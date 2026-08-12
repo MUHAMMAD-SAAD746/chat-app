@@ -1,0 +1,92 @@
+/* ========================================
+   Theme Variables
+======================================== */
+
+:root {
+    /* Backgrounds */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-hover: #f1f5f9;
+    --bg-active: #dbdde1;
+    --bg-chat-item-hover: #e9eaed;
+
+    /* Borders */
+    --border-primary: #e5e7eb;
+    --border-secondary: #e2e8f0;
+
+    /* Text */
+    --text-primary: #1e293b;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-placeholder: #94a3b8;
+
+    /* Accent */
+    --accent-primary: #2563eb;
+    --accent-success: #0fbd4e;
+    --accent-danger: #e74c3c;
+
+    /* Switch */
+    --switch-off: #cbd5e1;
+    --switch-thumb: #ffffff;
+
+    /* Shadows */
+    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ========================================
+   Dark Theme
+======================================== */
+
+[data-theme="dark"] {
+
+    /* Backgrounds */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-hover: #334155;
+    --bg-active: #475569;
+    --bg-chat-item-hover: #334155;
+
+    /* Borders */
+    --border-primary: #334155;
+    --border-secondary: #475569;
+
+    /* Text */
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-placeholder: #64748b;
+
+    /* Accent */
+    --accent-primary: #3b82f6;
+    --accent-success: #4ade80;
+
+    /* Switch */
+    --switch-off: #475569;
+    --switch-thumb: #ffffff;
+
+    /* Shadows */
+    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+/* ========================================
+   Global Theme Transition
+======================================== */
+
+body,
+.chat-sidebar,
+.chat-window,
+.empty-chat,
+.empty-chat-content,
+.chat-header,
+.chat-item,
+.sidebar-search,
+.theme-toggle,
+.empty-chat-actions > button,
+.chat-options-menu {
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}

@@ -1,0 +1,23 @@
+.chat-window {
+    flex: 1;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    background-color: var(--bg-secondary);
+}
+
+/* Messages area */
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Input area */
+.chat-input {
+    flex-shrink: 0;
+}

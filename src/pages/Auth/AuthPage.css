@@ -1,0 +1,75 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+.auth-page {
+    position: relative;
+
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    overflow: hidden;
+}
+
+/* Top-left decorative glow */
+.auth-page::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    top: -280px;
+    left: -220px;
+
+    border-radius: 50%;
+
+    background: oklch(58.541% 0.20415 277.126 / 0.20);
+
+    filter: blur(80px);
+
+    pointer-events: none;
+}
+
+/* Right-side decorative glow */
+.auth-page::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -180px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(96, 165, 250, 0.14);
+
+    filter: blur(90px);
+
+    pointer-events: none;
+}
+
+/* Keep authentication card above decorations */
+.auth-card {
+    position: relative;
+    z-index: 1;
+}

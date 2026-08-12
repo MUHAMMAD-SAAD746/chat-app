@@ -1,0 +1,240 @@
+.new-chat {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--bg-primary);
+    color: #1f2937;
+
+    box-sizing: border-box;
+}
+
+.new-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border-secondary);
+}
+
+.new-chat-back {
+    width: 38px;
+    height: 38px;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.new-chat-back:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+.new-chat-header-content {
+    min-width: 0;
+}
+
+.new-chat-header-content h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.new-chat-header-content p {
+    margin: 3px 0 0;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+
+.new-chat-search-wrapper {
+    padding: 20px 22px 16px;
+}
+
+.new-chat-search {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    background-color: var(--bg-secondary);
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.new-chat-search-icon {
+    flex-shrink: 0;
+    margin-right: 10px;
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.new-chat-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+
+.new-chat-search input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* New Chat Results */
+/* ========================================= */
+.new-chat-results {
+    flex: 1;
+    padding: 4px 22px 24px;
+    overflow-y: auto;
+}
+
+.new-chat-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.new-chat-results-header h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.new-chat-results-header span {
+    font-size: 12px;
+    color: #9ca3af;
+    color: var(--text-muted);
+}
+
+
+
+.new-chat-user {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+    padding: 11px 10px 11px 0;
+    margin-bottom: 4px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: transparent;
+
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s ease;
+}
+
+.new-chat-user:hover {
+    background-color: var(--bg-chat-item-hover);
+}
+
+
+
+.new-chat-user img {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e5e7eb;
+}
+
+
+/* User Info */
+
+.new-chat-user-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.new-chat-user-info h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.new-chat-user-info p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Scrollbar */
+
+.new-chat-results::-webkit-scrollbar {
+    width: 5px;
+}
+
+.new-chat-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.new-chat-results::-webkit-scrollbar-thumb {
+    background-color: #d5d8dc;
+    border-radius: 10px;
+}
+
+
+@media (max-width: 600px) {
+
+    .new-chat-header {
+        padding: 15px 16px;
+    }
+
+    .new-chat-search-wrapper {
+        padding: 16px;
+    }
+
+    .new-chat-results {
+        padding: 4px 16px 20px;
+    }
+
+    .new-chat-header-content h2 {
+        font-size: 17px;
+    }
+
+    .new-chat-header-content p {
+        font-size: 12px;
+    }
+}
