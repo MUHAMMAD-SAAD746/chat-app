@@ -3,12 +3,12 @@ import "./ChatWindow.css";
 import MessageInput from "./MessageInput/MessageInput";
 import MessageList from "./MessageList/MessageList";
 
-function ChatWindow() {
+function ChatWindow({ selectedUser }) {
     return (
         <main className="chat-window">
 
             {/* Chat Header */}
-            <ChatHeader />
+            <ChatHeader selectedUser={selectedUser} />
 
             {/* Messages */}
             <section className="chat-messages">

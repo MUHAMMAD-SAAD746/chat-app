@@ -1,22 +1,55 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function ConversationItem({
-    id,
-    name,
-    lastMessage,
-    time,
-    profileImage
-}) {
+import { useAuth } from "../../../context/AuthContext";
+import { getUser } from "../../../firebase/database";
+
+function ConversationItem({ conversation }) {
+    const { user } = useAuth();
+
+    const [otherUser, setOtherUser] = useState(null);
+
+    const otherUserId = Object.keys(conversation.members)
+        .find((uid) => uid !== user.uid);
+
+    console.log("Other user ID:", otherUserId);
+
+
+    useEffect(() => {
+        const fetchOtherUser = async () => {
+            const userData = await getUser(otherUserId);
+
+            console.log("Other user:", userData);
+
+            setOtherUser(userData);
+        };
+
+        fetchOtherUser();
+    }, [otherUserId]);
+
+
+
+    const formatTime = (timestamp) => {
+        if (!timestamp) return "";
+
+        return new Date(timestamp).toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+        });
+    };
+
+
+
     return (
         <Link
-            to={`/chat/${id}`}
+            to={`/chat/${conversation.id}`}
             className="chat-item"
         >
 
             {/* Profile Image */}
             <div className="chat-avatar">
                 <img
-                    src={profileImage}
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM8CJG2AbgWxM5Xrlpwt5eWJEnglBeMdJ6bs-GMzLo0Q&s"
                     alt={`${name} profile`}
                 />
             </div>
@@ -25,16 +58,16 @@ function ConversationItem({
             <div className="chat-info">
                 <div className="chat-top">
                     <p className="chat-name">
-                        {name}
+                        {otherUser?.fullName}
                     </p>
 
                     <span className="chat-time">
-                        {time}
+                        {formatTime(conversation.lastMessageTime)}
                     </span>
                 </div>
 
                 <p className="chat-last-message">
-                    {lastMessage}
+                    {conversation.lastMessage}
                 </p>
             </div>
 

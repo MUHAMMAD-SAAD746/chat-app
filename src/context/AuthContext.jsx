@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
 
+import { setupPresence } from "../firebase/services/presenceService";
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -16,6 +18,16 @@ export function AuthProvider({ children }) {
 
         return unsubscribe;
     }, []);
+
+
+    useEffect(() => {
+        if (!user?.uid) return;
+
+        const unsubscribePresence = setupPresence(user.uid);
+
+        return unsubscribePresence;
+    }, [user]);
+
 
     const value = {
         user,

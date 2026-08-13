@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/auth/Login/Login";
 import Register from "./pages/Auth/Register/Register";
@@ -31,6 +31,15 @@ function App() {
 
         <Route
           path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chat/add-contact"
           element={
             <ProtectedRoute>
               <Chat />

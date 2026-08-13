@@ -1,7 +1,7 @@
 import { LuUserPlus } from "react-icons/lu";
 import "./EmptySidebar.css"
 
-function EmptyChatSidebar() {
+function EmptyChatSidebar({ onAddContact }) {
     return (
         <div className="empty-sidebar">
 
@@ -15,7 +15,10 @@ function EmptyChatSidebar() {
                 Add a friend to start a conversation.
             </p>
 
-            <button className="empty-sidebar-btn">
+            <button 
+                className="empty-sidebar-btn"
+                onClick={onAddContact}
+            >
                 <LuUserPlus size={18} />
                 Add Contact
             </button>

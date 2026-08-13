@@ -11,12 +11,9 @@ import { LuLogOut, LuUserPlus } from "react-icons/lu";
 import { logout } from "../../../firebase/auth";
 
 
-function Sidebar({ onAddContact }) {
+function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
     const navigate = useNavigate();
-
-
-
 
 
     const handleLogout = async () => {
@@ -31,15 +28,6 @@ function Sidebar({ onAddContact }) {
     };
 
 
-
-
-
-    const conversations = [
-        // {
-        //     id: 1,
-        //     name: "saad"
-        // }
-    ]
 
     return (
         <aside className="chat-sidebar">
@@ -88,9 +76,9 @@ function Sidebar({ onAddContact }) {
             </div>
 
             {conversations.length === 0 ? (
-                <EmptyChatSidebar />
+                <EmptyChatSidebar onAddContact={onAddContact}/>
             ) : (
-                <ConversationList />
+                <ConversationList conversations={conversations} />
             )}
         </aside>
     )

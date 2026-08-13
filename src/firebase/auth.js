@@ -6,7 +6,13 @@ import {
     signOut,
 } from "firebase/auth";
 
-import { auth } from "./config";
+import {
+    ref,
+    set,
+    serverTimestamp,
+} from "firebase/database";
+
+import { auth, database } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -20,5 +26,16 @@ export const login = (email, password) =>
 export const loginWithGoogle = () =>
     signInWithPopup(auth, googleProvider);
 
-export const logout = () =>
-    signOut(auth);
+
+export const logout = async () => {
+    const uid = auth.currentUser?.uid;
+
+    if (uid) {
+        await set(ref(database, `presence/${uid}`), {
+            online: false,
+            lastSeen: serverTimestamp(),
+        });
+    }
+
+    return signOut(auth);
+};
