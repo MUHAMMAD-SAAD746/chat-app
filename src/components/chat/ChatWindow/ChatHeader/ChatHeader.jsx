@@ -6,10 +6,10 @@ import { listenToUserPresence } from "../../../../firebase/services/presenceList
 
 import "./ChatHeader.css";
 
-function ChatHeader({ selectedUser }) {
+function ChatHeader({ selectedUser, isOtherUserTyping }) {
     const [showMenu, setShowMenu] = useState(false);
     const [presence, setPresence] = useState(null);
-
+    console.log("Typing:", isOtherUserTyping);
     const navigate = useNavigate();
     console.log("Selected user in ChatHeader:", selectedUser);
 
@@ -75,7 +75,7 @@ function ChatHeader({ selectedUser }) {
 
                 <div className="chat-header-avatar">
                     <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7GPdV2GaZgJvQsWkNO_1SgJOawLjTfuA51Ij0j8-EXTG9mJDVbSSxNNI&s=10"
+                        src={`${selectedUser?.profileImage}`}
                         alt="User profile"
                     />
                 </div>
@@ -93,11 +93,13 @@ function ChatHeader({ selectedUser }) {
                         <span className="chat-status-dot"></span>
 
                         <span>
-                            {presence === null
-                                ? "..."
-                                : presence.online
-                                    ? "Online"
-                                    : `Last seen ${formatLastSeen(presence.lastSeen)}`}
+                            {isOtherUserTyping
+                                ? "typing..."
+                                : presence === null
+                                    ? "..."
+                                    : presence.online
+                                        ? "Online"
+                                        : `Last seen ${formatLastSeen(presence.lastSeen)}`}
                         </span>
                     </div>
                 </div>

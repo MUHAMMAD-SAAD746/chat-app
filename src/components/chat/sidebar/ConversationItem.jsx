@@ -49,7 +49,7 @@ function ConversationItem({ conversation }) {
             {/* Profile Image */}
             <div className="chat-avatar">
                 <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM8CJG2AbgWxM5Xrlpwt5eWJEnglBeMdJ6bs-GMzLo0Q&s"
+                    src={`${otherUser?.profileImage}`}
                     alt={`${name} profile`}
                 />
             </div>

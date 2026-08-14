@@ -1,19 +1,50 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./ChatSidebar.css"
+
 import ConversationList from "./ConversationList";
 import EmptyChatSidebar from "./EmptySidebar/EmptySidebar";
+import ProfileWarning from "./ProfileWarning/ProfileWarning";
 
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoSearchOutline, IoSettingsSharp } from "react-icons/io5";
 import { LuLogOut, LuUserPlus } from "react-icons/lu";
 
 import { logout } from "../../../firebase/auth";
+import { useAuth } from "../../../context/AuthContext";
+import { getUser } from "../../../firebase/database";
 
 
 function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
+    const [showProfileWarning, setShowProfileWarning] = useState(false);
+
+    const { user } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+
+
+    useEffect(() => {
+        const checkUsername = async () => {
+            if (!user?.uid) {
+                setShowProfileWarning(false);
+                return;
+            }
+
+            try {
+                const profile = await getUser(user.uid);
+
+                setShowProfileWarning(!profile?.userName);
+            } catch (error) {
+                console.error("Failed to check username:", error);
+                setShowProfileWarning(false);
+            }
+        };
+
+        checkUsername();
+    }, [user?.uid]);
+
 
 
     const handleLogout = async () => {
@@ -53,7 +84,12 @@ function Sidebar({ conversations, onAddContact }) {
                                 <LuUserPlus size={18} />
                                 Add Contact
                             </button>
-                            <button>
+                            <button
+                                onClick={() => {
+                                    navigate("/settings");
+                                    setShowMenu(false);
+                                }}
+                            >
                                 <IoSettingsSharp size={18} />
                                 Settings
                             </button>
@@ -75,8 +111,16 @@ function Sidebar({ conversations, onAddContact }) {
                 </div>
             </div>
 
+            {showProfileWarning && location.pathname !== "/settings" && (
+                <ProfileWarning
+                    onCompleteProfile={() => {
+                        navigate("/settings");
+                    }}
+                />
+            )}
+
             {conversations.length === 0 ? (
-                <EmptyChatSidebar onAddContact={onAddContact}/>
+                <EmptyChatSidebar onAddContact={onAddContact} />
             ) : (
                 <ConversationList conversations={conversations} />
             )}

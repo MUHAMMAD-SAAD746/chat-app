@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../AuthPage.css";
@@ -7,13 +7,24 @@ import AuthCard from "../../../components/auth/AuthCard/AuthCard";
 import { signup } from "../../../firebase/auth";
 import {
     createUser,
-    getUsername
 } from "../../../firebase/database";
+
+import useUsername from "../../../hooks/useUsername";
+
+import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
 
 
 function Register() {
     const [fullName, setFullName] = useState("");
-    const [userName, setUserName] = useState("");
+    const {
+        username: userName,
+        setUsername: setUserName,
+        usernameError,
+        usernameChecking,
+        usernameAvailable
+    } = useUsername();
+
+    const [profileImage, setProfileImage] = useState(null);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,9 +32,6 @@ function Register() {
     const [loading, setLoading] = useState(false);
 
     const [errors, setErrors] = useState({});
-
-    const [usernameAvailable, setUsernameAvailable] = useState(null);
-    const [usernameChecking, setUsernameChecking] = useState(false);
 
     const navigate = useNavigate();
 
@@ -39,11 +47,8 @@ function Register() {
             errors.fullName = "Full name is required";
         }
 
-        // Username
-        const hasSpecialCharacter = /[^a-zA-Z0-9]/.test(username);
-
-        if (username.length < 5 || !hasSpecialCharacter) {
-            errors.userName = "Enter a valid username";
+        if (usernameError) {
+            errors.userName = usernameError;
         }
 
         // Email
@@ -64,67 +69,6 @@ function Register() {
 
 
 
-
-    // Debouncing to match username from database 
-    useEffect(() => {
-        setUsernameAvailable(null);
-        setUsernameChecking(false);
-
-        const username = userName.trim();
-        const hasSpecialCharacter = /[^a-zA-Z0-9]/.test(username);
-
-        if (userName.trim().length < 5) {
-            setUsernameAvailable(null);
-            return;
-        }
-
-        // / No special character → show immediately
-        if (!hasSpecialCharacter) {
-            setUsernameAvailable(null);
-
-            setErrors((prev) => ({
-                ...prev,
-                userName:
-                    "Username must contain at least one special character"
-            }));
-
-            return;
-        }
-
-
-        setErrors((prev) => {
-            const newErrors = { ...prev };
-            delete newErrors.userName;
-            return newErrors;
-        });
-
-        setUsernameChecking(true);
-
-        const timer = setTimeout(async () => {
-            try {
-                const existingUsername = await getUsername(
-                    userName.trim().toLowerCase()
-                );
-
-                if (existingUsername) {
-                    setUsernameAvailable(false);
-                    setUsernameChecking(false);
-                } else {
-                    setUsernameAvailable(true);
-                    setUsernameChecking(false);
-                }
-
-            } catch (error) {
-                console.error("Username check failed:", error);
-            }
-        }, 600);
-
-        return () => clearTimeout(timer);
-    }, [userName]);
-
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
@@ -135,7 +79,7 @@ function Register() {
         }
 
         // Username already exists
-        if (usernameAvailable === false) {
+        if (usernameAvailable !== true) {
             return;
         }
 
@@ -146,15 +90,26 @@ function Register() {
             const result = await signup(email, password);
             const user = result.user;
 
+            const DEFAULT_PROFILE_IMAGE = "https://res.cloudinary.com/dn7oklgm7/image/upload/v1786611251/copy_of_profile_ppp_wh9unh.png";
+            let profileImageUrl = DEFAULT_PROFILE_IMAGE;
+
+            if (profileImage?.type === "file") {
+                profileImageUrl = await uploadProfileImage(profileImage.value);
+            } else if (profileImage?.type === "url") {
+                profileImageUrl = profileImage.value;
+            }
+
             await createUser(user.uid, {
                 uid: user.uid,
                 fullName,
                 userName,
                 email: user.email,
+                profileImage: profileImageUrl,
                 createdAt: Date.now()
             });
 
 
+            setProfileImage(null);
             setFullName("");
             setUserName("");
             setEmail("");
@@ -184,6 +139,9 @@ function Register() {
     return (
         <main className="auth-page">
             <AuthCard
+                profileImage={profileImage}
+                setProfileImage={setProfileImage}
+
                 fullName={fullName}
                 setFullName={setFullName}
 

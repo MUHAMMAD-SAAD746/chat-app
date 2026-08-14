@@ -2,7 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/auth/Login/Login";
 import Register from "./pages/Auth/Register/Register";
-import Chat from "./pages/chat/chat";
+import Chat from "./pages/chat/Chat";
+import ChatLayout from "./components/chat/ChatLayout/ChatLayout";
+import Settings from "./pages/Settings/Settings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
@@ -29,32 +31,57 @@ function App() {
           element={<Register />}
         />
 
-        <Route
+        {/* <Route
           path="/chat"
           element={
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           path="/chat/add-contact"
           element={
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           path="/chat/:conversationId"
           element={
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }
-        />
+        /> */}
+
+        {/* <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <ChatLayout>
+                <Settings />
+              </ChatLayout>
+            </ProtectedRoute>
+          }
+        /> */}
+
+        <Route
+          element={
+            <ProtectedRoute>
+              <ChatLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/add-contact" element={<Chat />} />
+          <Route path="/chat/:conversationId" element={<Chat />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+
       </Routes>
     </div>
   );

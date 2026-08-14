@@ -1,0 +1,373 @@
+.profile-settings {
+    width: 100%;
+    max-width: 760px;
+
+    margin: 0 auto;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.profile-settings-header {
+    margin-bottom: 24px;
+}
+
+.profile-settings-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+.profile-settings-header p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Card
+================================ */
+
+.profile-settings-card {
+    width: 100%;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    background: var(--bg-primary);
+
+    border: 1px solid var(--border-primary);
+    border-radius: 14px;
+}
+
+
+/* ================================
+   Profile Image
+================================ */
+
+.profile-settings-avatar-section {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.profile-settings-avatar {
+    width: 82px;
+    height: 82px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--bg-secondary);
+
+    color: var(--text-primary);
+
+    border: 1px solid var(--border-primary);
+
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.profile-settings-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.profile-settings-avatar-info {
+    min-width: 0;
+}
+
+.profile-settings-avatar-info h3 {
+    margin: 0 0 5px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+.profile-settings-avatar-info p {
+    margin: 0 0 11px;
+
+    font-size: 12px;
+
+    color: var(--text-secondary);
+}
+
+.profile-settings-photo-button {
+    padding: 7px 12px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+}
+
+.profile-settings-photo-button:hover {
+    background: var(--bg-tertiary);
+}
+
+
+/* =======-------------============= */
+.profile-settings-photo-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-settings-photo-actions .profile-image-input {
+    flex: 1;
+}
+
+.profile-settings-photo-button.cancel {
+    flex-shrink: 0;
+}
+
+
+/* ================================
+   Sections
+================================ */
+
+.profile-settings-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-settings-section h3 {
+    margin: 0 0 4px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+.profile-settings-section-description {
+    margin: 0 0 20px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Divider
+================================ */
+
+.profile-settings-divider {
+    height: 1px;
+
+    margin: 26px 0;
+
+    background: var(--border-primary);
+}
+
+
+/* ================================
+   Fields
+================================ */
+
+.profile-settings-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+.profile-settings-field:last-child {
+    margin-bottom: 0;
+}
+
+.profile-settings-field label {
+    font-size: 13px;
+    font-weight: 500;
+
+    color: var(--text-primary);
+}
+
+.profile-settings-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    outline: none;
+
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.profile-settings-field input:focus {
+    border-color: var(--accent-color);
+
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+.profile-settings-field>span {
+    font-size: 11px;
+    line-height: 1.4;
+
+    /* color: var(--text-secondary); */
+}
+
+
+/* ================================
+   Field Messages
+================================ */
+.profile-settings-current-text {
+    color: var(--text-secondary);
+}
+
+.profile-settings-error-text {
+    color: #dc2626;
+}
+
+.profile-settings-checking-text {
+    color: var(--text-secondary);
+}
+
+.username-status {
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.username-available {
+    color: #16a34a;
+}
+
+/* ================================
+   Read Only Fields
+================================ */
+
+.profile-settings-readonly-wrapper {
+    position: relative;
+}
+
+.profile-settings-readonly-wrapper input {
+    padding-right: 38px;
+
+    background: var(--bg-tertiary);
+
+    color: var(--text-secondary);
+
+    cursor: not-allowed;
+}
+
+.profile-settings-lock {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    font-size: 12px;
+}
+
+.profile-settings-readonly {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    background: var(--bg-tertiary);
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   Actions
+================================ */
+
+.profile-settings-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 28px;
+}
+
+.profile-settings-save {
+    min-width: 112px;
+
+    padding: 9px 17px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    background: var(--accent-color);
+    color: white;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.1s ease;
+}
+
+.profile-settings-save:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.profile-settings-save:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.profile-settings-save:disabled {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.7;
+}

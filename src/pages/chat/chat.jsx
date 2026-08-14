@@ -1,11 +1,14 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import ChatLayout from "../../components/chat/ChatLayout/ChatLayout";
+
 import ChatWindow from "../../components/chat/ChatWindow/ChatWindow";
 import EmptyChat from "../../components/chat/ChatWindow/EmptyChat/EmptyChat";
-import Sidebar from "../../components/chat/sidebar/ChatSidebar";
 
 import NewChat from "../../components/chat/NewChat/NewChat";
+
+import { subscribeToTyping } from "../../firebase/services/typingListenerService";
 
 import {
     getConversation,
@@ -15,7 +18,6 @@ import {
 import { getUser } from "../../firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
-import { subscribeToUserConversations } from "../../firebase/services/conversationListenerService";
 
 import "./Chat.css";
 
@@ -23,13 +25,13 @@ function Chat() {
     const { conversationId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const isAddContact = location.pathname === "/chat/add-contact";
 
-    const { user } = useAuth();
-
     const [selectedUser, setSelectedUser] = useState(null);
-    const [conversations, setConversations] = useState([]);
+
+    const [typingUsers, setTypingUsers] = useState([]);
 
 
 
@@ -66,23 +68,6 @@ function Chat() {
             navigate(`/chat/${newConversation.id}`);
         }
     };
-
-
-
-    useEffect(() => {
-        if (!user?.uid) return;
-
-
-        const unsubscribe = subscribeToUserConversations(
-            user.uid,
-            (conversations) => {
-                console.log("Conversations received:", conversations);
-                setConversations(conversations);
-            }
-        );
-
-        return unsubscribe;
-    }, [user]);
 
 
 
@@ -127,27 +112,44 @@ function Chat() {
 
 
 
+
+    useEffect(() => {
+        if (!conversationId || !user?.uid) return;
+
+        const unsubscribe = subscribeToTyping(
+            conversationId,
+            (typingUsers) => {
+                setTypingUsers(typingUsers);
+            }
+        );
+
+        return unsubscribe;
+    }, [conversationId, user?.uid]);
+
+
+    const isOtherUserTyping = typingUsers.some(
+        (uid) => uid !== user?.uid
+    );
+
+
     return (
-        <main className="chat-page">
-            <Sidebar
-                conversations={conversations}
-                onAddContact={() => navigate("/chat/add-contact")}
-            />
-
-
+        <>
             {isAddContact ? (
                 <NewChat
                     onBack={() => navigate("/chat")}
                     onSelectUser={handleSelectUser}
                 />
             ) : conversationId ? (
-                <ChatWindow selectedUser={selectedUser} />
+                <ChatWindow
+                    selectedUser={selectedUser}
+                    isOtherUserTyping={isOtherUserTyping}
+                />
             ) : (
                 <EmptyChat
                     onAddContact={() => navigate("/chat/add-contact")}
                 />
             )}
-        </main>
+        </>
     );
 }
 

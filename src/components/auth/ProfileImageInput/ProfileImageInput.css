@@ -1,0 +1,168 @@
+/* Profile Image Input */
+
+.profile-image-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+
+/* =========================
+   Image Preview
+========================= */
+
+.profile-image-preview {
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+
+    color: var(--text-secondary);
+
+    box-sizing: border-box;
+}
+
+
+/* Preview Image */
+
+.profile-image-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+
+.profile-image-actions {
+    width: 100%;
+    max-width: 380px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* =========================
+   Choose Image Button
+========================= */
+
+.profile-image-button {
+    flex-shrink: 0;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* Hover */
+
+.profile-image-button:hover {
+    background-color: var(--accent-primary-hover);
+}
+
+
+
+/* Active */
+
+.profile-image-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================
+   Image URL Input
+========================= */
+
+.profile-image-url {
+    flex: 1;
+    min-width: 0;
+
+    padding: 10px 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.profile-image-url::placeholder {
+    color: var(--text-secondary);
+}
+
+
+/* Focus */
+
+.profile-image-url:focus {
+    border-color: var(--accent-primary);
+
+    box-shadow:
+        0 0 0 3px
+        color-mix(
+            in srgb,
+            var(--accent-primary) 15%,
+            transparent
+        );
+}
+
+
+/* Hover */
+
+.profile-image-url:hover {
+    border-color: var(--accent-primary);
+}
+
+.profile-image-error {
+    width: 100%;
+    max-width: 380px;
+
+    margin: -4px 0 0;
+
+    color: var(--accent-danger);
+
+    font-size: 13px;
+    line-height: 1.4;
+
+    text-align: center;
+}

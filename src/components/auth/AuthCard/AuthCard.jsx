@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
+import ProfileImageInput from "../ProfileImageInput/ProfileImageInput";
 import GoogleButton from "../GoogleButton/GoogleButton";
 import "./AuthCard.css";
 
 function AuthCard({
     isLogin = false,
+
+    profileImage,
+    setProfileImage,
 
     fullName,
     setFullName,
@@ -40,6 +44,11 @@ function AuthCard({
                 {/* Register-only fields */}
                 {!isLogin && (
                     <>
+                        <ProfileImageInput
+                            value={profileImage}
+                            onChange={setProfileImage}
+                        />
+
                         {/* Full Name */}
                         <div className="form-group">
                             <label htmlFor="full-name">

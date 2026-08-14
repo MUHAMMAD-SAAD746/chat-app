@@ -101,7 +101,7 @@ function NewChat({ onBack, onSelectUser }) {
                         onClick={() => onSelectUser(user)}
                     >
                         <img
-                            src={user.profilePicture || "/assets/hero.png"}
+                            src={user.profileImage}
                             alt={user.fullName}
                         />
 
