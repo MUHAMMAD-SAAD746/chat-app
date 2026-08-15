@@ -200,6 +200,13 @@
     color: var(--text-placeholder);
 }
 
+.chat-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
 .chat-last-message {
     margin: 5px 0 0;
 
@@ -209,4 +216,25 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.unread-count {
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #ffffff;
+    background: #25d366;
+
+    flex-shrink: 0;
 }

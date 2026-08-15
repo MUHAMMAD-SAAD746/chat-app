@@ -6,6 +6,7 @@ import "./MessageList.css";
 
 import { useAuth } from "../../../../context/AuthContext";
 import { subscribeToMessages } from "../../../../firebase/services/messageListenerService";
+import { markConversationAsRead } from "../../../../firebase/services/unreadService";
 
 function MessageList() {
     const { conversationId } = useParams();
@@ -14,17 +15,27 @@ function MessageList() {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        if (!conversationId) return;
+        if (!conversationId || !user?.uid) return;
 
         const unsubscribe = subscribeToMessages(
             conversationId,
             (messages) => {
                 setMessages(messages);
+
+                markConversationAsRead(
+                    conversationId,
+                    user.uid
+                ).catch((error) => {
+                    console.error(
+                        "Error marking conversation as read:",
+                        error
+                    );
+                });
             }
         );
 
         return unsubscribe;
-    }, [conversationId]);
+    }, [conversationId, user?.uid]);
 
 
     const formatTime = (timestamp) => {

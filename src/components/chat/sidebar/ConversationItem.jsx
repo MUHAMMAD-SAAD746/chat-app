@@ -6,6 +6,7 @@ import { getUser } from "../../../firebase/database";
 
 function ConversationItem({ conversation }) {
     const { user } = useAuth();
+    const unreadCount = conversation.unread?.[user.uid] || 0;
 
     const [otherUser, setOtherUser] = useState(null);
 
@@ -50,7 +51,7 @@ function ConversationItem({ conversation }) {
             <div className="chat-avatar">
                 <img
                     src={`${otherUser?.profileImage}`}
-                    alt={`${name} profile`}
+                    alt={`${otherUser?.fullName || "User"} profile`}
                 />
             </div>
 
@@ -66,9 +67,17 @@ function ConversationItem({ conversation }) {
                     </span>
                 </div>
 
-                <p className="chat-last-message">
-                    {conversation.lastMessage}
-                </p>
+                <div className="chat-bottom">
+                    <p className="chat-last-message">
+                        {conversation.lastMessage}
+                    </p>
+
+                    {unreadCount > 0 && (
+                        <span className="unread-count">
+                            {unreadCount}
+                        </span>
+                    )}
+                </div>
             </div>
 
         </Link>

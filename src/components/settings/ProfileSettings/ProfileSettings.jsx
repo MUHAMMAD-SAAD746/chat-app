@@ -13,14 +13,14 @@ import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
 import "./ProfileSettings.css";
 
 function ProfileSettings() {
-    const { user } = useAuth();
+    const { user, setProfile } = useAuth();
 
     const [dbProfileImage, setDbProfileImage] = useState("");
     const [newProfileImage, setNewProfileImage] = useState(null);
 
     const [showPhotoInput, setShowPhotoInput] = useState(false);
 
-    const [profile, setProfile] = useState(null);
+    const [profile, setLocalProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const [fullName, setFullName] = useState("");
@@ -66,7 +66,7 @@ function ProfileSettings() {
                 setLoading(true);
 
                 const userData = await getUser(user.uid);
-                setProfile(userData);
+                setLocalProfile(userData);
 
 
                 const finalImage =
@@ -146,6 +146,11 @@ function ProfileSettings() {
                 profile.userName,
                 updatedData
             );
+
+            setLocalProfile((prev) => ({
+                ...prev,
+                ...updatedData,
+            }));
 
             setProfile((prev) => ({
                 ...prev,

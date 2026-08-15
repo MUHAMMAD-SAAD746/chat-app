@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ChatSidebar.css"
 
 import ConversationList from "./ConversationList";
@@ -12,38 +12,38 @@ import { LuLogOut, LuUserPlus } from "react-icons/lu";
 
 import { logout } from "../../../firebase/auth";
 import { useAuth } from "../../../context/AuthContext";
-import { getUser } from "../../../firebase/database";
+// import { getUser } from "../../../firebase/database";
 
 
 function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
-    const [showProfileWarning, setShowProfileWarning] = useState(false);
+    // const [showProfileWarning, setShowProfileWarning] = useState(false);
 
-    const { user } = useAuth();
+    const { user, profile } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
 
 
-    useEffect(() => {
-        const checkUsername = async () => {
-            if (!user?.uid) {
-                setShowProfileWarning(false);
-                return;
-            }
+    // useEffect(() => {
+    //     const checkUsername = async () => {
+    //         if (!user?.uid) {
+    //             setShowProfileWarning(false);
+    //             return;
+    //         }
 
-            try {
-                const profile = await getUser(user.uid);
+    //         try {
+    //             const profile = await getUser(user.uid);
 
-                setShowProfileWarning(!profile?.userName);
-            } catch (error) {
-                console.error("Failed to check username:", error);
-                setShowProfileWarning(false);
-            }
-        };
+    //             setShowProfileWarning(!profile?.userName);
+    //         } catch (error) {
+    //             console.error("Failed to check username:", error);
+    //             setShowProfileWarning(false);
+    //         }
+    //     };
 
-        checkUsername();
-    }, [user?.uid]);
+    //     checkUsername();
+    // }, [user?.uid]);
 
 
 
@@ -111,7 +111,7 @@ function Sidebar({ conversations, onAddContact }) {
                 </div>
             </div>
 
-            {showProfileWarning && location.pathname !== "/settings" && (
+            {!profile?.userName && location.pathname !== "/settings" && (
                 <ProfileWarning
                     onCompleteProfile={() => {
                         navigate("/settings");
