@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import "./ChatLayout.css";
 
@@ -11,8 +11,20 @@ import { subscribeToUserConversations } from "../../../firebase/services/convers
 function ChatLayout() {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [conversations, setConversations] = useState([]);
+
+    const isSettingsPage = location.pathname === "/settings";
+
+    const isAddContact =
+        location.pathname === "/chat/add-contact";
+
+    const isConversationOpen =
+        location.pathname.startsWith("/chat/") &&
+        !isAddContact;
+
+
 
     useEffect(() => {
         if (!user?.uid) return;
@@ -28,7 +40,14 @@ function ChatLayout() {
     }, [user?.uid]);
 
     return (
-        <main className="chat-layout">
+        <main
+            className={`chat-layout ${isConversationOpen
+                    ? "conversation-open"
+                    : isAddContact
+                        ? "add-contact-open"
+                        : ""
+                } ${isSettingsPage ? "settings-open" : ""}`}
+        >
 
             <Sidebar
                 conversations={conversations}

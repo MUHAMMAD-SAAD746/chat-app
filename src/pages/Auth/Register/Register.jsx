@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import "../AuthPage.css";
 
+import { useAuth } from "../../../context/AuthContext";
+
 import AuthCard from "../../../components/auth/AuthCard/AuthCard";
 import { signup } from "../../../firebase/auth";
 import {
@@ -34,6 +36,7 @@ function Register() {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+    const { setProfile } = useAuth();
 
 
 
@@ -99,14 +102,17 @@ function Register() {
                 profileImageUrl = profileImage.value;
             }
 
-            await createUser(user.uid, {
+            const profileData = {
                 uid: user.uid,
                 fullName,
                 userName,
                 email: user.email,
                 profileImage: profileImageUrl,
                 createdAt: Date.now()
-            });
+            };
+
+            await createUser(user.uid, profileData);
+            setProfile(profileData);
 
 
             setProfileImage(null);

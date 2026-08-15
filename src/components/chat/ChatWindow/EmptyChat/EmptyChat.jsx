@@ -7,9 +7,11 @@ import {
 import "./EmptyChat.css";
 import { useTheme } from "../../../../context/ThemeContext";
 import { logout } from "../../../../firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function EmptyChat({ onAddContact }) {
     const { darkMode, toggleTheme } = useTheme();
+    const navigate = useNavigate();
 
 
 

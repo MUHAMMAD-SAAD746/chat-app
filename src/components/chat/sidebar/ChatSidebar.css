@@ -1,7 +1,5 @@
 .chat-sidebar {
-    width: 380px;
-    min-width: 380px;
-    flex: 0 0 380px;
+    flex: 0 0 30%;
     height: 100vh;
 
     display: flex;
@@ -116,6 +114,7 @@
     outline: none;
     background: transparent;
     font-size: 14px;
+    color: var(--text-primary);
 }
 
 .sidebar-search input::placeholder {
@@ -237,4 +236,33 @@
     background: #25d366;
 
     flex-shrink: 0;
+}
+
+
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 600px) {
+
+    .chat-sidebar {
+        width: 100%;
+        min-width: 100%;
+        flex-basis: 100%;
+
+        height: 100%;
+    }
+
+    .sidebar-header {
+        height: 60px;
+        padding: 0 12px;
+        gap: 10px;
+    }
+
+    .chat-item {
+        min-height: 68px;
+        padding: 0 14px;
+    }
+
 }

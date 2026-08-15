@@ -1,8 +1,8 @@
 .profile-settings {
     width: 100%;
-    max-width: 760px;
+    /* max-width: 760px; */
 
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 
@@ -56,10 +56,14 @@
 ================================ */
 
 .profile-settings-avatar-section {
-    display: flex;
-    align-items: center;
+    display: grid;
 
-    gap: 18px;
+    grid-template-columns: 82px 1fr;
+
+    column-gap: 18px;
+    row-gap: 12px;
+
+    align-items: start;
 }
 
 .profile-settings-avatar {
@@ -84,6 +88,9 @@
 
     font-size: 24px;
     font-weight: 600;
+
+    grid-column: 1;
+    grid-row: 1 / 3;
 }
 
 .profile-settings-avatar img {
@@ -95,6 +102,9 @@
 
 .profile-settings-avatar-info {
     min-width: 0;
+
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .profile-settings-avatar-info h3 {
@@ -140,11 +150,23 @@
 .profile-settings-photo-actions {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 12px;
+
+    min-width: 0;
+
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.profile-settings-photo-actions .profile-image-input {
+    display: flex;
+    align-items: flex-start;
 }
 
 .profile-settings-photo-actions .profile-image-input {
     flex: 1;
+    min-width: 0;
 }
 
 .profile-settings-photo-button.cancel {
@@ -219,6 +241,7 @@
 
 .profile-settings-field input {
     width: 100%;
+    /* max-width: 520px; */
 
     box-sizing: border-box;
 
@@ -370,4 +393,178 @@
     color: var(--text-secondary);
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+
+
+/* ================================
+   Responsive
+================================ */
+
+/* Tablet */
+@media (max-width: 900px) {
+
+    .profile-settings {
+        max-width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .profile-settings-card {
+        padding: 24px;
+    }
+
+    .profile-settings-avatar-section {
+        grid-template-columns: 82px 1fr;
+
+        column-gap: 14px;
+        row-gap: 12px;
+
+        align-items: start;
+    }
+
+    .profile-settings-avatar {
+        grid-column: 1;
+        grid-row: 1;
+
+        width: 82px;
+        height: 82px;
+    }
+
+    .profile-settings-avatar-info {
+        grid-column: 2;
+        grid-row: 1;
+
+        min-width: 0;
+    }
+
+    .profile-settings-photo-actions {
+        grid-column: 1 / -1;
+        grid-row: 2;
+
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        min-width: 0;
+    }
+
+    .profile-settings-photo-actions .profile-image-input {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .profile-settings {
+        width: 100%;
+        max-width: none;
+
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    /* Header */
+
+    .profile-settings-header {
+        margin-bottom: 18px;
+    }
+
+    .profile-settings-header h2 {
+        font-size: 20px;
+    }
+
+    .profile-settings-header p {
+        font-size: 12px;
+    }
+
+
+    /* Card */
+
+    .profile-settings-card {
+        padding: 20px 16px;
+
+        border-radius: 12px;
+    }
+
+
+    /* Profile Image */
+
+    .profile-settings-avatar-section {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .profile-settings-avatar {
+        width: 68px;
+        height: 68px;
+    }
+
+    .profile-settings-avatar-info h3 {
+        font-size: 13px;
+    }
+
+    .profile-settings-avatar-info p {
+        font-size: 11px;
+        margin-bottom: 9px;
+    }
+
+
+    /* Photo actions */
+
+    .profile-settings-photo-actions {
+        flex-wrap: nowrap;
+        gap: 8px;
+
+        width: 100%;
+        align-items: center;
+    }
+
+    .profile-settings-photo-actions .profile-image-input {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+    }
+
+
+    /* Sections */
+
+    .profile-settings-divider {
+        margin: 22px 0;
+    }
+
+    .profile-settings-section-description {
+        margin-bottom: 17px;
+    }
+
+
+    /* Fields */
+
+    .profile-settings-field {
+        margin-bottom: 16px;
+    }
+
+    .profile-settings-field input {
+        padding: 10px;
+    }
+
+
+    /* Actions */
+
+    .profile-settings-actions {
+        margin-top: 22px;
+    }
+
+    .profile-settings-save {
+        width: 100%;
+        min-width: 0;
+
+        padding: 11px 16px;
+    }
 }

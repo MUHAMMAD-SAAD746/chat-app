@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
+
 import "./ProfileImageInput.css";
 
 function ProfileImageInput({
@@ -78,7 +80,8 @@ function ProfileImageInput({
                     htmlFor="profile-image"
                     className="profile-image-button"
                 >
-                    Choose Image
+                    <IoCloudUploadOutline className="profile-image-button-icon" />
+                    <span>Choose Image</span>
                 </label>
 
                 <input

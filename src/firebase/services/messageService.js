@@ -38,10 +38,23 @@ export async function sendMessage(conversationId, senderId, text) {
 
     await set(messageRef, message);
 
-    await incrementUnread(
-        conversationId,
-        recipientId
+    const activeConversationRef = ref(
+        database,
+        `activeConversations/${recipientId}`
     );
+
+    const activeConversationSnapshot = await get(
+        activeConversationRef
+    );
+
+    const activeConversationId = activeConversationSnapshot.val();
+
+    if (activeConversationId !== conversationId) {
+        await incrementUnread(
+            conversationId,
+            recipientId
+        );
+    }
 
     return {
         id: messageRef.key,

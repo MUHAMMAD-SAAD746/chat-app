@@ -14,6 +14,44 @@
     border-bottom: 1px solid var(--border-primary);
 }
 
+.chat-header-left {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+    flex: 1;
+}
+
+
+.chat-header-back {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+    margin-right: 6px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    transition: background-color 0.15s ease;
+}
+
+.chat-header-back:hover {
+    background-color: var(--bg-chat-item-hover);
+}
+
+
 /* User Section */
 
 .chat-header-user {

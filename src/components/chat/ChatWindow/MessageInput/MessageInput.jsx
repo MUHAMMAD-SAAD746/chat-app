@@ -70,24 +70,28 @@ function MessageInput() {
     const handleSend = async () => {
         if (!text.trim() || !user || !conversationId) return;
 
+        const messageText = text.trim();
+
+        setText("");
+
+        clearTimeout(typingTimer.current);
+
+        setTyping(
+            conversationId,
+            user.uid,
+            false
+        );
+
         try {
             await sendMessage(
                 conversationId,
                 user.uid,
-                text.trim()
+                messageText
             );
-
-            clearTimeout(typingTimer.current);
-
-            await setTyping(
-                conversationId,
-                user.uid,
-                false
-            );
-
-            setText("");
         } catch (error) {
             console.error("Failed to send message:", error);
+
+            setText(messageText);
         }
     };
 

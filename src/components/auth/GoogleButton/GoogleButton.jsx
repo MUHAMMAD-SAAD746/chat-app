@@ -27,7 +27,6 @@ function GoogleButton() {
             }
 
 
-            console.log("Google login successful:", result.user);
             navigate("/chat");
 
         } catch (error) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
+import { IoArrowBack, IoEllipsisVerticalSharp } from "react-icons/io5";
 
 import { listenToUserPresence } from "../../../../firebase/services/presenceListenerService";
 
@@ -9,9 +9,7 @@ import "./ChatHeader.css";
 function ChatHeader({ selectedUser, isOtherUserTyping }) {
     const [showMenu, setShowMenu] = useState(false);
     const [presence, setPresence] = useState(null);
-    console.log("Typing:", isOtherUserTyping);
     const navigate = useNavigate();
-    console.log("Selected user in ChatHeader:", selectedUser);
 
     useEffect(() => {
         if (!selectedUser?.uid) {
@@ -29,6 +27,13 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
 
 
     const handleCloseChat = () => {
+        setShowMenu(false);
+        navigate("/chat");
+    };
+
+
+
+    const handleBack = () => {
         setShowMenu(false);
         navigate("/chat");
     };
@@ -70,41 +75,56 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
     return (
         <header className="chat-header">
 
-            {/* User Profile */}
-            <div className="chat-header-user">
 
-                <div className="chat-header-avatar">
-                    <img
-                        src={`${selectedUser?.profileImage}`}
-                        alt="User profile"
-                    />
-                </div>
 
-                {/* User Information */}
-                <div className="chat-header-info">
-                    <p className="chat-header-name">
-                        {selectedUser?.fullName || "User Name"}
-                    </p>
+            <div className="chat-header-left">
+                <button
+                    type="button"
+                    className="chat-header-back"
+                    aria-label="Back to chats"
+                    onClick={handleBack}
+                >
+                    <IoArrowBack size={20} />
+                </button>
 
-                    <div
-                        className={`chat-header-status ${presence?.online ? "online" : "offline"
-                            }`}
-                    >
-                        <span className="chat-status-dot"></span>
+                {/* User Profile */}
+                <div className="chat-header-user">
 
-                        <span>
-                            {isOtherUserTyping
-                                ? "typing..."
-                                : presence === null
-                                    ? "..."
-                                    : presence.online
-                                        ? "Online"
-                                        : `Last seen ${formatLastSeen(presence.lastSeen)}`}
-                        </span>
+                    <div className="chat-header-avatar">
+                        <img
+                            src={`${selectedUser?.profileImage}`}
+                            alt="User profile"
+                        />
                     </div>
-                </div>
 
+                    {/* User Information */}
+                    <div className="chat-header-info">
+                        <p className="chat-header-name">
+                            {selectedUser?.fullName || "User Name"}
+                        </p>
+
+                        <div
+                            className={`chat-header-status ${presence?.online ? "online" : "offline"
+                                }`}
+                        >
+                            <span className="chat-status-dot"></span>
+
+                            <span>
+                                {isOtherUserTyping
+                                    ? "typing..."
+                                    : presence === null
+                                        ? "..."
+                                        : presence.online
+                                            ? "Online"
+                                            : `Last seen ${formatLastSeen(presence.lastSeen)}`}
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
+
 
             {/* Header Actions */}
             <div className="chat-header-actions">

@@ -1,8 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import ChatLayout from "../../components/chat/ChatLayout/ChatLayout";
-
 import ChatWindow from "../../components/chat/ChatWindow/ChatWindow";
 import EmptyChat from "../../components/chat/ChatWindow/EmptyChat/EmptyChat";
 
@@ -15,6 +13,12 @@ import {
     getConversationById,
     createConversation,
 } from "../../firebase/services/conversationService";
+
+import {
+    setActiveConversation,
+    clearActiveConversation,
+} from "../../firebase/services/activeConversationService";
+
 import { getUser } from "../../firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
@@ -35,16 +39,40 @@ function Chat() {
 
 
 
+    useEffect(() => {
+        if (!conversationId || !user?.uid) return;
+
+        setActiveConversation(
+            user.uid,
+            conversationId
+        ).catch((error) => {
+            console.error(
+                "Error setting active conversation:",
+                error
+            );
+        });
+
+        return () => {
+            clearActiveConversation(
+                user.uid
+            ).catch((error) => {
+                console.error(
+                    "Error clearing active conversation:",
+                    error
+                );
+            });
+        };
+    }, [conversationId, user?.uid]);
+
+
+
     const handleSelectUser = async (selectedUser) => {
         setSelectedUser(selectedUser);
 
-        console.log("Selected user:", selectedUser);
 
         const currentUserId = user.uid;
         const selectedUserId = selectedUser.uid;
 
-        console.log("Current user ID:", currentUserId);
-        console.log("Selected user ID:", selectedUserId);
 
         const conversation = await getConversation(
             currentUserId,
@@ -52,18 +80,13 @@ function Chat() {
         );
 
         if (conversation) {
-            console.log("Conversation already exists:", conversation);
-
             navigate(`/chat/${conversation.id}`);
         } else {
-            console.log("No conversation found. Creating one...");
-
             const newConversation = await createConversation(
                 currentUserId,
                 selectedUserId
             );
 
-            console.log("New conversation created:", newConversation);
 
             navigate(`/chat/${newConversation.id}`);
         }

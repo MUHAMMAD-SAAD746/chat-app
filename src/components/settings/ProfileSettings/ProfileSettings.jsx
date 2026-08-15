@@ -238,6 +238,7 @@ function ProfileSettings() {
             <div className="profile-settings-card">
                 {/* Profile Image */}
                 <div className="profile-settings-avatar-section">
+
                     <div className="profile-settings-avatar">
                         <img
                             src={
@@ -262,7 +263,7 @@ function ProfileSettings() {
                             This image will be visible to other users.
                         </p>
 
-                        {!showPhotoInput ? (
+                        {!showPhotoInput && (
                             <button
                                 type="button"
                                 className="profile-settings-photo-button"
@@ -270,27 +271,32 @@ function ProfileSettings() {
                             >
                                 Change photo
                             </button>
-                        ) : (
-                            <div className="profile-settings-photo-actions">
-
-                                <ProfileImageInput
-                                    onChange={setNewProfileImage}
-                                    showPreview={false}
-                                />
-
-                                <button
-                                    type="button"
-                                    className="profile-settings-photo-button cancel"
-                                    onClick={() => {
-                                        setNewProfileImage(null);
-                                        setShowPhotoInput(false);
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
                         )}
+
                     </div>
+
+                    {showPhotoInput && (
+                        <div className="profile-settings-photo-actions">
+
+                            <ProfileImageInput
+                                onChange={setNewProfileImage}
+                                showPreview={false}
+                            />
+
+                            <button
+                                type="button"
+                                className="profile-settings-photo-button cancel"
+                                onClick={() => {
+                                    setNewProfileImage(null);
+                                    setShowPhotoInput(false);
+                                }}
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+                    )}
+
                 </div>
 
 

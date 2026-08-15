@@ -12,38 +12,16 @@ import { LuLogOut, LuUserPlus } from "react-icons/lu";
 
 import { logout } from "../../../firebase/auth";
 import { useAuth } from "../../../context/AuthContext";
-// import { getUser } from "../../../firebase/database";
 
 
 function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
-    // const [showProfileWarning, setShowProfileWarning] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const { user, profile } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
-
-
-    // useEffect(() => {
-    //     const checkUsername = async () => {
-    //         if (!user?.uid) {
-    //             setShowProfileWarning(false);
-    //             return;
-    //         }
-
-    //         try {
-    //             const profile = await getUser(user.uid);
-
-    //             setShowProfileWarning(!profile?.userName);
-    //         } catch (error) {
-    //             console.error("Failed to check username:", error);
-    //             setShowProfileWarning(false);
-    //         }
-    //     };
-
-    //     checkUsername();
-    // }, [user?.uid]);
 
 
 
@@ -107,6 +85,8 @@ function Sidebar({ conversations, onAddContact }) {
                     <input
                         type="text"
                         placeholder="Search chats..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </div>
@@ -122,7 +102,10 @@ function Sidebar({ conversations, onAddContact }) {
             {conversations.length === 0 ? (
                 <EmptyChatSidebar onAddContact={onAddContact} />
             ) : (
-                <ConversationList conversations={conversations} />
+                <ConversationList
+                    conversations={conversations}
+                    searchQuery={searchQuery}
+                />
             )}
         </aside>
     )

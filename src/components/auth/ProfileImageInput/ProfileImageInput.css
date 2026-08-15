@@ -64,6 +64,11 @@
 
     padding: 10px 16px;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
     border-radius: 8px;
 
     background-color: var(--accent-primary);
@@ -165,4 +170,21 @@
     line-height: 1.4;
 
     text-align: center;
+}
+
+@media (max-width: 480px) {
+
+    .profile-image-button {
+        padding: 10px;
+    }
+
+    .profile-image-button span {
+        display: none;
+    }
+
+    .profile-image-button-icon {
+        font-size: 18px;
+        display: block;
+    }
+
 }
