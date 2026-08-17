@@ -1,11 +1,12 @@
-import { ref, set, get, update, remove } from "firebase/database";
+import { ref, get, update } from "firebase/database";
 import { database } from "./config";
+
+const normalizeUsername = (username) => username?.trim().toLowerCase();
+
 
 export const createUser = async (uid, data) => {
     try {
-        const normalizedUsername = data.userName
-            ?.trim()
-            .toLowerCase();
+        const normalizedUsername = normalizeUsername(data.userName);
 
         const updates = {
             [`users/${uid}`]: {
@@ -31,11 +32,9 @@ export const createUser = async (uid, data) => {
 export const getUser = async (uid) => {
     const snapshot = await get(ref(database, `users/${uid}`));
 
-    if (snapshot.exists()) {
-        return snapshot.val();
-    }
-
-    return null;
+    return snapshot.exists()
+        ? snapshot.val()
+        : null;
 };
 
 
@@ -43,13 +42,8 @@ export const getUser = async (uid) => {
 
 export const updateUser = async (uid, oldUserName, data) => {
     try {
-        const newUserName = data.userName
-            ?.trim()
-            .toLowerCase();
-
-        const oldUserNameNormalized = oldUserName
-            ?.trim()
-            .toLowerCase();
+        const newUserName = normalizeUsername(data.userName);
+        const oldUsername = normalizeUsername(oldUserName);
 
         const updates = {
             [`users/${uid}/fullName`]: data.fullName.trim(),
@@ -60,7 +54,7 @@ export const updateUser = async (uid, oldUserName, data) => {
         // -----------------------------------------
         // Case 1: User is adding username for first time
         // -----------------------------------------
-        if (!oldUserNameNormalized && newUserName) {
+        if (!oldUsername && newUserName) {
             updates[`usernames/${newUserName}`] = uid;
         }
 
@@ -68,12 +62,12 @@ export const updateUser = async (uid, oldUserName, data) => {
         // Case 2: User is changing existing username
         // -----------------------------------------
         else if (
-            oldUserNameNormalized &&
+            oldUsername &&
             newUserName &&
-            oldUserNameNormalized !== newUserName
+            oldUsername !== newUserName
         ) {
             // Remove old username
-            updates[`usernames/${oldUserNameNormalized}`] = null;
+            updates[`usernames/${oldUsername}`] = null;
 
             // Create new username
             updates[`usernames/${newUserName}`] = uid;
@@ -83,10 +77,10 @@ export const updateUser = async (uid, oldUserName, data) => {
         // Case 3: User removes username
         // -----------------------------------------
         else if (
-            oldUserNameNormalized &&
+            oldUsername &&
             !newUserName
         ) {
-            updates[`usernames/${oldUserNameNormalized}`] = null;
+            updates[`usernames/${oldUsername}`] = null;
         }
 
         await update(ref(database), updates);
@@ -107,9 +101,7 @@ export const deleteUser = async (uid, userName) => {
             [`users/${uid}`]: null,
         };
 
-        const normalizedUsername = userName
-            ?.trim()
-            .toLowerCase();
+        const normalizedUsername = normalizeUsername(userName);
 
         if (normalizedUsername) {
             updates[`usernames/${normalizedUsername}`] = null;
@@ -129,19 +121,15 @@ export const deleteUser = async (uid, userName) => {
 
 // fetch a single username from data base 
 export const getUsername = async (userName) => {
-    const normalizedUsername = userName
-        .trim()
-        .toLowerCase();
+    const normalizedUsername = normalizeUsername(userName);
 
     const snapshot = await get(
         ref(database, `usernames/${normalizedUsername}`)
     );
 
-    if (snapshot.exists()) {
-        return snapshot.val();
-    }
-
-    return null;
+    return snapshot.exists()
+    ? snapshot.val()
+    : null;
 };
 
 
@@ -149,9 +137,7 @@ export const getUsername = async (userName) => {
 export const getUsernames = async () => {
     const snapshot = await get(ref(database, "usernames"));
 
-    if (snapshot.exists()) {
-        return snapshot.val();
-    }
-
-    return {};
+    return snapshot.exists()
+    ? snapshot.val()
+    : {};
 };

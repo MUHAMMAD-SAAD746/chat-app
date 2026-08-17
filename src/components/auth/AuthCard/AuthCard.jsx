@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import ProfileImageInput from "../ProfileImageInput/ProfileImageInput";
 import GoogleButton from "../GoogleButton/GoogleButton";
@@ -25,6 +27,8 @@ function AuthCard({
     onSubmit,
     loading
 }) {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <div className="auth-card">
             {/* Header */}
@@ -131,13 +135,28 @@ function AuthCard({
                         Password
                     </label>
 
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="password-input-wrapper">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? (
+                                <IoEyeOffOutline />
+                            ) : (
+                                <IoEyeOutline />
+                            )}
+                        </button>
+                    </div>
 
                     {errors?.password && (
                         <p className="form-error">{errors.password}</p>

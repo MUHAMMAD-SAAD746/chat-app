@@ -7,6 +7,7 @@ import "./MessageList.css";
 import { useAuth } from "../../../../context/AuthContext";
 import { subscribeToMessages } from "../../../../firebase/services/messageListenerService";
 import { markConversationAsRead } from "../../../../firebase/services/unreadService";
+import { markMessageAsRead } from "../../../../firebase/services/messageReceiptService";
 
 function MessageList() {
     const { conversationId } = useParams();
@@ -21,6 +22,18 @@ function MessageList() {
             conversationId,
             (messages) => {
                 setMessages(messages);
+
+                messages.forEach((message) => {
+                    if (
+                        message.senderId !== user.uid &&
+                        !message.readAt
+                    ) {
+                        markMessageAsRead(
+                            conversationId,
+                            message.id
+                        );
+                    }
+                });
 
                 markConversationAsRead(
                     conversationId,
@@ -55,6 +68,8 @@ function MessageList() {
                     text={message.text}
                     time={formatTime(message.createdAt)}
                     isOwn={message.senderId === user?.uid}
+                    deliveredAt={message.deliveredAt}
+                    readAt={message.readAt}
                 />
             ))}
         </div>

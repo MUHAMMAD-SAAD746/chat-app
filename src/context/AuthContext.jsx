@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    useMemo,
+} from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
 
@@ -12,18 +18,23 @@ export function AuthProvider({ children }) {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
+    const loadUserProfile = async (uid) => {
+        try {
+            const userProfile = await getUser(uid);
+            setProfile(userProfile);
+        } catch (error) {
+            console.error("Failed to load user profile:", error);
+            setProfile(null);
+        }
+    };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
 
             if (currentUser) {
-                try {
-                    const userProfile = await getUser(currentUser.uid);
-                    setProfile(userProfile);
-                } catch (error) {
-                    console.error("Failed to load user profile:", error);
-                    setProfile(null);
-                }
+                await loadUserProfile(currentUser.uid);
             } else {
                 setProfile(null);
             }
@@ -41,15 +52,16 @@ export function AuthProvider({ children }) {
         const unsubscribePresence = setupPresence(user.uid);
 
         return unsubscribePresence;
-    }, [user]);
+    }, [user?.uid]);
 
 
-    const value = {
+    const value = useMemo(() => ({
         user,
         profile,
         setProfile,
         loading,
-    };
+    }), [user, profile, loading]);
+
 
     return (
         <AuthContext.Provider value={value}>

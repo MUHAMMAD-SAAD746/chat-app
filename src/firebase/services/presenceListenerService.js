@@ -6,7 +6,8 @@ export function listenToUserPresence(uid, callback) {
 
     const presenceRef = ref(database, `presence/${uid}`);
 
-    return onValue(presenceRef, (snapshot) => {
-        callback(snapshot.val());
-    });
+    return onValue(
+        presenceRef, 
+        (snapshot) => callback(snapshot.val())
+    );
 }

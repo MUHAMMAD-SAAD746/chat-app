@@ -1,0 +1,329 @@
+/* ========================================
+   Delete Account Modal
+======================================== */
+
+
+/* ================================
+   Overlay
+================================ */
+
+.delete-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(0, 0, 0, 0.45);
+}
+
+
+/* ================================
+   Modal
+================================ */
+
+.delete-modal {
+    width: 100%;
+    max-width: 440px;
+
+    box-sizing: border-box;
+
+    background: var(--bg-primary);
+
+    border: 1px solid var(--border-primary);
+    border-radius: 14px;
+
+    box-shadow: var(--shadow-menu);
+
+    overflow: hidden;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.delete-modal-header {
+    padding: 22px 24px 0;
+}
+
+.delete-modal-header h2 {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+
+/* ================================
+   Content
+================================ */
+
+.delete-modal-content {
+    padding: 20px 24px 24px;
+}
+
+.delete-modal-question {
+    margin: 0 0 10px;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+
+    color: var(--text-primary);
+}
+
+.delete-modal-warning {
+    margin: 0 0 22px;
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Fields
+================================ */
+
+.delete-modal-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+.delete-modal-field:last-of-type {
+    margin-bottom: 0;
+}
+
+.delete-modal-field label {
+    font-size: 13px;
+    font-weight: 500;
+
+    color: var(--text-primary);
+}
+
+.delete-modal-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    outline: none;
+
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.delete-modal-field input::placeholder {
+    color: var(--text-placeholder);
+}
+
+.delete-modal-field input:focus {
+    border-color: var(--accent-primary);
+
+    box-shadow:
+        0 0 0 2px color-mix(
+            in srgb,
+            var(--accent-primary) 12%,
+            transparent
+        );
+}
+
+
+/* ================================
+   Error
+================================ */
+
+.delete-modal-error {
+    margin: 12px 0 0;
+
+    font-size: 11px;
+    line-height: 1.4;
+
+    color: var(--accent-danger);
+}
+
+
+/* ================================
+   Actions
+================================ */
+
+.delete-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 24px;
+
+    border-top: 1px solid var(--border-primary);
+}
+
+
+/* ================================
+   Cancel Button
+================================ */
+
+.delete-modal-cancel {
+    min-width: 80px;
+
+    padding: 9px 15px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 7px;
+
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.1s ease;
+}
+
+.delete-modal-cancel:hover:not(:disabled) {
+    background: var(--bg-hover);
+}
+
+.delete-modal-cancel:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+
+/* ================================
+   Delete Button
+================================ */
+
+.delete-modal-confirm {
+    min-width: 112px;
+
+    padding: 9px 15px;
+
+    border: 1px solid var(--accent-danger);
+    border-radius: 7px;
+
+    background: var(--accent-danger);
+    color: white;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.1s ease;
+}
+
+.delete-modal-confirm:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.delete-modal-confirm:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.delete-modal-confirm:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+
+    border-color: var(--border-primary);
+
+    cursor: not-allowed;
+
+    opacity: 0.7;
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 600px) {
+
+    .delete-modal-overlay {
+        padding: 16px;
+    }
+
+    .delete-modal {
+        max-width: none;
+
+        border-radius: 12px;
+    }
+
+
+    /* Header */
+
+    .delete-modal-header {
+        padding: 20px 18px 0;
+    }
+
+    .delete-modal-header h2 {
+        font-size: 17px;
+    }
+
+
+    /* Content */
+
+    .delete-modal-content {
+        padding: 18px;
+    }
+
+
+    /* Fields */
+
+    .delete-modal-field {
+        margin-bottom: 16px;
+    }
+
+    .delete-modal-field input {
+        padding: 10px;
+    }
+
+
+    /* Actions */
+
+    .delete-modal-actions {
+        padding: 14px 18px;
+    }
+
+    .delete-modal-cancel,
+    .delete-modal-confirm {
+        flex: 1;
+
+        min-width: 0;
+
+        padding: 11px 12px;
+    }
+}

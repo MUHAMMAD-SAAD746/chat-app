@@ -76,6 +76,19 @@
 
 
 /* =========================
+   Password Input
+========================= */
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    padding-right: 42px;
+}
+
+/* =========================
    Inputs
 ========================= */
 
@@ -125,6 +138,58 @@
 }
 
 
+
+/* =========================
+   Password Input
+========================= */
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    padding-right: 42px;
+}
+
+
+/* =========================
+   Password Toggle
+========================= */
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+    color: var(--text-muted);
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: color 0.15s ease;
+}
+
+.password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.password-toggle:focus {
+    outline: none;
+}
 
 
 .username-status {

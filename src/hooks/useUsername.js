@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getUsername } from "../firebase/database";
 
+
+function normalizeUsername(username) {
+    return username?.trim().toLowerCase() || "";
+}
+
+
 function validateUsername(username) {
     if (!username) {
         return "Username is required";
@@ -34,10 +40,8 @@ function useUsername({
     }, [initialValue]);
 
     useEffect(() => {
-        const normalizedUsername = username.trim().toLowerCase();
-        const normalizedCurrentUsername = currentUsername
-            .trim()
-            .toLowerCase();
+        const normalizedUsername = normalizeUsername(username);
+        const normalizedCurrentUsername = normalizeUsername(currentUsername);
 
         setUsernameAvailable(null);
         setIsCurrentUsername(false);

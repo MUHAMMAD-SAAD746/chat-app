@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
 import ProfileSettings from "../../components/settings/ProfileSettings/ProfileSettings";
+import PasswordSettings from "../../components/settings/PasswordSettings/PasswordSettings";
+import DangerZone from "../../components/settings/DangerZone/DangerZone";
 
 import "./Settings.css";
 
@@ -9,9 +11,7 @@ function Settings() {
 
     return (
         <div className="settings-page">
-
             <div className="settings-topbar">
-
                 <button
                     className="settings-back-button"
                     onClick={() => navigate("/chat")}
@@ -20,13 +20,13 @@ function Settings() {
                 </button>
 
                 <h1>Settings</h1>
-
             </div>
 
 
             <div className="settings-content">
-
                 <ProfileSettings />
+                <PasswordSettings />
+                <DangerZone />
 
             </div>
 

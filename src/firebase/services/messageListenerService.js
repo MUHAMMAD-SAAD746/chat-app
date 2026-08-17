@@ -1,6 +1,15 @@
 import { ref, onValue } from "firebase/database";
 import { database } from "../config";
 
+
+function mapMessages(data) {
+    return Object.entries(data).map(([id, message]) => ({
+        id,
+        ...message,
+    }));
+}
+
+
 export function subscribeToMessages(conversationId, callback) {
     const messagesRef = ref(
         database,
@@ -15,10 +24,7 @@ export function subscribeToMessages(conversationId, callback) {
             return;
         }
 
-        const messages = Object.entries(data).map(([id, message]) => ({
-            id,
-            ...message,
-        }));
+        const messages = mapMessages(data);
 
         callback(messages);
     });

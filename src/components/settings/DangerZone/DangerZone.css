@@ -1,0 +1,212 @@
+/* ========================================
+   Danger Zone
+======================================== */
+
+.danger-zone {
+    width: 100%;
+    margin-top: 25px;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.danger-zone-header {
+    margin-bottom: 24px;
+}
+
+.danger-zone-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+.danger-zone-header p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Card
+================================ */
+
+.danger-zone-card {
+    width: 100%;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    background: var(--bg-primary);
+
+    border: 1px solid var(--border-primary);
+    border-radius: 14px;
+}
+
+
+/* ================================
+   Information
+================================ */
+
+.danger-zone-info {
+    min-width: 0;
+}
+
+.danger-zone-info h3 {
+    margin: 0 0 4px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+.danger-zone-info p {
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Delete Button
+================================ */
+
+.danger-zone-delete {
+    flex-shrink: 0;
+
+    min-width: 112px;
+
+    padding: 9px 17px;
+
+    border: 1px solid var(--accent-danger);
+    border-radius: 7px;
+
+    background: transparent;
+    color: var(--accent-danger);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.1s ease;
+}
+
+.danger-zone-delete:hover {
+    background: var(--accent-danger);
+    color: white;
+}
+
+.danger-zone-delete:active {
+    transform: translateY(1px);
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .danger-zone {
+        max-width: 100%;
+
+        padding: 0;
+
+        box-sizing: border-box;
+    }
+
+    .danger-zone-card {
+        padding: 24px;
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .danger-zone {
+        width: 100%;
+        max-width: none;
+
+        padding: 0;
+
+        box-sizing: border-box;
+    }
+
+
+    /* Header */
+
+    .danger-zone-header {
+        margin-bottom: 18px;
+    }
+
+    .danger-zone-header h2 {
+        font-size: 20px;
+    }
+
+    .danger-zone-header p {
+        font-size: 12px;
+    }
+
+
+    /* Card */
+
+    .danger-zone-card {
+        padding: 20px 16px;
+
+        border-radius: 12px;
+
+        align-items: flex-start;
+
+        gap: 18px;
+    }
+
+
+    /* Information */
+
+    .danger-zone-info h3 {
+        font-size: 13px;
+    }
+
+    .danger-zone-info p {
+        font-size: 11px;
+    }
+
+
+    /* Delete Button */
+
+    .danger-zone-delete {
+        min-width: 0;
+
+        padding: 9px 12px;
+
+        font-size: 12px;
+    }
+}
