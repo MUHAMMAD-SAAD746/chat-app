@@ -1,0 +1,220 @@
+.friend-request-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.friend-request-modal {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background-color: var(--bg-secondary);
+
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+
+.friend-request-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+
+.friend-request-modal-header h2 {
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.friend-request-modal-close {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.friend-request-modal-close:hover {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+
+.friend-request-modal-user {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    background-color: var(--bg-primary);
+
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+}
+
+
+.friend-request-modal-avatar {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--border-primary);
+}
+
+
+.friend-request-modal-user-info {
+    min-width: 0;
+}
+
+
+.friend-request-modal-name {
+    margin: 0 0 4px;
+
+    color: var(--text-primary);
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+.friend-request-modal-username {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.friend-request-modal-message {
+    margin: 20px 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+.friend-request-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+
+.friend-request-modal-actions button {
+    padding: 9px 16px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.friend-request-modal-cancel {
+    background-color: var(--bg-primary);
+
+    border: 1px solid var(--border-primary);
+
+    color: var(--text-primary);
+}
+
+
+.friend-request-modal-confirm {
+    background-color: var(--accent-primary);
+
+    border: 1px solid var(--accent-primary);
+
+    color: white;
+}
+
+
+.friend-request-modal-actions button:disabled,
+.friend-request-modal-close:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 500px) {
+
+    .friend-request-modal {
+        padding: 20px;
+    }
+
+
+    .friend-request-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+
+    .friend-request-modal-actions button {
+        width: 100%;
+    }
+}

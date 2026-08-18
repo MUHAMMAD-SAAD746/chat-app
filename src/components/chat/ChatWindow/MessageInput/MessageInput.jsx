@@ -10,7 +10,7 @@ import { useAuth } from "../../../../context/AuthContext";
 
 
 
-function MessageInput() {
+function MessageInput({ canSendMessage = true }) {
     const [text, setText] = useState("");
     const { user } = useAuth();
 
@@ -24,6 +24,8 @@ function MessageInput() {
 
 
     const handleTyping = (value) => {
+        if (!canSendMessage) return;
+
         setText(value);
 
         if (!user || !conversationId) return;
@@ -68,7 +70,12 @@ function MessageInput() {
 
 
     const handleSend = async () => {
-        if (!text.trim() || !user || !conversationId) return;
+        if (
+            !canSendMessage ||
+            !text.trim() ||
+            !user ||
+            !conversationId
+        ) return;
 
         const messageText = text.trim();
 
@@ -120,6 +127,13 @@ function MessageInput() {
     }, [conversationId, user]);
 
 
+    if (!canSendMessage) {
+        return (
+            <div className="message-input-disabled">
+                <p>You are no longer friends with this user.</p>
+            </div>
+        );
+    }
 
 
     return (

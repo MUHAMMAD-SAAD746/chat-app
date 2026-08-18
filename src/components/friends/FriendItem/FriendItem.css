@@ -1,0 +1,108 @@
+.friend-item {
+    width: 100%;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+
+.friend-item-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.friend-item-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+}
+
+
+.friend-item-details {
+    min-width: 0;
+}
+
+
+.friend-item-name {
+    margin: 0 0 4px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+
+.friend-item-username {
+    margin: 0;
+
+    font-size: 13px;
+
+    color: var(--text-secondary);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.friend-item-remove-btn {
+    padding: 8px 14px;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.friend-item-remove-btn:hover {
+    background-color: var(--bg-chat-item-hover);
+    color: var(--text-primary);
+}
+
+.friend-item-remove-btn:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+.friend-item-remove-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

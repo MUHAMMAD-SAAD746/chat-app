@@ -1,5 +1,6 @@
 import { ref, get, set } from "firebase/database"
 import { database } from "../config";
+import { isFriend } from "./friendService";
 
 export function getConversationId(userId1, userId2) {
     return [userId1, userId2]
@@ -18,6 +19,19 @@ function getConversationRef(conversationId) {
 
 
 export async function getConversation(userId1, userId2) {
+    if (!userId1 || !userId2) {
+        throw new Error("User IDs are required.");
+    }
+
+    const friends = await isFriend(userId1, userId2);
+
+    if (!friends) {
+        throw new Error(
+            "You can only create a conversation with a friend."
+        );
+    }
+
+
     const conversationId = getConversationId(userId1, userId2);
     const conversationRef = getConversationRef(conversationId);
 

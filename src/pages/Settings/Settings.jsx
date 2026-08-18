@@ -27,7 +27,6 @@ function Settings() {
                 <ProfileSettings />
                 <PasswordSettings />
                 <DangerZone />
-
             </div>
 
         </div>

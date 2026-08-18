@@ -1,0 +1,131 @@
+.friend-request-item {
+    width: 100%;
+
+    padding: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    box-sizing: border-box;
+
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+}
+
+
+.friend-request-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.friend-request-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+}
+
+
+.friend-request-details {
+    min-width: 0;
+}
+
+
+.friend-request-name {
+    margin: 0 0 4px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+
+.friend-request-username {
+    margin: 0;
+
+    font-size: 13px;
+
+    color: var(--text-secondary);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.friend-request-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+
+.friend-request-actions button {
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.friend-request-accept {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+
+.friend-request-sent {
+    padding: 8px 4px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    color: var(--text-secondary);
+
+    white-space: nowrap;
+}
+
+
+.friend-request-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 500px) {
+
+    .friend-request-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .friend-request-actions {
+        width: 100%;
+    }
+
+    .friend-request-actions button {
+        flex: 1;
+    }
+}

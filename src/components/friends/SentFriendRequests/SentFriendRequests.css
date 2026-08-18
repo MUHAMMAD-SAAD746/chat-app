@@ -1,0 +1,26 @@
+.sent-friend-requests {
+    width: 100%;
+}
+
+.sent-friend-requests-message {
+    width: 100%;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+}
+
+.sent-friend-requests-message p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: center;
+}

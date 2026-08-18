@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getUser, getUsernames } from "../../../firebase/database";
+import { sendFriendRequest } from "../../../firebase/services/friendRequestService";
+import { isFriend } from "../../../firebase/services/friendService";
 import { useAuth } from "../../../context/AuthContext";
+
+import SendFriendRequestModal from "../../friends/SendFriendRequestModal/SendFriendRequestModal";
+
+import {
+    getConversation,
+    createConversation
+} from "../../../firebase/services/conversationService";
 
 import { IoArrowBack, IoSearch } from "react-icons/io5";
 import "./NewChat.css";
 
-function NewChat({ onBack, onSelectUser }) {
+function NewChat({ onBack }) {
     const [search, setSearch] = useState("");
     const [usernames, setUsernames] = useState({});
     const [searchResults, setSearchResults] = useState([]);
 
-    const { user } = useAuth();
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [sendingRequest, setSendingRequest] = useState(false);
+    const [alreadyFriend, setAlreadyFriend] = useState(false);
 
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -52,6 +66,81 @@ function NewChat({ onBack, onSelectUser }) {
 
         fetchSearchResults();
     }, [search, usernames]);
+
+
+
+
+    const handleSelectUser = async (selectedUser) => {
+        setSelectedUser(selectedUser);
+
+        const friendStatus = await isFriend(
+            user.uid,
+            selectedUser.uid
+        );
+
+        setAlreadyFriend(friendStatus);
+    };
+
+
+
+    const handleSendFriendRequest = async () => {
+        if (!user?.uid || !selectedUser?.uid) return;
+
+        try {
+            setSendingRequest(true);
+
+            await sendFriendRequest(
+                user.uid,
+                selectedUser.uid
+            );
+
+            setSelectedUser(null);
+
+        } catch (error) {
+            console.error(
+                "Failed to send friend request:",
+                error
+            );
+
+            alert(error.message);
+
+        } finally {
+            setSendingRequest(false);
+        }
+    };
+
+
+
+    const handleStartConversation = async () => {
+        if (!user?.uid || !selectedUser?.uid) return;
+
+        try {
+            const conversation = await getConversation(
+                user.uid,
+                selectedUser.uid
+            );
+
+            if (conversation) {
+                navigate(`/chat/${conversation.id}`);
+                return;
+            }
+
+            const newConversation = await createConversation(
+                user.uid,
+                selectedUser.uid
+            );
+
+            navigate(`/chat/${newConversation.id}`);
+
+        } catch (error) {
+            console.error(
+                "Failed to start conversation:",
+                error
+            );
+
+            alert(error.message);
+        }
+    };
 
 
 
@@ -98,7 +187,7 @@ function NewChat({ onBack, onSelectUser }) {
                         key={user.uid}
                         className="new-chat-user"
                         type="button"
-                        onClick={() => onSelectUser(user)}
+                        onClick={() => handleSelectUser(user)}
                     >
                         <img
                             src={user.profileImage}
@@ -112,6 +201,24 @@ function NewChat({ onBack, onSelectUser }) {
                     </button>
                 ))}
             </div>
+
+
+            {selectedUser && (
+                <SendFriendRequestModal
+                    user={selectedUser}
+                    alreadyFriend={alreadyFriend}
+                    onConfirm={
+                        alreadyFriend
+                            ? handleStartConversation
+                            : handleSendFriendRequest
+                    }
+                    onCancel={() => {
+                        setSelectedUser(null);
+                        setAlreadyFriend(false);
+                    }}
+                    loading={sendingRequest}
+                />
+            )}
         </section>
     );
 }

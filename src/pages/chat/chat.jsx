@@ -9,9 +9,9 @@ import NewChat from "../../components/chat/NewChat/NewChat";
 import { subscribeToTyping } from "../../firebase/services/typingListenerService";
 
 import {
-    getConversation,
+    // getConversation,
     getConversationById,
-    createConversation,
+    // createConversation,
 } from "../../firebase/services/conversationService";
 
 import {
@@ -66,31 +66,31 @@ function Chat() {
 
 
 
-    const handleSelectUser = async (selectedUser) => {
-        setSelectedUser(selectedUser);
+    // const handleSelectUser = async (selectedUser) => {
+    //     setSelectedUser(selectedUser);
 
 
-        const currentUserId = user.uid;
-        const selectedUserId = selectedUser.uid;
+    //     const currentUserId = user.uid;
+    //     const selectedUserId = selectedUser.uid;
 
 
-        const conversation = await getConversation(
-            currentUserId,
-            selectedUserId
-        );
+    //     const conversation = await getConversation(
+    //         currentUserId,
+    //         selectedUserId
+    //     );
 
-        if (conversation) {
-            navigate(`/chat/${conversation.id}`);
-        } else {
-            const newConversation = await createConversation(
-                currentUserId,
-                selectedUserId
-            );
+    //     if (conversation) {
+    //         navigate(`/chat/${conversation.id}`);
+    //     } else {
+    //         const newConversation = await createConversation(
+    //             currentUserId,
+    //             selectedUserId
+    //         );
 
 
-            navigate(`/chat/${newConversation.id}`);
-        }
-    };
+    //         navigate(`/chat/${newConversation.id}`);
+    //     }
+    // };
 
 
 
@@ -119,6 +119,8 @@ function Chat() {
                     console.error("Other user not found:", otherUserId);
                     return;
                 }
+
+
 
                 setSelectedUser({
                     uid: otherUserId,
@@ -155,12 +157,13 @@ function Chat() {
     );
 
 
+    
     return (
         <>
             {isAddContact ? (
                 <NewChat
                     onBack={() => navigate("/chat")}
-                    onSelectUser={handleSelectUser}
+                // onSelectUser={handleSelectUser}
                 />
             ) : conversationId ? (
                 <ChatWindow

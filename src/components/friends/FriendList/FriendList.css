@@ -1,0 +1,33 @@
+.friend-list {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.friend-list-message {
+    width: 100%;
+
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+}
+
+
+.friend-list-message p {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+}

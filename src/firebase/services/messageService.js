@@ -1,6 +1,7 @@
 import { ref, push, set, get } from "firebase/database";
 import { database } from "../config";
 import { incrementUnread } from "./unreadService";
+import { isFriend } from "./friendService";
 
 export async function sendMessage(conversationId, senderId, text) {
     const conversationRef = ref(
@@ -22,6 +23,19 @@ export async function sendMessage(conversationId, senderId, text) {
     if (!recipientId) {
         throw new Error("Recipient not found");
     }
+
+
+    const areFriends = await isFriend(
+        senderId,
+        recipientId
+    );
+
+    if (!areFriends) {
+        throw new Error(
+            "You are no longer friends with this user."
+        );
+    }
+
 
     const messagesRef = ref(
         database,

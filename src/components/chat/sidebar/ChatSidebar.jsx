@@ -8,17 +8,21 @@ import ProfileWarning from "./ProfileWarning/ProfileWarning";
 
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoSearchOutline, IoSettingsSharp } from "react-icons/io5";
-import { LuLogOut, LuUserPlus } from "react-icons/lu";
+import { LuLogOut, LuUserPlus, LuUsers } from "react-icons/lu";
 
 import { logout } from "../../../firebase/auth";
 import { useAuth } from "../../../context/AuthContext";
+
+import useFriendRequests from "../../../hooks/useFriendRequests";
 
 
 function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const { user, profile } = useAuth();
+    const { requestCount } = useFriendRequests();
+
+    const { profile } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -49,6 +53,12 @@ function Sidebar({ conversations, onAddContact }) {
                         onClick={() => setShowMenu(!showMenu)}
                     >
                         <RxHamburgerMenu size={18} />
+
+                        {!showMenu && requestCount > 0 && (
+                            <span className="sidebar-request-badge">
+                                {requestCount}
+                            </span>
+                        )}
                     </button>
 
                     {showMenu && (
@@ -61,6 +71,21 @@ function Sidebar({ conversations, onAddContact }) {
                             >
                                 <LuUserPlus size={18} />
                                 Add Contact
+                            </button>
+                            <button
+                                onClick={() => {
+                                    navigate("/friends");
+                                    setShowMenu(false);
+                                }}
+                            >
+                                <LuUsers size={18} />
+                                Friends
+
+                                {requestCount > 0 && (
+                                    <span className="request-count">
+                                        {requestCount}
+                                    </span>
+                                )}
                             </button>
                             <button
                                 onClick={() => {
