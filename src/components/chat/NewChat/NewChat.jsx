@@ -6,6 +6,7 @@ import { isFriend } from "../../../firebase/services/friendService";
 import { useAuth } from "../../../context/AuthContext";
 
 import SendFriendRequestModal from "../../friends/SendFriendRequestModal/SendFriendRequestModal";
+import { notify } from "../../../utils/notification";
 
 import {
     getConversation,
@@ -94,6 +95,8 @@ function NewChat({ onBack }) {
                 selectedUser.uid
             );
 
+            notify.success("Friend request sent", {autoClose: 2000,});
+
             setSelectedUser(null);
 
         } catch (error) {
@@ -102,10 +105,12 @@ function NewChat({ onBack }) {
                 error
             );
 
-            alert(error.message);
+            notify.error(error.message, {autoClose: 2000,});
 
         } finally {
             setSendingRequest(false);
+            setSelectedUser(null);
+            setAlreadyFriend(false);
         }
     };
 

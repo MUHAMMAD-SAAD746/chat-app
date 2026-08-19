@@ -14,6 +14,7 @@ import {
 import useUsername from "../../../hooks/useUsername";
 
 import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
+import { notify } from "../../../utils/notification";
 
 
 function Register() {
@@ -89,8 +90,14 @@ function Register() {
         setErrors({});
         setLoading(true);
 
+        let toastId;
+
         try {
+            console.log("Before loading toast");
+            toastId = notify.loading("Creating your account...");
+            console.log("Toast created:", toastId);
             const result = await signup(email, password);
+            console.log("Signup completed");
             const user = result.user;
 
             const DEFAULT_PROFILE_IMAGE = "https://res.cloudinary.com/dn7oklgm7/image/upload/v1786611251/copy_of_profile_ppp_wh9unh.png";
@@ -121,7 +128,7 @@ function Register() {
             setEmail("");
             setPassword("");
 
-            console.log("Account created Successfully");
+            notify.dismiss(toastId);
 
             navigate("/chat");
         }
@@ -129,6 +136,7 @@ function Register() {
             console.error("Signup Failed");
             console.error(err.code);
             console.error(err.message);
+            notify.dismiss(toastId);
 
             if (err.code === "auth/email-already-in-use") {
                 setErrors({

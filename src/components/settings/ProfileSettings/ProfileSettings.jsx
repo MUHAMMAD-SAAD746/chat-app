@@ -9,6 +9,7 @@ import {
 } from "../../../firebase/database";
 import useUsername from "../../../hooks/useUsername";
 import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
+import { notify } from "../../../utils/notification";
 
 import "./ProfileSettings.css";
 
@@ -118,8 +119,11 @@ function ProfileSettings() {
             return;
         }
 
+        let toastId;
         try {
             setSaving(true);
+
+            toastId = notify.loading("Updating your profile...");
 
             let finalProfileImage = dbProfileImage;
 
@@ -165,12 +169,20 @@ function ProfileSettings() {
 
             setShowPhotoInput(false);
 
-            setSaveMessage("Profile updated successfully");
+            notify.updateSuccess(
+                toastId,
+                "Profile updated successfully"
+            );
 
         } catch (error) {
             console.error(
                 "Failed to update profile:",
                 error
+            );
+
+            notify.updateError(
+                toastId,
+                "Failed to update profile"
             );
 
             setSaveMessage("Failed to update profile");

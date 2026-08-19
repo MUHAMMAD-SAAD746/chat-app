@@ -5,6 +5,7 @@ import AuthCard from "../../../components/auth/AuthCard/AuthCard";
 import "../AuthPage.css";
 
 import { login } from "../../../firebase/auth";
+import { notify } from "../../../utils/notification";
 
 function Login() {
     const navigate = useNavigate();
@@ -39,21 +40,29 @@ function Login() {
             return;
         }
 
+        let toastId;
+
         try {
             setLoading(true);
 
+            toastId = notify.loading("Signing in...");
+
             await login(email, password);
+
+            notify.dismiss(toastId);
 
             // Login successful
             navigate("/chat");
 
         } catch (error) {
             console.error("Login failed:", error);
+            notify.dismiss(toastId);
 
             if (error.code === "auth/invalid-credential") {
                 setErrors({
                     email: "Invalid email or password"
                 });
+
             } else {
                 setErrors({
                     email: "Something went wrong. Please try again."
