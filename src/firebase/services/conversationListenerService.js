@@ -64,6 +64,13 @@ export function subscribeToUserConversations(userId, callback) {
             }
         });
 
+        conversations.sort(
+            (a, b) =>
+                (b.lastMessageTime || 0) -
+                (a.lastMessageTime || 0)
+        );
+
+
         callback(conversations);
     });
 

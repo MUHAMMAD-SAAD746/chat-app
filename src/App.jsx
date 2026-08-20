@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Login from "./pages/auth/Login/Login";
+import Login from "./pages/Auth/login/Login";
 import Register from "./pages/Auth/Register/Register";
 import Chat from "./pages/chat/Chat";
 import ChatLayout from "./components/chat/ChatLayout/ChatLayout";
