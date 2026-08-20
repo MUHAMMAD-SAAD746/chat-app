@@ -9,9 +9,7 @@ import NewChat from "../../components/chat/NewChat/NewChat";
 import { subscribeToTyping } from "../../firebase/services/typingListenerService";
 
 import {
-    // getConversation,
     getConversationById,
-    // createConversation,
 } from "../../firebase/services/conversationService";
 
 import {
@@ -66,31 +64,7 @@ function Chat() {
 
 
 
-    // const handleSelectUser = async (selectedUser) => {
-    //     setSelectedUser(selectedUser);
 
-
-    //     const currentUserId = user.uid;
-    //     const selectedUserId = selectedUser.uid;
-
-
-    //     const conversation = await getConversation(
-    //         currentUserId,
-    //         selectedUserId
-    //     );
-
-    //     if (conversation) {
-    //         navigate(`/chat/${conversation.id}`);
-    //     } else {
-    //         const newConversation = await createConversation(
-    //             currentUserId,
-    //             selectedUserId
-    //         );
-
-
-    //         navigate(`/chat/${newConversation.id}`);
-    //     }
-    // };
 
 
 
