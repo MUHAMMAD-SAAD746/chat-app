@@ -18,9 +18,38 @@
     margin-bottom: 24px;
 }
 
+.friends-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.friends-back-button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--text-primary);
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
 
 .friends-header h1 {
-    margin: 0 0 18px;
+    margin: 0;
 
     font-size: 22px;
     font-weight: 600;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ChatSidebar.css"
 
@@ -14,17 +14,63 @@ import { logout } from "../../../firebase/auth";
 import { useAuth } from "../../../context/AuthContext";
 
 import useFriendRequests from "../../../hooks/useFriendRequests";
+import { subscribeToSentFriendRequests } from "../../../firebase/services/friendRequestListenerService";
+import { isFriend } from "../../../firebase/services/friendService";
+import { notify } from "../../../utils/notification";
 
 
 function Sidebar({ conversations, onAddContact }) {
     const [showMenu, setShowMenu] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const previousSentRequests = useRef({});
 
     const { requestCount } = useFriendRequests();
 
-    const { profile } = useAuth();
+    const { profile, loading } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+
+
+    useEffect(() => {
+        if (!profile?.uid) return;
+
+        const unsubscribe = subscribeToSentFriendRequests(
+            profile.uid,
+            async (requests) => {
+                const currentRequests = {};
+
+                requests.forEach((request) => {
+                    currentRequests[request.id] = request;
+                });
+
+                const previousRequests =
+                    previousSentRequests.current;
+
+                for (const requestId in previousRequests) {
+                    if (!currentRequests[requestId]) {
+                        const previousRequest =
+                            previousRequests[requestId];
+
+                        const accepted = await isFriend(
+                            profile.uid,
+                            previousRequest.receiverId
+                        );
+
+                        if (accepted) {
+                            notify.success("Friend request accepted", {
+                                autoClose: 2000,
+                            });
+                        }
+                    }
+                }
+
+                previousSentRequests.current = currentRequests;
+            }
+        );
+
+        return unsubscribe;
+    }, [profile?.uid]);
 
 
 
@@ -40,6 +86,11 @@ function Sidebar({ conversations, onAddContact }) {
         }
     };
 
+
+    const shouldShowProfileWarning =
+        !loading &&
+        !profile?.userName &&
+        location.pathname !== "/settings";
 
 
     return (
@@ -116,7 +167,7 @@ function Sidebar({ conversations, onAddContact }) {
                 </div>
             </div>
 
-            {!profile?.userName && location.pathname !== "/settings" && (
+            {shouldShowProfileWarning && (
                 <ProfileWarning
                     onCompleteProfile={() => {
                         navigate("/settings");
@@ -124,13 +175,14 @@ function Sidebar({ conversations, onAddContact }) {
                 />
             )}
 
-            {conversations.length === 0 ? (
-                <EmptyChatSidebar onAddContact={onAddContact} />
-            ) : (
+
+            {searchQuery.trim() || conversations.length > 0 ? (
                 <ConversationList
                     conversations={conversations}
                     searchQuery={searchQuery}
                 />
+            ) : (
+                <EmptyChatSidebar onAddContact={onAddContact} />
             )}
         </aside>
     )

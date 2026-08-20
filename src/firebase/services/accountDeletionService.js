@@ -51,6 +51,34 @@ export const deleteAccount = async () => {
 
 
     // ========================================
+    // Get user's friends
+    // ========================================
+
+    const friendsRef = ref(
+        database,
+        `friends/${uid}`
+    );
+
+    const friendsSnapshot = await get(
+        friendsRef
+    );
+
+
+    // ========================================
+    // Get all friend requests
+    // ========================================
+
+    const friendRequestsRef = ref(
+        database,
+        "friendRequests"
+    );
+
+    const friendRequestsSnapshot = await get(
+        friendRequestsRef
+    );
+
+
+    // ========================================
     // Prepare deletion updates
     // ========================================
 
@@ -74,6 +102,58 @@ export const deleteAccount = async () => {
                 ) {
                     updates[
                         `conversations/${conversationId}`
+                    ] = null;
+                }
+
+            }
+        );
+    }
+
+
+    // ========================================
+    // Delete friends
+    // ========================================
+
+    if (friendsSnapshot.exists()) {
+
+        const friends =
+            friendsSnapshot.val();
+
+        Object.keys(friends).forEach(
+            (friendId) => {
+
+                // Remove user's friend relationship
+                updates[
+                    `friends/${uid}/${friendId}`
+                ] = null;
+
+                // Remove reverse relationship
+                updates[
+                    `friends/${friendId}/${uid}`
+                ] = null;
+            }
+        );
+    }
+
+
+    // ========================================
+    // Delete friend requests
+    // ========================================
+
+    if (friendRequestsSnapshot.exists()) {
+
+        const friendRequests =
+            friendRequestsSnapshot.val();
+
+        Object.entries(friendRequests).forEach(
+            ([requestId, request]) => {
+
+                if (
+                    request.senderId === uid ||
+                    request.receiverId === uid
+                ) {
+                    updates[
+                        `friendRequests/${requestId}`
                     ] = null;
                 }
 

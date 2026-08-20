@@ -1,4 +1,4 @@
-import { ref, get, update } from "firebase/database";
+import { ref, get, update, onValue } from "firebase/database";
 import { database } from "../config";
 
 
@@ -42,6 +42,25 @@ export const getFriends = async (userId) => {
 
     return snapshot.val();
 };
+
+
+
+
+export const subscribeToFriends = (userId, callback) => {
+    if (!userId) return () => { };
+
+    const friendsRef = ref(
+        database,
+        `friends/${userId}`
+    );
+
+    return onValue(friendsRef, (snapshot) => {
+        callback(snapshot.exists() ? snapshot.val() : {});
+    });
+};
+
+
+
 
 
 /**

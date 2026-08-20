@@ -109,7 +109,7 @@ function FriendItem({ friend, onRemove }) {
 
                         <p className="friend-item-username">
                             {friend.userName
-                                ? `@${friend.userName}`
+                                ? `${friend.userName}`
                                 : ""}
                         </p>
 

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./Friends.css";
 
 import FriendRequests from "../../components/friends/FriendRequests/FriendRequests";
@@ -6,8 +8,10 @@ import FriendList from "../../components/friends/FriendList/FriendList";
 import SentFriendRequests from "../../components/friends/SentFriendRequests/SentFriendRequests";
 
 import useFriendRequests from "../../hooks/useFriendRequests";
+import { IoArrowBack } from "react-icons/io5";
 
 function Friends() {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("friends");
     const {
         requestCount,
@@ -18,7 +22,19 @@ function Friends() {
         <div className="friends-page">
 
             <div className="friends-header">
-                <h1>Friends</h1>
+                <div className="friends-title-row">
+
+                    <button
+                        className="friends-back-button"
+                        onClick={() => navigate("/chat")}
+                        aria-label="Back to chats"
+                    >
+                        <IoArrowBack />
+                    </button>
+
+                    <h1>Friends</h1>
+
+                </div>
 
                 <div className="friends-tabs">
 

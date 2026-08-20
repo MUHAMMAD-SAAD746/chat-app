@@ -45,6 +45,31 @@ function NewChat({ onBack }) {
 
 
 
+    // useEffect(() => {
+    //     const fetchSearchResults = async () => {
+    //         if (!search.trim()) {
+    //             setSearchResults([]);
+    //             return;
+    //         }
+
+    //         const filteredUsernames = Object.entries(usernames).filter(
+    //             ([username, uid]) =>
+    //                 uid !== user?.uid &&
+    //                 username.toLowerCase().includes(search.toLowerCase())
+    //         );
+
+    //         const users = await Promise.all(
+    //             filteredUsernames.map(([username, uid]) => getUser(uid))
+    //         );
+
+    //         setSearchResults(users.filter(Boolean));
+    //     };
+
+    //     fetchSearchResults();
+    // }, [search, usernames]);
+
+
+
     useEffect(() => {
         const fetchSearchResults = async () => {
             if (!search.trim()) {
@@ -52,22 +77,28 @@ function NewChat({ onBack }) {
                 return;
             }
 
-            const filteredUsernames = Object.entries(usernames).filter(
-                ([username, uid]) =>
-                    uid !== user?.uid &&
-                    username.toLowerCase().includes(search.toLowerCase())
-            );
+            const searchTerm = search.toLowerCase().trim();
 
             const users = await Promise.all(
-                filteredUsernames.map(([username, uid]) => getUser(uid))
+                Object.values(usernames)
+                    .filter((uid) => uid !== user?.uid)
+                    .map((uid) => getUser(uid))
             );
 
-            setSearchResults(users.filter(Boolean));
+            const filteredUsers = users.filter((user) => {
+                if (!user) return false;
+
+                return (
+                    user.userName?.toLowerCase().includes(searchTerm) ||
+                    user.fullName?.toLowerCase().includes(searchTerm)
+                );
+            });
+
+            setSearchResults(filteredUsers);
         };
 
         fetchSearchResults();
-    }, [search, usernames]);
-
+    }, [search, usernames, user?.uid]);
 
 
 
@@ -95,7 +126,7 @@ function NewChat({ onBack }) {
                 selectedUser.uid
             );
 
-            notify.success("Friend request sent", {autoClose: 2000,});
+            notify.success("Friend request sent", { autoClose: 2000, });
 
             setSelectedUser(null);
 
@@ -105,7 +136,7 @@ function NewChat({ onBack }) {
                 error
             );
 
-            notify.error(error.message, {autoClose: 2000,});
+            notify.error(error.message, { autoClose: 2000, });
 
         } finally {
             setSendingRequest(false);

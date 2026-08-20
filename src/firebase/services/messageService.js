@@ -1,4 +1,4 @@
-import { ref, push, set, get } from "firebase/database";
+import { ref, push, set, get, update } from "firebase/database";
 import { database } from "../config";
 import { incrementUnread } from "./unreadService";
 import { isFriend } from "./friendService";
@@ -24,7 +24,6 @@ export async function sendMessage(conversationId, senderId, text) {
         throw new Error("Recipient not found");
     }
 
-
     const areFriends = await isFriend(
         senderId,
         recipientId
@@ -35,7 +34,6 @@ export async function sendMessage(conversationId, senderId, text) {
             "You are no longer friends with this user."
         );
     }
-
 
     const messagesRef = ref(
         database,
@@ -74,4 +72,36 @@ export async function sendMessage(conversationId, senderId, text) {
         id: messageRef.key,
         ...message,
     };
+}
+
+
+export async function deleteMessageForMe(
+    conversationId,
+    messageId,
+    userId
+) {
+    const messageRef = ref(
+        database,
+        `conversations/${conversationId}/messages/${messageId}`
+    );
+
+    await update(messageRef, {
+        [`deletedFor/${userId}`]: true,
+    });
+}
+
+
+export async function deleteMessageForEveryone(
+    conversationId,
+    messageId
+) {
+    const messageRef = ref(
+        database,
+        `conversations/${conversationId}/messages/${messageId}`
+    );
+
+    await update(messageRef, {
+        deleteStatus: "everyone",
+        deletedAt: Date.now(),
+    });
 }

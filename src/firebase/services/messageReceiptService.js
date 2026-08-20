@@ -1,7 +1,10 @@
-import { ref, get, update, serverTimestamp } from "firebase/database";
+import {
+    ref,
+    runTransaction,
+    serverTimestamp,
+} from "firebase/database";
+
 import { database } from "../config";
-
-
 
 
 function getMessageRef(conversationId, messageId) {
@@ -12,7 +15,6 @@ function getMessageRef(conversationId, messageId) {
 }
 
 
-// Mark a message as delivered
 export const markMessageAsDelivered = async (
     conversationId,
     messageId
@@ -25,18 +27,28 @@ export const markMessageAsDelivered = async (
             messageId
         );
 
-        const snapshot = await get(messageRef);
+        await runTransaction(
+            messageRef,
+            (message) => {
 
-        if (!snapshot.exists()) return;
+                if (!message) {
+                    return;
+                }
 
-        const message = snapshot.val();
+                if (message.deliveredAt) {
+                    return;
+                }
 
-        // Already delivered
-        if (message.deliveredAt) return;
+                return {
+                    ...message,
+                    deliveredAt: serverTimestamp(),
+                };
+            },
+            {
+                applyLocally: false,
+            }
+        );
 
-        await update(messageRef, {
-            deliveredAt: serverTimestamp()
-        });
     } catch (error) {
         console.error(
             "Error marking message as delivered:",
@@ -46,7 +58,6 @@ export const markMessageAsDelivered = async (
 };
 
 
-// Mark a message as read
 export const markMessageAsRead = async (
     conversationId,
     messageId
@@ -59,9 +70,24 @@ export const markMessageAsRead = async (
             messageId
         );
 
-        await update(messageRef, {
-            readAt: serverTimestamp()
-        });
+        await runTransaction(
+            messageRef,
+            (message) => {
+
+                if (!message) {
+                    return;
+                }
+
+                return {
+                    ...message,
+                    readAt: serverTimestamp(),
+                };
+            },
+            {
+                applyLocally: false,
+            }
+        );
+
     } catch (error) {
         console.error(
             "Error marking message as read:",

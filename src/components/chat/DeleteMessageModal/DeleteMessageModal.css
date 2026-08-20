@@ -1,0 +1,75 @@
+.delete-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    z-index: 1000;
+}
+
+.delete-modal {
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.delete-modal h3 {
+    margin: 0 0 20px;
+
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.delete-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.delete-modal-actions button {
+    width: 100%;
+    padding: 12px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.delete-modal-actions button:hover {
+    opacity: 0.85;
+}
+
+.delete-everyone-btn {
+    background: var(--accent-danger);
+    color: white;
+}
+
+.delete-me-btn {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary) !important;
+}
+
+.delete-cancel-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-primary) !important;
+}

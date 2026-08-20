@@ -136,6 +136,14 @@
         background: var(--bg-primary);
     }
 
+    .chat-layout.friends-open .chat-sidebar {
+        display: none;
+    }
+
+    .chat-layout.friends-open .chat-layout-content {
+        display: block;
+    }
+
 
     /* ================================
        Conversation Open
@@ -180,13 +188,11 @@
        Chat Home
     ================================ */
 
-    .chat-layout:not(.conversation-open):not(.add-contact-open):not(.settings-open)
-        .chat-sidebar {
+    .chat-layout:not(.conversation-open):not(.add-contact-open):not(.settings-open):not(.friends-open) .chat-sidebar {
         display: flex;
     }
 
-    .chat-layout:not(.conversation-open):not(.add-contact-open):not(.settings-open)
-        .chat-layout-content {
+    .chat-layout:not(.conversation-open):not(.add-contact-open):not(.settings-open):not(.friends-open) .chat-layout-content {
         display: none;
     }
 }

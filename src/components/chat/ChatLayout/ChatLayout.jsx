@@ -20,6 +20,9 @@ function ChatLayout() {
     const isAddContact =
         location.pathname === "/chat/add-contact";
 
+    const isFriendsPage =
+        location.pathname === "/friends";
+
     const isConversationOpen =
         location.pathname.startsWith("/chat/") &&
         !isAddContact;
@@ -42,9 +45,11 @@ function ChatLayout() {
     return (
         <main
             className={`chat-layout ${isConversationOpen
-                    ? "conversation-open"
-                    : isAddContact
-                        ? "add-contact-open"
+                ? "conversation-open"
+                : isAddContact
+                    ? "add-contact-open"
+                    : isFriendsPage
+                        ? "friends-open"
                         : ""
                 } ${isSettingsPage ? "settings-open" : ""}`}
         >

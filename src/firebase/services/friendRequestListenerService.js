@@ -9,7 +9,7 @@ export const subscribeToReceivedFriendRequests = (
     userId,
     callback
 ) => {
-    if (!userId) return () => {};
+    if (!userId) return () => { };
 
     const requestsRef = ref(
         database,
@@ -19,11 +19,16 @@ export const subscribeToReceivedFriendRequests = (
     const unsubscribe = onValue(requestsRef, (snapshot) => {
         const requests = snapshot.val() || {};
 
-        const receivedRequests = Object.values(requests).filter(
-            (request) =>
-                request.receiverId === userId &&
-                request.status === "pending"
-        );
+        const receivedRequests = Object.entries(requests)
+            .filter(
+                ([_, request]) =>
+                    request.receiverId === userId &&
+                    request.status === "pending"
+            )
+            .map(([id, request]) => ({
+                id,
+                ...request,
+            }));
 
         callback(receivedRequests);
     });
@@ -39,7 +44,7 @@ export const subscribeToSentFriendRequests = (
     userId,
     callback
 ) => {
-    if (!userId) return () => {};
+    if (!userId) return () => { };
 
     const requestsRef = ref(
         database,
@@ -49,11 +54,23 @@ export const subscribeToSentFriendRequests = (
     const unsubscribe = onValue(requestsRef, (snapshot) => {
         const requests = snapshot.val() || {};
 
-        const sentRequests = Object.values(requests).filter(
-            (request) =>
-                request.senderId === userId &&
-                request.status === "pending"
-        );
+        // const sentRequests = Object.values(requests).filter(
+        //     (request) =>
+        //         request.senderId === userId &&
+        //         request.status === "pending"
+        // );
+
+        const sentRequests = Object.entries(requests)
+            .filter(
+                ([_, request]) =>
+                    request.senderId === userId
+            )
+            .map(([id, request]) => ({
+                id,
+                ...request,
+            }));
+
+
 
         callback(sentRequests);
     });
