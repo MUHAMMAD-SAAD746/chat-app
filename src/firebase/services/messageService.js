@@ -105,3 +105,94 @@ export async function deleteMessageForEveryone(
         deletedAt: Date.now(),
     });
 }
+
+
+
+
+
+
+export async function sendFileMessage(
+    conversationId,
+    senderId,
+    fileUrl,
+    fileName,
+    fileType,
+    fileSize,
+    caption
+) {
+    const conversationRef = ref(
+        database,
+        `conversations/${conversationId}`
+    );
+
+    const conversationSnapshot = await get(conversationRef);
+
+    if (!conversationSnapshot.exists()) {
+        throw new Error("Conversation not found");
+    }
+
+    const conversation = conversationSnapshot.val();
+
+    const recipientId = Object.keys(conversation.members)
+        .find((uid) => uid !== senderId);
+
+    if (!recipientId) {
+        throw new Error("Recipient not found");
+    }
+
+    const areFriends = await isFriend(
+        senderId,
+        recipientId
+    );
+
+    if (!areFriends) {
+        throw new Error(
+            "You are no longer friends with this user."
+        );
+    }
+
+    const messagesRef = ref(
+        database,
+        `conversations/${conversationId}/messages`
+    );
+
+    const messageRef = push(messagesRef);
+
+    const message = {
+        senderId,
+        type: fileType.startsWith("image/")
+            ? "image"
+            : "file",
+        fileUrl,
+        fileName,
+        fileType,
+        fileSize,
+        caption,
+        createdAt: Date.now(),
+    };
+
+    await set(messageRef, message);
+
+    const activeConversationRef = ref(
+        database,
+        `activeConversations/${recipientId}`
+    );
+
+    const activeConversationSnapshot = await get(
+        activeConversationRef
+    );
+
+    const activeConversationId = activeConversationSnapshot.val();
+
+    if (activeConversationId !== conversationId) {
+        await incrementUnread(
+            conversationId,
+            recipientId
+        );
+    }
+
+    return {
+        id: messageRef.key,
+        ...message,
+    };
+}

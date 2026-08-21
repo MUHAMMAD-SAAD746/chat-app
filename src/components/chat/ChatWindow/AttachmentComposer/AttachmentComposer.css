@@ -1,0 +1,191 @@
+.attachment-composer {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--bg-primary);
+}
+
+
+/* Header */
+
+.attachment-composer-header {
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 0 16px;
+
+    border-bottom: 1px solid var(--border-primary);
+
+    background: var(--bg-secondary);
+
+    color: var(--text-primary);
+}
+
+.attachment-composer-header button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    cursor: pointer;
+}
+
+.attachment-composer-header button:hover {
+    background: var(--bg-primary);
+}
+
+.attachment-composer-header span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+/* Preview area */
+
+.attachment-composer-preview {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 0;
+
+    padding: 30px;
+
+    overflow: hidden;
+
+    background: var(--bg-primary);
+}
+
+
+/* Image */
+
+.attachment-composer-preview img {
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+/* File */
+
+.attachment-file-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    text-align: center;
+
+    color: var(--text-primary);
+}
+
+.attachment-file-preview p {
+    max-width: 400px;
+
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attachment-file-preview span {
+    font-size: 13px;
+
+    color: var(--text-secondary);
+}
+
+
+/* Caption input */
+
+.attachment-composer-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    background: var(--bg-secondary);
+
+    border-top: 1px solid var(--border-primary);
+}
+
+.attachment-composer-input input {
+    flex: 1;
+
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border-primary);
+    border-radius: 21px;
+
+    outline: none;
+
+    background: var(--bg-primary);
+
+    color: var(--text-primary);
+
+    font-size: 14px;
+}
+
+.attachment-composer-input input::placeholder {
+    color: var(--text-secondary);
+}
+
+.attachment-composer-input input:focus {
+    border-color: var(--accent-primary);
+}
+
+
+/* Send button */
+
+.attachment-composer-input button {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--accent-primary);
+
+    color: white;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+}
+
+.attachment-composer-input button:hover {
+    opacity: 0.9;
+}

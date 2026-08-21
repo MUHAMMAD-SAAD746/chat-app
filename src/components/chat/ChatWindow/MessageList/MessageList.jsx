@@ -65,16 +65,11 @@ function MessageList() {
             {messages.map((message) => (
                 <MessageBubble
                     key={message.id}
+                    message={message}
                     conversationId={conversationId}
-                    messageId={message.id}
                     userId={user.uid}
-                    text={message.text}
                     time={formatTime(message.createdAt)}
                     isOwn={message.senderId === user.uid}
-                    deliveredAt={message.deliveredAt}
-                    readAt={message.readAt}
-                    deleteStatus={message.deleteStatus}
-                    deletedFor={message.deletedFor}
                 />
             ))}
         </div>

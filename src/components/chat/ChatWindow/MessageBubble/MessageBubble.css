@@ -71,7 +71,7 @@
 .message-receipt-read {
     /* color:  #172554; */
     /* color:  #1e40af; */
-    color:  #0227a0;
+    color: #0227a0;
 }
 
 
@@ -184,6 +184,111 @@
 .message-deleted {
     font-style: italic;
     opacity: 0.7;
+}
+
+
+/* ================================
+   Attachments
+================================ */
+
+.message-attachment {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+/* Image */
+
+.message-image {
+    display: block;
+
+    width: 280px;
+    max-width: 100%;
+    max-height: 320px;
+    cursor: pointer;
+    object-fit: cover;
+
+    border-radius: 8px;
+}
+
+
+/* Caption */
+
+.message-caption {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+
+/* File */
+
+.message-file {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    background-color: rgba(0, 0, 0, 0.356);
+
+    border-radius: 8px;
+
+    color: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.message-other .message-file {
+    background-color: rgba(0, 0, 0, 0.158);
+}
+
+
+.message-file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.message-file-info {
+    min-width: 0;
+}
+
+
+.message-file-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.message-file-name {
+    margin: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.message-file-preview {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.message-other .message-file-preview {
+    color: var(--text-placeholder);
 }
 
 

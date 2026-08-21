@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoAttach } from "react-icons/io5";
 import "./MessageInput.css";
 
 import { sendMessage } from "../../../../firebase/services/messageService";
@@ -10,16 +10,14 @@ import { useAuth } from "../../../../context/AuthContext";
 
 
 
-function MessageInput({ canSendMessage = true }) {
-    const [text, setText] = useState("");
+
+function MessageInput({ canSendMessage = true, onAttach }) {
     const { user } = useAuth();
+    const [text, setText] = useState("");
 
     const { conversationId } = useParams();
 
     const typingTimer = useRef(null);
-
-
-
 
 
 
@@ -62,7 +60,6 @@ function MessageInput({ canSendMessage = true }) {
             );
         }, 2000);
     };
-
 
 
 
@@ -138,6 +135,14 @@ function MessageInput({ canSendMessage = true }) {
 
     return (
         <div className="message-input">
+
+            <button
+                type="button"
+                aria-label="Attach file"
+                onClick={onAttach}
+            >
+                <IoAttach size={20} />
+            </button>
 
             <input
                 type="text"

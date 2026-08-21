@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
-import { IoCheckmark, IoCheckmarkDone, IoChevronDown } from "react-icons/io5";
+import {
+    IoCheckmark,
+    IoCheckmarkDone,
+    IoChevronDown,
+    IoDocumentText,
+    IoDownloadOutline
+} from "react-icons/io5";
 import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
+import ImageViewer from "./ImageViewer/ImageViewer";
 
 import {
     deleteMessageForMe,
@@ -10,19 +17,31 @@ import {
 import "./MessageBubble.css";
 
 function MessageBubble({
+    message,
     conversationId,
-    messageId,
     userId,
-    text,
     time,
     isOwn = false,
-    deliveredAt,
-    readAt,
-    deleteStatus,
-    deletedFor,
 }) {
+    const {
+        id: messageId,
+        text,
+        type,
+        fileUrl,
+        fileName,
+        fileType,
+        fileSize,
+        caption,
+        deliveredAt,
+        readAt,
+        deleteStatus,
+        deletedFor,
+    } = message;
+
+
     const [showMenu, setShowMenu] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showImageViewer, setShowImageViewer] = useState(false);
     let receiptStatus = "sent";
 
     if (deliveredAt) {
@@ -36,7 +55,7 @@ function MessageBubble({
 
     const isDeletedForMe = deletedFor?.[userId] === true;
     const isDeletedForEveryone = deleteStatus === "everyone";
-    
+
 
     useEffect(() => {
         const handleClick = () => {
@@ -90,7 +109,24 @@ function MessageBubble({
     };
 
 
+    const formatFileSize = (bytes) => {
+        if (!bytes) return "";
 
+        if (bytes < 1024) {
+            return `${bytes} B`;
+        }
+
+        if (bytes < 1024 * 1024) {
+            return `${(bytes / 1024).toFixed(1)} KB`;
+        }
+
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    };
+
+
+    const handleOpenFile = () => {
+        window.open(fileUrl, "_blank");
+    };
 
 
     return (
@@ -124,12 +160,65 @@ function MessageBubble({
                     </div>
                 )}
 
+
                 {!isDeletedForMe && (
                     <>
                         {isDeletedForEveryone ? (
                             <p className="message-deleted">
                                 Message deleted
                             </p>
+                        ) : type === "image" ? (
+                            <div className="message-attachment">
+                                <img
+                                    src={fileUrl}
+                                    alt={fileName}
+                                    className="message-image"
+                                    onClick={() => setShowImageViewer(true)}
+                                />
+
+                                {caption && (
+                                    <p className="message-caption">
+                                        {caption}
+                                    </p>
+                                )}
+                            </div>
+                        ) : type === "file" ? (
+                            <div className="message-attachment">
+                                <div
+                                    className="message-file"
+                                    onClick={handleOpenFile}
+                                >
+                                    <div className="message-file-icon">
+                                        <IoDocumentText size={32} />
+                                    </div>
+
+                                    <div className="message-file-info">
+                                        <p className="message-file-name">
+                                            {fileName}
+                                        </p>
+
+                                        <span className="message-file-preview">
+                                            {fileType?.split("/")[1]?.toUpperCase()} • {formatFileSize(fileSize)}
+                                        </span>
+                                    </div>
+
+                                    <div className="message-file-download">
+                                        <IoDownloadOutline size={20} />
+                                    </div>
+                                </div>
+
+                                {caption && (
+                                    <p className="message-caption">
+                                        {caption}
+                                    </p>
+                                )}
+
+                                {caption && (
+                                    <p className="message-caption">
+                                        {caption}
+                                    </p>
+                                )}
+                            </div>
                         ) : (
                             <p>
                                 {text}
@@ -137,6 +226,7 @@ function MessageBubble({
                         )}
                     </>
                 )}
+
 
 
                 <span className="message-time">
@@ -159,6 +249,15 @@ function MessageBubble({
                     onDeleteEveryone={handleDeleteForEveryone}
                     onDeleteForMe={handleDeleteForMe}
                     onCancel={() => setShowDeleteModal(false)}
+                />
+            )}
+
+
+            {showImageViewer && (
+                <ImageViewer
+                    imageUrl={fileUrl}
+                    alt={fileName}
+                    onClose={() => setShowImageViewer(false)}
                 />
             )}
         </div>
