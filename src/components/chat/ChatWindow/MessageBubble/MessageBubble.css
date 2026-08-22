@@ -228,9 +228,7 @@
 
 
 .message-menu {
-    position: absolute;
-    top: 32px;
-    right: 0;
+    position: fixed;
 
     min-width: 100px;
 
@@ -242,12 +240,7 @@
 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-    z-index: 20;
-}
-
-.message-other .message-menu {
-    left: 0;
-    right: auto;
+    z-index: 9999;
 }
 
 .message-menu button {

@@ -42,6 +42,10 @@ function MessageBubble({
 
 
     const [showMenu, setShowMenu] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({
+        top: 0,
+        left: 0,
+    });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showImageViewer, setShowImageViewer] = useState(false);
 
@@ -168,6 +172,33 @@ function MessageBubble({
     };
 
 
+
+
+    const handleMenuToggle = (event) => {
+        event.stopPropagation();
+
+        const rect = event.currentTarget.getBoundingClientRect();
+
+        const menuHeight = 75;
+        const menuWidth = 100;
+
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const openUp = spaceBelow < menuHeight;
+
+        setMenuPosition({
+            top: openUp
+                ? rect.top - menuHeight - 4
+                : rect.bottom + 4,
+
+            left: isOwn
+                ? rect.right - menuWidth
+                : rect.left,
+        });
+
+        setShowMenu((prev) => !prev);
+    };
+
+
     return (
         <div className={`message ${isOwn ? "message-own" : "message-other"}`}>
             <div className="message-bubble">
@@ -179,13 +210,20 @@ function MessageBubble({
                     >
                         <button
                             className={`message-action-button ${showMenu ? "active" : ""}`}
-                            onClick={() => setShowMenu((prev) => !prev)}
+                            onClick={handleMenuToggle}
                         >
                             <IoChevronDown />
                         </button>
 
                         {showMenu && (
-                            <div className="message-menu">
+                            <div
+                                className="message-menu"
+                                style={{
+                                    top: `${menuPosition.top}px`,
+                                    left: `${menuPosition.left}px`,
+                                }}
+                                onClick={(event) => event.stopPropagation()}
+                            >
                                 {isOwn && !type && !isDeletedForEveryone && (
                                     <button
                                         onClick={() => {
@@ -264,40 +302,40 @@ function MessageBubble({
                                     </p>
                                 )}
                             </div>
-                        ) :isEditing ? (
-                                <div className="message-edit">
-                                    <textarea
-                                        value={editText}
-                                        onChange={(event) => setEditText(event.target.value)}
-                                        autoFocus
-                                    />
+                        ) : isEditing ? (
+                            <div className="message-edit">
+                                <textarea
+                                    value={editText}
+                                    onChange={(event) => setEditText(event.target.value)}
+                                    autoFocus
+                                />
 
-                                    <div className="message-edit-actions">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setEditText(text || "");
-                                                setIsEditing(false);
-                                            }}
-                                            disabled={isSavingEdit}
-                                        >
-                                            Cancel
-                                        </button>
+                                <div className="message-edit-actions">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditText(text || "");
+                                            setIsEditing(false);
+                                        }}
+                                        disabled={isSavingEdit}
+                                    >
+                                        Cancel
+                                    </button>
 
-                                        <button
-                                            type="button"
-                                            onClick={handleEdit}
-                                            disabled={isSavingEdit || !editText.trim()}
-                                        >
-                                            {isSavingEdit ? "Saving..." : "Save"}
-                                        </button>
-                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleEdit}
+                                        disabled={isSavingEdit || !editText.trim()}
+                                    >
+                                        {isSavingEdit ? "Saving..." : "Save"}
+                                    </button>
                                 </div>
-                            ) : (
-                                <p>
-                                    {text}
-                                </p>
-                            )}
+                            </div>
+                        ) : (
+                            <p>
+                                {text}
+                            </p>
+                        )}
                     </>
                 )}
 

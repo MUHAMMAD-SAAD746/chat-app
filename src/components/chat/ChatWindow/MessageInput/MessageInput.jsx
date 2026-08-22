@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IoSend, IoAttach } from "react-icons/io5";
+import { IoSend, IoAttach, IoHappyOutline } from "react-icons/io5";
+import EmojiPicker from "emoji-picker-react";
 import "./MessageInput.css";
 
 import { sendMessage } from "../../../../firebase/services/messageService";
@@ -14,6 +15,7 @@ import { useAuth } from "../../../../context/AuthContext";
 function MessageInput({ canSendMessage = true, onAttach }) {
     const { user } = useAuth();
     const [text, setText] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const { conversationId } = useParams();
 
@@ -62,7 +64,13 @@ function MessageInput({ canSendMessage = true, onAttach }) {
     };
 
 
+    const handleEmojiClick = (emojiData) => {
+        setText((prevText) => {
+            const newText = prevText + emojiData.emoji;
 
+            return newText;
+        });
+    };
 
 
 
@@ -138,11 +146,33 @@ function MessageInput({ canSendMessage = true, onAttach }) {
 
             <button
                 type="button"
+                className="message-attach-button"
                 aria-label="Attach file"
                 onClick={onAttach}
             >
                 <IoAttach size={20} />
             </button>
+
+
+            <div className="emoji-picker-container">
+                <button
+                    type="button"
+                    aria-label="Add emoji"
+                    className="message-emoji-button"
+                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                >
+                    <IoHappyOutline size={20} />
+                </button>
+
+                {showEmojiPicker && (
+                    <EmojiPicker
+                        onEmojiClick={handleEmojiClick}
+                        width={320}
+                        height={380}
+                    />
+                )}
+            </div>
+
 
             <input
                 type="text"
@@ -154,6 +184,7 @@ function MessageInput({ canSendMessage = true, onAttach }) {
 
             <button
                 type="button"
+                className="message-send-button"
                 aria-label="Send message"
                 onClick={handleSend}
             >
