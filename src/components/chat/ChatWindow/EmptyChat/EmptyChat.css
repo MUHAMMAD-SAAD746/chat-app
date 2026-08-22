@@ -80,76 +80,9 @@
     gap: 12px;
 }
 
-.empty-chat-actions>button,
-.empty-chat-actions>.theme-toggle {
+.empty-chat-actions>button {
     flex: 1;
     min-width: 0;
-}
-
-.theme-toggle {
-    /* min-width: 130px; */
-    height: 42px;
-
-    padding: 0 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    border: 1px solid var(--border-secondary);
-    border-radius: 8px;
-
-    background-color: var(--bg-primary);
-}
-
-.theme-toggle>span {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    font-family: Arial;
-}
-
-.theme-switch {
-    position: relative;
-
-    width: 38px;
-    height: 21px;
-
-    padding: 0;
-
-    border: none;
-    border-radius: 20px;
-
-    background-color: var(--switch-off);
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-}
-
-.theme-switch-thumb {
-    position: absolute;
-
-    top: 3px;
-    left: 3px;
-
-    width: 15px;
-    height: 15px;
-
-    border-radius: 50%;
-
-    background-color: var(--bg-primary);
-
-    transition: transform 0.2s ease;
-}
-
-.theme-switch.active {
-    background-color: var(--accent-primary);
-}
-
-.theme-switch.active .theme-switch-thumb {
-    transform: translateX(17px);
 }
 
 .empty-chat-actions>button {
@@ -180,8 +113,7 @@
         transform 0.2s ease;
 }
 
-.empty-chat-actions>button:hover,
-.empty-chat-actions .theme-toggle:hover {
+.empty-chat-actions>button:hover {
     background-color: var(--bg-hover);
     border-color: var(--switch-off);
     cursor: pointer;
@@ -209,8 +141,7 @@
         flex-wrap: wrap;
     }
 
-    .empty-chat-actions>button>span,
-    .theme-toggle>span {
+    .empty-chat-actions>button>span {
         display: none;
     }
 }
@@ -220,7 +151,4 @@
         flex-direction: column;
     }
 
-    /* .empty-chat-actions button {
-        width: 200px;
-    } */
 }

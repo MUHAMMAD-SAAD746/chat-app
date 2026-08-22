@@ -7,6 +7,7 @@ function AttachmentComposer({
     onCaptionChange,
     onClose,
     onSend,
+    isSending,
 }) {
     if (!file) {
         return null;
@@ -22,6 +23,7 @@ function AttachmentComposer({
                     type="button"
                     onClick={onClose}
                     aria-label="Close attachment"
+                    disabled={isSending}
                 >
                     <IoClose size={24} />
                 </button>
@@ -55,6 +57,12 @@ function AttachmentComposer({
                     </div>
                 )}
 
+                {isSending && (
+                    <div className="attachment-composer-sending">
+                        Sending...
+                    </div>
+                )}
+
             </div>
 
 
@@ -67,14 +75,20 @@ function AttachmentComposer({
                     onChange={(e) =>
                         onCaptionChange(e.target.value)
                     }
+                    disabled={isSending}
                 />
 
                 <button
                     type="button"
                     onClick={onSend}
                     aria-label="Send attachment"
+                    disabled={isSending}
                 >
-                    <IoSend size={20} />
+                    {isSending ? (
+                        <span className="attachment-send-spinner" />
+                    ) : (
+                        <IoSend size={20} />
+                    )}
                 </button>
 
             </div>

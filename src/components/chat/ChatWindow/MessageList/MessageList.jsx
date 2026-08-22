@@ -60,18 +60,67 @@ function MessageList() {
 
 
 
+
+    const formatMessageDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const today = new Date();
+
+        const isToday =
+            date.toDateString() === today.toDateString();
+
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+
+        const isYesterday =
+            date.toDateString() === yesterday.toDateString();
+
+        if (isToday) {
+            return "Today";
+        }
+
+        if (isYesterday) {
+            return "Yesterday";
+        }
+
+        return date.toLocaleDateString([], {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
+    };
+
+
+
     return (
         <div className="message-list">
-            {messages.map((message) => (
-                <MessageBubble
-                    key={message.id}
-                    message={message}
-                    conversationId={conversationId}
-                    userId={user.uid}
-                    time={formatTime(message.createdAt)}
-                    isOwn={message.senderId === user.uid}
-                />
-            ))}
+            {messages.map((message, index) => {
+                const currentDate = formatMessageDate(message.createdAt);
+
+                const previousDate =
+                    index > 0
+                        ? formatMessageDate(messages[index - 1].createdAt)
+                        : null;
+
+                const showDateSeparator = currentDate !== previousDate;
+
+                return (
+                    <div key={message.id}>
+                        {showDateSeparator && (
+                            <div className="message-date">
+                                {currentDate}
+                            </div>
+                        )}
+
+                        <MessageBubble
+                            message={message}
+                            conversationId={conversationId}
+                            userId={user.uid}
+                            time={formatTime(message.createdAt)}
+                            isOwn={message.senderId === user.uid}
+                        />
+                    </div>
+                );
+            })}
         </div>
     );
 }

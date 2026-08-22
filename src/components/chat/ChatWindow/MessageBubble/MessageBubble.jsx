@@ -12,6 +12,7 @@ import ImageViewer from "./ImageViewer/ImageViewer";
 import {
     deleteMessageForMe,
     deleteMessageForEveryone,
+    editMessage,
 } from "../../../../firebase/services/messageService";
 
 import "./MessageBubble.css";
@@ -36,12 +37,17 @@ function MessageBubble({
         readAt,
         deleteStatus,
         deletedFor,
+        editedAt,
     } = message;
 
 
     const [showMenu, setShowMenu] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showImageViewer, setShowImageViewer] = useState(false);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editText, setEditText] = useState(text || "");
+    const [isSavingEdit, setIsSavingEdit] = useState(false);
     let receiptStatus = "sent";
 
     if (deliveredAt) {
@@ -109,6 +115,39 @@ function MessageBubble({
     };
 
 
+
+    const handleEdit = async () => {
+        const trimmedText = editText.trim();
+
+        if (!trimmedText) {
+            return;
+        }
+
+        if (trimmedText === text) {
+            setIsEditing(false);
+            return;
+        }
+
+        try {
+            setIsSavingEdit(true);
+
+            await editMessage(
+                conversationId,
+                messageId,
+                userId,
+                trimmedText
+            );
+
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Failed to edit message:", error);
+        } finally {
+            setIsSavingEdit(false);
+        }
+    };
+
+
+
     const formatFileSize = (bytes) => {
         if (!bytes) return "";
 
@@ -139,7 +178,7 @@ function MessageBubble({
                         onClick={(event) => event.stopPropagation()}
                     >
                         <button
-                            className="message-action-button"
+                            className={`message-action-button ${showMenu ? "active" : ""}`}
                             onClick={() => setShowMenu((prev) => !prev)}
                         >
                             <IoChevronDown />
@@ -147,6 +186,18 @@ function MessageBubble({
 
                         {showMenu && (
                             <div className="message-menu">
+                                {isOwn && !type && !isDeletedForEveryone && (
+                                    <button
+                                        onClick={() => {
+                                            setEditText(text || "");
+                                            setIsEditing(true);
+                                            setShowMenu(false);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                )}
+
                                 <button
                                     onClick={() => {
                                         setShowDeleteModal(true);
@@ -212,34 +263,65 @@ function MessageBubble({
                                         {caption}
                                     </p>
                                 )}
-
-                                {caption && (
-                                    <p className="message-caption">
-                                        {caption}
-                                    </p>
-                                )}
                             </div>
-                        ) : (
-                            <p>
-                                {text}
-                            </p>
-                        )}
+                        ) :isEditing ? (
+                                <div className="message-edit">
+                                    <textarea
+                                        value={editText}
+                                        onChange={(event) => setEditText(event.target.value)}
+                                        autoFocus
+                                    />
+
+                                    <div className="message-edit-actions">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setEditText(text || "");
+                                                setIsEditing(false);
+                                            }}
+                                            disabled={isSavingEdit}
+                                        >
+                                            Cancel
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleEdit}
+                                            disabled={isSavingEdit || !editText.trim()}
+                                        >
+                                            {isSavingEdit ? "Saving..." : "Save"}
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p>
+                                    {text}
+                                </p>
+                            )}
                     </>
                 )}
 
 
 
-                <span className="message-time">
-                    {time}
-
-                    {isOwn && (
-                        receiptStatus === "sent"
-                            ? <IoCheckmark className="message-receipt" />
-                            : <IoCheckmarkDone
-                                className={`message-receipt message-receipt-${receiptStatus}`}
-                            />
+                <div className="message-footer">
+                    {editedAt && (
+                        <span className="message-edited">
+                            edited
+                        </span>
                     )}
-                </span>
+
+                    <span className="message-time">
+                        {time}
+
+                        {isOwn && (
+                            receiptStatus === "sent"
+                                ? <IoCheckmark className="message-receipt" />
+                                : <IoCheckmarkDone
+                                    className={`message-receipt message-receipt-${receiptStatus}`}
+                                />
+                        )}
+                    </span>
+                </div>
             </div>
 
 

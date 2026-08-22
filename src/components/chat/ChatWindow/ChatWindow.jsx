@@ -21,10 +21,28 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [showAttachmentComposer, setShowAttachmentComposer] = useState(false);
     const [attachmentCaption, setAttachmentCaption] = useState("");
+    const [isSendingAttachment, setIsSendingAttachment] = useState(false);
 
+
+
+    // const handleFileSelect = (e) => {
+    //     const file = e.target.files[0];
+
+    //     if (!file) return;
+
+    //     setSelectedFile(file);
+    //     setShowAttachmentComposer(true);
+
+    //     e.target.value = "";
+    // };
 
 
     const handleFileSelect = (e) => {
+        if (isSendingAttachment) {
+            e.target.value = "";
+            return;
+        }
+
         const file = e.target.files[0];
 
         if (!file) return;
@@ -37,14 +55,55 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
+
+    // const handleSendAttachment = async () => {
+    //     if (
+    //         !selectedFile ||
+    //         !user ||
+    //         !conversationId
+    //     ) {
+    //         return;
+    //     }
+
+    //     try {
+    //         const uploadedFile = await uploadChatFile(
+    //             selectedFile
+    //         );
+
+    //         await sendFileMessage(
+    //             conversationId,
+    //             user.uid,
+    //             uploadedFile.url,
+    //             selectedFile.name,
+    //             selectedFile.type,
+    //             selectedFile.size,
+    //             attachmentCaption.trim()
+    //         );
+
+    //         setSelectedFile(null);
+    //         setAttachmentCaption("");
+    //         setShowAttachmentComposer(false);
+
+    //     } catch (error) {
+    //         console.error(
+    //             "Failed to send attachment:",
+    //             error
+    //         );
+    //     }
+    // };
+
+
     const handleSendAttachment = async () => {
         if (
+            isSendingAttachment ||
             !selectedFile ||
             !user ||
             !conversationId
         ) {
             return;
         }
+
+        setIsSendingAttachment(true);
 
         try {
             const uploadedFile = await uploadChatFile(
@@ -70,6 +129,8 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                 "Failed to send attachment:",
                 error
             );
+        } finally {
+            setIsSendingAttachment(false);
         }
     };
 
@@ -162,6 +223,7 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                         caption={attachmentCaption}
                         onCaptionChange={setAttachmentCaption}
                         onSend={handleSendAttachment}
+                        isSending={isSendingAttachment}
                         onClose={() => {
                             setSelectedFile(null);
                             setAttachmentCaption("");

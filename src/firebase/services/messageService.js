@@ -109,6 +109,40 @@ export async function deleteMessageForEveryone(
 
 
 
+export async function editMessage(
+    conversationId,
+    messageId,
+    userId,
+    text
+) {
+    const messageRef = ref(
+        database,
+        `conversations/${conversationId}/messages/${messageId}`
+    );
+
+    const messageSnapshot = await get(messageRef);
+
+    if (!messageSnapshot.exists()) {
+        throw new Error("Message not found");
+    }
+
+    const message = messageSnapshot.val();
+
+    if (message.senderId !== userId) {
+        throw new Error(
+            "You can only edit your own messages."
+        );
+    }
+
+    await update(messageRef, {
+        text,
+        editedAt: Date.now(),
+    });
+}
+
+
+
+
 
 
 export async function sendFileMessage(

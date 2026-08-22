@@ -1,16 +1,17 @@
 import {
     LuMessageSquareText,
     LuUserPlus,
-    LuLogOut
+    LuLogOut,
+    LuSettings
 } from "react-icons/lu";
 
 import "./EmptyChat.css";
-import { useTheme } from "../../../../context/ThemeContext";
+// import { useTheme } from "../../../../context/ThemeContext";
 import { logout } from "../../../../firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 function EmptyChat({ onAddContact }) {
-    const { darkMode, toggleTheme } = useTheme();
+    // const { darkMode, toggleTheme } = useTheme();
     const navigate = useNavigate();
 
 
@@ -52,7 +53,7 @@ function EmptyChat({ onAddContact }) {
                 </button>
 
                 {/* Theme Toggle */}
-                <div className="theme-toggle">
+                {/* <div className="theme-toggle">
                     <button
                         type="button"
                         className={`theme-switch ${darkMode ? "active" : ""}`}
@@ -66,7 +67,18 @@ function EmptyChat({ onAddContact }) {
                     <span>
                         Dark Theme
                     </span>
-                </div>
+                </div> */}
+
+
+                {/* Settings */}
+                <button
+                    type="button"
+                    onClick={() => navigate("/settings")}
+                >
+                    <LuSettings size={18} />
+                    <span>Settings</span>
+                </button>
+
 
                 {/* Logout */}
                 <button type="button" onClick={handleLogout}>

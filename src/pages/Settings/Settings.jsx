@@ -4,6 +4,8 @@ import ProfileSettings from "../../components/settings/ProfileSettings/ProfileSe
 import PasswordSettings from "../../components/settings/PasswordSettings/PasswordSettings";
 import DangerZone from "../../components/settings/DangerZone/DangerZone";
 
+import ThemeSettings from "../../components/settings/ThemeSettings/ThemeSettings";
+
 import "./Settings.css";
 
 function Settings() {
@@ -26,6 +28,7 @@ function Settings() {
             <div className="settings-content">
                 <ProfileSettings />
                 <PasswordSettings />
+                <ThemeSettings />
                 <DangerZone />
             </div>
 
