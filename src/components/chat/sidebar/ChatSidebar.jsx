@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import usePopupPosition from "../../../hooks/usePopupPosition";
 import "./ChatSidebar.css"
 
 import ConversationList from "./ConversationList";
@@ -29,6 +30,17 @@ function Sidebar({ conversations, onAddContact }) {
     const { profile, loading } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+
+
+    const {
+        triggerRef,
+        menuRef,
+        position,
+    } = usePopupPosition(
+        showMenu,
+        setShowMenu
+    );
 
 
 
@@ -101,7 +113,8 @@ function Sidebar({ conversations, onAddContact }) {
                 <div className="sidebar-menu">
                     <button
                         className="sidebar-menu-btn"
-                        onClick={() => setShowMenu(!showMenu)}
+                        ref={triggerRef}
+                        onClick={() => setShowMenu((prev) => !prev)}
                     >
                         <RxHamburgerMenu size={18} />
 
@@ -113,7 +126,14 @@ function Sidebar({ conversations, onAddContact }) {
                     </button>
 
                     {showMenu && (
-                        <div className="sidebar-dropdown-menu">
+                        <div
+                            ref={menuRef}
+                            className="sidebar-dropdown-menu"
+                            style={{
+                                top: position.top - 5,
+                                left: position.left - 10,
+                            }}
+                        >
                             <button
                                 onClick={() => {
                                     onAddContact();

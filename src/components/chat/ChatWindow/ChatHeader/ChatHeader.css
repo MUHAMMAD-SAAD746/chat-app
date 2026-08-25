@@ -182,11 +182,12 @@
 
 
 .chat-options-menu {
-    position: absolute;
+    position: fixed;
     top: 44px;
     right: 0;
 
-    min-width: 140px;
+    width: 140px;
+    /* min-width: 140px; */
     padding: 6px;
     background-color: var(--bg-primary);
 

@@ -1,4 +1,4 @@
-import { ref, get, set } from "firebase/database"
+import { ref, get, set, remove } from "firebase/database";
 import { database } from "../config";
 import { isFriend } from "./friendService";
 
@@ -81,4 +81,47 @@ export async function createConversation(userId1, userId2) {
         id: conversationId,
         ...conversation,
     };
+}
+
+
+
+
+
+export async function getOrCreateConversation(
+    currentUserId,
+    otherUserId
+) {
+    const existingConversation = await getConversation(
+        currentUserId,
+        otherUserId
+    );
+
+    if (existingConversation) {
+        return existingConversation;
+    }
+
+    return await createConversation(
+        currentUserId,
+        otherUserId
+    );
+}
+
+
+
+export async function pinConversation(conversationId, userId) {
+    const pinRef = ref(
+        database,
+        `conversations/${conversationId}/pinnedBy/${userId}`
+    );
+
+    await set(pinRef, true);
+}
+
+export async function unpinConversation(conversationId, userId) {
+    const pinRef = ref(
+        database,
+        `conversations/${conversationId}/pinnedBy/${userId}`
+    );
+
+    await remove(pinRef);
 }

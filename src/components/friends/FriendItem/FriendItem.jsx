@@ -2,10 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
-import {
-    getConversation,
-    createConversation
-} from "../../../firebase/services/conversationService";
+import { getOrCreateConversation } from "../../../firebase/services/conversationService";
 
 import { removeFriend } from "../../../firebase/services/friendService";
 import RemoveFriendModal from "../RemoveFriendModal/RemoveFriendModal";
@@ -27,25 +24,12 @@ function FriendItem({ friend, onRemove }) {
         if (!user?.uid || !friend?.uid) return;
 
         try {
-            const existingConversation = await getConversation(
+            const conversation = await getOrCreateConversation(
                 user.uid,
                 friend.uid
             );
 
-            let conversationId;
-
-            if (existingConversation) {
-                conversationId = existingConversation.id;
-            } else {
-                const newConversation = await createConversation(
-                    user.uid,
-                    friend.uid
-                );
-
-                conversationId = newConversation.id;
-            }
-
-            navigate(`/chat/${conversationId}`);
+            navigate(`/chat/${conversation.id}`);
 
         } catch (error) {
             console.error(

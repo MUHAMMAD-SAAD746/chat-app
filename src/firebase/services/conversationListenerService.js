@@ -64,11 +64,24 @@ export function subscribeToUserConversations(userId, callback) {
             }
         });
 
-        conversations.sort(
-            (a, b) =>
+
+        conversations.sort((a, b) => {
+            const aPinned = a.pinnedBy?.[userId] === true;
+            const bPinned = b.pinnedBy?.[userId] === true;
+
+            if (aPinned && !bPinned) {
+                return -1;
+            }
+
+            if (!aPinned && bPinned) {
+                return 1;
+            }
+
+            return (
                 (b.lastMessageTime || 0) -
                 (a.lastMessageTime || 0)
-        );
+            );
+        });
 
 
         callback(conversations);

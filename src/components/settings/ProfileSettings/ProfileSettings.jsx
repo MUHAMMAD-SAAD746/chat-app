@@ -10,6 +10,7 @@ import {
 import useUsername from "../../../hooks/useUsername";
 import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
 import { notify } from "../../../utils/notification";
+import { formatMessageDate } from "../../../utils/formatUtils";
 
 import "./ProfileSettings.css";
 
@@ -194,18 +195,6 @@ function ProfileSettings() {
 
 
 
-
-
-
-    const formatDate = (timestamp) => {
-        if (!timestamp) return "Unknown";
-
-        return new Date(timestamp).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    };
 
 
 
@@ -468,7 +457,7 @@ function ProfileSettings() {
                         </label>
 
                         <div className="profile-settings-readonly">
-                            {formatDate(profile.createdAt)}
+                            {formatMessageDate(profile.createdAt)}
                         </div>
 
                     </div>

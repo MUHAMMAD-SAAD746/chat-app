@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import usePopupPosition from "../../../../hooks/usePopupPosition";
 import { IoArrowBack, IoEllipsisVerticalSharp } from "react-icons/io5";
 
 import { listenToUserPresence } from "../../../../firebase/services/presenceListenerService";
+import { formatLastSeen } from "../../../../utils/formatUtils";
 
 import "./ChatHeader.css";
 
@@ -10,6 +12,17 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
     const [showMenu, setShowMenu] = useState(false);
     const [presence, setPresence] = useState(null);
     const navigate = useNavigate();
+
+
+    const {
+        triggerRef,
+        menuRef,
+        position,
+    } = usePopupPosition(
+        showMenu,
+        setShowMenu
+    );
+
 
     useEffect(() => {
         if (!selectedUser?.uid) {
@@ -40,35 +53,35 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
 
 
 
-    function formatLastSeen(timestamp) {
-        if (!timestamp) return "some time ago";
+    // function formatLastSeen(timestamp) {
+    //     if (!timestamp) return "some time ago";
 
-        const now = Date.now();
-        const difference = now - timestamp;
+    //     const now = Date.now();
+    //     const difference = now - timestamp;
 
-        const seconds = Math.floor(difference / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
+    //     const seconds = Math.floor(difference / 1000);
+    //     const minutes = Math.floor(seconds / 60);
+    //     const hours = Math.floor(minutes / 60);
+    //     const days = Math.floor(hours / 24);
 
-        if (seconds < 60) {
-            return "just now";
-        }
+    //     if (seconds < 60) {
+    //         return "just now";
+    //     }
 
-        if (minutes < 60) {
-            return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
-        }
+    //     if (minutes < 60) {
+    //         return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+    //     }
 
-        if (hours < 24) {
-            return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-        }
+    //     if (hours < 24) {
+    //         return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    //     }
 
-        if (days < 7) {
-            return `${days} ${days === 1 ? "day" : "days"} ago`;
-        }
+    //     if (days < 7) {
+    //         return `${days} ${days === 1 ? "day" : "days"} ago`;
+    //     }
 
-        return new Date(timestamp).toLocaleDateString();
-    }
+    //     return new Date(timestamp).toLocaleDateString();
+    // }
 
 
 
@@ -134,13 +147,21 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
                     className="chat-header-menu"
                     aria-label="Chat options"
                     onClick={() => setShowMenu((prev) => !prev)}
+                    ref={triggerRef}
                 >
                     <IoEllipsisVerticalSharp size={20} />
                 </button>
 
                 {/* Dropdown */}
                 {showMenu && (
-                    <div className="chat-options-menu">
+                    <div
+                        className="chat-options-menu"
+                        ref={menuRef}
+                        style={{
+                            top: position.top,
+                            left: position.left - 28,
+                        }}
+                    >
                         <button
                             type="button"
                             onClick={handleCloseChat}

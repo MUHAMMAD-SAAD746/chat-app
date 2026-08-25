@@ -6,10 +6,7 @@ import { useAuth } from "../../../context/AuthContext";
 // import { getFriends } from "../../../firebase/services/friendService";
 import { subscribeToFriends } from "../../../firebase/services/friendService";
 
-import {
-    getConversation,
-    createConversation,
-} from "../../../firebase/services/conversationService";
+import { getOrCreateConversation } from "../../../firebase/services/conversationService";
 
 
 function ConversationList({ conversations, searchQuery = "" }) {
@@ -118,17 +115,10 @@ function ConversationList({ conversations, searchQuery = "" }) {
 
     const handleFriendClick = async (friend) => {
         try {
-            let conversation = await getConversation(
+            const conversation = await getOrCreateConversation(
                 user.uid,
                 friend.uid
             );
-
-            if (!conversation) {
-                conversation = await createConversation(
-                    user.uid,
-                    friend.uid
-                );
-            }
 
             navigate(`/chat/${conversation.id}`);
         } catch (error) {

@@ -15,16 +15,14 @@ function ChatLayout() {
 
     const [conversations, setConversations] = useState([]);
 
-    const isSettingsPage = location.pathname === "/settings";
+    const pathname = location.pathname;
 
-    const isAddContact =
-        location.pathname === "/chat/add-contact";
-
-    const isFriendsPage =
-        location.pathname === "/friends";
+    const isSettingsPage = pathname === "/settings";
+    const isAddContact = pathname === "/chat/add-contact";
+    const isFriendsPage = pathname === "/friends";
 
     const isConversationOpen =
-        location.pathname.startsWith("/chat/") &&
+        pathname.startsWith("/chat/") &&
         !isAddContact;
 
 
@@ -44,14 +42,13 @@ function ChatLayout() {
 
     return (
         <main
-            className={`chat-layout ${isConversationOpen
-                ? "conversation-open"
-                : isAddContact
-                    ? "add-contact-open"
-                    : isFriendsPage
-                        ? "friends-open"
-                        : ""
-                } ${isSettingsPage ? "settings-open" : ""}`}
+            className={`
+                chat-layout
+                ${isConversationOpen ? "conversation-open" : ""}
+                ${isAddContact ? "add-contact-open" : ""}
+                ${isFriendsPage ? "friends-open" : ""}
+                ${isSettingsPage ? "settings-open" : ""}
+            `}
         >
 
             <Sidebar

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import usePopupPosition from "../../../../hooks/usePopupPosition";
 import { IoSend, IoAttach, IoHappyOutline } from "react-icons/io5";
 import EmojiPicker from "emoji-picker-react";
 import "./MessageInput.css";
@@ -20,6 +21,19 @@ function MessageInput({ canSendMessage = true, onAttach }) {
     const { conversationId } = useParams();
 
     const typingTimer = useRef(null);
+
+
+    const {
+        triggerRef: emojiTriggerRef,
+        menuRef: emojiPickerRef,
+        position: emojiPickerPosition,
+    } = usePopupPosition(
+        showEmojiPicker,
+        setShowEmojiPicker,
+        {
+            preferAbove: true,
+        }
+    );
 
 
 
@@ -156,6 +170,7 @@ function MessageInput({ canSendMessage = true, onAttach }) {
 
             <div className="emoji-picker-container">
                 <button
+                    ref={emojiTriggerRef}
                     type="button"
                     aria-label="Add emoji"
                     className="message-emoji-button"
@@ -165,11 +180,20 @@ function MessageInput({ canSendMessage = true, onAttach }) {
                 </button>
 
                 {showEmojiPicker && (
-                    <EmojiPicker
-                        onEmojiClick={handleEmojiClick}
-                        width={320}
-                        height={380}
-                    />
+                    <div
+                        ref={emojiPickerRef}
+                        className="message-emoji-picker"
+                        style={{
+                            top: emojiPickerPosition.top,
+                            left: emojiPickerPosition.left,
+                        }}
+                    >
+                        <EmojiPicker
+                            onEmojiClick={handleEmojiClick}
+                            width={320}
+                            height={380}
+                        />
+                    </div>
                 )}
             </div>
 

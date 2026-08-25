@@ -25,17 +25,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
-    // const handleFileSelect = (e) => {
-    //     const file = e.target.files[0];
-
-    //     if (!file) return;
-
-    //     setSelectedFile(file);
-    //     setShowAttachmentComposer(true);
-
-    //     e.target.value = "";
-    // };
-
 
     const handleFileSelect = (e) => {
         if (isSendingAttachment) {
@@ -55,42 +44,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
-
-    // const handleSendAttachment = async () => {
-    //     if (
-    //         !selectedFile ||
-    //         !user ||
-    //         !conversationId
-    //     ) {
-    //         return;
-    //     }
-
-    //     try {
-    //         const uploadedFile = await uploadChatFile(
-    //             selectedFile
-    //         );
-
-    //         await sendFileMessage(
-    //             conversationId,
-    //             user.uid,
-    //             uploadedFile.url,
-    //             selectedFile.name,
-    //             selectedFile.type,
-    //             selectedFile.size,
-    //             attachmentCaption.trim()
-    //         );
-
-    //         setSelectedFile(null);
-    //         setAttachmentCaption("");
-    //         setShowAttachmentComposer(false);
-
-    //     } catch (error) {
-    //         console.error(
-    //             "Failed to send attachment:",
-    //             error
-    //         );
-    //     }
-    // };
 
 
     const handleSendAttachment = async () => {
@@ -165,42 +118,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
     }, [user?.uid, selectedUser?.uid]);
 
 
-
-    // return (
-    //     <main className="chat-window">
-
-    //         <input
-    //             id="chat-file-input"
-    //             type="file"
-    //             hidden
-    //             onChange={handleFileSelect}
-    //         />
-
-    //         {/* Chat Header */}
-    //         <ChatHeader
-    //             selectedUser={selectedUser}
-    //             isOtherUserTyping={isOtherUserTyping}
-    //         />
-
-    //         {/* Messages */}
-    //         <section className="chat-messages">
-    //             <MessageList />
-    //         </section>
-
-    //         {/* Message Input */}
-    //         <div className="chat-input">
-    //             <MessageInput
-    //                 canSendMessage={canSendMessage}
-    //                 onAttach={() =>
-    //                     document
-    //                         .getElementById("chat-file-input")
-    //                         ?.click()
-    //                 }
-    //             />
-    //         </div>
-
-    //     </main>
-    // );
 
 
     return (

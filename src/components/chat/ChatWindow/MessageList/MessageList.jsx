@@ -9,6 +9,11 @@ import { subscribeToMessages } from "../../../../firebase/services/messageListen
 import { markConversationAsRead } from "../../../../firebase/services/unreadService";
 import { markMessageAsRead } from "../../../../firebase/services/messageReceiptService";
 
+import {
+    formatTime,
+    formatMessageDate,
+} from "../../../../utils/formatUtils";
+
 function MessageList() {
     const { conversationId } = useParams();
     const { user } = useAuth();
@@ -51,43 +56,7 @@ function MessageList() {
     }, [conversationId, user?.uid]);
 
 
-    const formatTime = (timestamp) => {
-        return new Date(timestamp).toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit",
-        });
-    };
 
-
-
-
-    const formatMessageDate = (timestamp) => {
-        const date = new Date(timestamp);
-        const today = new Date();
-
-        const isToday =
-            date.toDateString() === today.toDateString();
-
-        const yesterday = new Date();
-        yesterday.setDate(today.getDate() - 1);
-
-        const isYesterday =
-            date.toDateString() === yesterday.toDateString();
-
-        if (isToday) {
-            return "Today";
-        }
-
-        if (isYesterday) {
-            return "Yesterday";
-        }
-
-        return date.toLocaleDateString([], {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        });
-    };
 
 
 

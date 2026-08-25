@@ -8,10 +8,7 @@ import { useAuth } from "../../../context/AuthContext";
 import SendFriendRequestModal from "../../friends/SendFriendRequestModal/SendFriendRequestModal";
 import { notify } from "../../../utils/notification";
 
-import {
-    getConversation,
-    createConversation
-} from "../../../firebase/services/conversationService";
+import { getOrCreateConversation } from "../../../firebase/services/conversationService";
 
 import { IoArrowBack, IoSearch } from "react-icons/io5";
 import "./NewChat.css";
@@ -43,30 +40,6 @@ function NewChat({ onBack }) {
     }, []);
 
 
-
-
-    // useEffect(() => {
-    //     const fetchSearchResults = async () => {
-    //         if (!search.trim()) {
-    //             setSearchResults([]);
-    //             return;
-    //         }
-
-    //         const filteredUsernames = Object.entries(usernames).filter(
-    //             ([username, uid]) =>
-    //                 uid !== user?.uid &&
-    //                 username.toLowerCase().includes(search.toLowerCase())
-    //         );
-
-    //         const users = await Promise.all(
-    //             filteredUsernames.map(([username, uid]) => getUser(uid))
-    //         );
-
-    //         setSearchResults(users.filter(Boolean));
-    //     };
-
-    //     fetchSearchResults();
-    // }, [search, usernames]);
 
 
 
@@ -151,22 +124,12 @@ function NewChat({ onBack }) {
         if (!user?.uid || !selectedUser?.uid) return;
 
         try {
-            const conversation = await getConversation(
+            const conversation = await getOrCreateConversation(
                 user.uid,
                 selectedUser.uid
             );
 
-            if (conversation) {
-                navigate(`/chat/${conversation.id}`);
-                return;
-            }
-
-            const newConversation = await createConversation(
-                user.uid,
-                selectedUser.uid
-            );
-
-            navigate(`/chat/${newConversation.id}`);
+            navigate(`/chat/${conversation.id}`);
 
         } catch (error) {
             console.error(
