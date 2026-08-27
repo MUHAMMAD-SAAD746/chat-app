@@ -13,7 +13,7 @@
 
     box-sizing: border-box;
 
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary);
 }
 
 /* Main Content */
@@ -96,10 +96,11 @@
     justify-content: center;
     gap: 8px;
 
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
 
-    background-color: var(--bg-primary);
+    /* background-color: var(--bg-primary); */
+    background-color: var(--light-grey);
     color: var(--text-secondary);
 
     font-size: 13px;
@@ -115,7 +116,7 @@
 
 .empty-chat-actions>button:hover {
     background-color: var(--bg-hover);
-    border-color: var(--switch-off);
+    border-color: var(--border-primary);
     cursor: pointer;
     transform: translateY(-1px);
 }

@@ -3,7 +3,12 @@ import { database } from "../config";
 import { incrementUnread } from "./unreadService";
 import { isFriend } from "./friendService";
 
-export async function sendMessage(conversationId, senderId, text) {
+export async function sendMessage(
+    conversationId,
+    senderId,
+    text,
+    replyTo = null
+) {
     const conversationRef = ref(
         database,
         `conversations/${conversationId}`
@@ -46,6 +51,7 @@ export async function sendMessage(conversationId, senderId, text) {
         senderId,
         text,
         createdAt: Date.now(),
+        ...(replyTo && { replyTo }),
     };
 
     await set(messageRef, message);

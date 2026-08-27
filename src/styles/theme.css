@@ -12,7 +12,7 @@
 
     /* Borders */
     --border-primary: #e5e7eb;
-    --border-secondary: #e2e8f0;
+    /* --border-secondary: #e2e8f0; */
 
     /* Text */
     --text-primary: #1e293b;
@@ -26,8 +26,8 @@
     --accent-danger: #e74c3c;
 
     /* Switch */
-    --switch-off: #cbd5e1;
-    --switch-thumb: #ffffff;
+    /* --switch-off: #cbd5e1;
+    --switch-thumb: #ffffff; */
 
     /* Shadows */
     --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -41,29 +41,33 @@
 [data-theme="dark"] {
 
     /* Backgrounds */
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-hover: #334155;
-    --bg-active: #475569;
-    --bg-chat-item-hover: #334155;
+    /* --bg-primary: #0f172a; */
+    --bg-primary: #161717;
+    /* --bg-secondary: #1e293b; */
+    --bg-secondary: #1d1f1f;
+    /* --bg-hover: #334155; */
+    --bg-hover: #2e2f2f;
+    /* --bg-active: #475569; */
+    /* --bg-chat-item-hover: #334155; */
+    --bg-chat-item-hover: #2e2f2f;
+
+    /* whats app light grey */
+    --light-grey: #494a4a;
 
     /* Borders */
-    --border-primary: #334155;
-    --border-secondary: #475569;
+    /* --border-primary: #334155; */
+    --border-primary: #393a3a;
 
     /* Text */
     --text-primary: #f8fafc;
     --text-secondary: #e2e8f0;
-    --text-muted: #94a3b8;
-    --text-placeholder: #64748b;
+    --text-muted: #a1a2a5;
+    --text-placeholder: #8b928c;
 
     /* Accent */
-    --accent-primary: #3b82f6;
-    --accent-success: #4ade80;
+    --accent-primary: #37c572;
+    /* --accent-success: #4ade80; */
 
-    /* Switch */
-    --switch-off: #475569;
-    --switch-thumb: #ffffff;
 
     /* Shadows */
     --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.4);

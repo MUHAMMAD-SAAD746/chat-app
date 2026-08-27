@@ -3,9 +3,23 @@ import { database } from "../config";
 import { markMessageAsDelivered } from "./messageReceiptService";
 
 
-function getLastMessage(messages) {
+function getLastMessage(messages, userId, clearedAt) {
     return Object.values(messages).reduce(
         (latest, message) => {
+            // Ignore messages deleted for everyone
+            if (message.deleteStatus === "everyone") {
+                return latest;
+            }
+
+            // Ignore messages deleted for the current user
+            if (message.deletedFor?.[userId] === true) {
+                return latest;
+            }
+
+            if (clearedAt && message.createdAt <= clearedAt) {
+                return latest;
+            }
+
             if (!latest || message.createdAt > latest.createdAt) {
                 return message;
             }
@@ -52,7 +66,9 @@ export function subscribeToUserConversations(userId, callback) {
                     userId
                 );
 
-                const lastMessage = getLastMessage(messages);
+                const clearedAt = conversation.clearedAt?.[userId] || 0;
+
+                const lastMessage = getLastMessage(messages, userId, clearedAt);
 
                 conversations.push({
                     id: childSnapshot.key,

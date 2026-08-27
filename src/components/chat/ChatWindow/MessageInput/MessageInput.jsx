@@ -13,7 +13,12 @@ import { useAuth } from "../../../../context/AuthContext";
 
 
 
-function MessageInput({ canSendMessage = true, onAttach }) {
+function MessageInput({
+    canSendMessage = true,
+    onAttach,
+    replyingTo,
+    onCancelReply,
+}) {
     const { user } = useAuth();
     const [text, setText] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -109,11 +114,28 @@ function MessageInput({ canSendMessage = true, onAttach }) {
         );
 
         try {
+            const replyTo = replyingTo
+                ? {
+                    messageId: replyingTo.id,
+                    senderId: replyingTo.senderId,
+                    text: replyingTo.text || "",
+                    type: replyingTo.type || "text",
+                    fileUrl: replyingTo.fileUrl || "",
+                    fileName: replyingTo.fileName || "",
+                    caption: replyingTo.caption || "",
+                    deleteStatus: replyingTo.deleteStatus || null,
+                }
+                : null;
+
+
             await sendMessage(
                 conversationId,
                 user.uid,
-                messageText
+                messageText,
+                replyTo
             );
+
+            onCancelReply?.();
         } catch (error) {
             console.error("Failed to send message:", error);
 
@@ -157,63 +179,86 @@ function MessageInput({ canSendMessage = true, onAttach }) {
 
     return (
         <div className="message-input">
+            {replyingTo && (
+                <div className="reply-preview">
+                    <div className="reply-preview-content">
+                        <strong>Replying to</strong>
 
-            <button
-                type="button"
-                className="message-attach-button"
-                aria-label="Attach file"
-                onClick={onAttach}
-            >
-                <IoAttach size={20} />
-            </button>
+                        <p>
+                            {replyingTo.text ||
+                                replyingTo.caption ||
+                                replyingTo.fileName ||
+                                "Attachment"}
+                        </p>
+                    </div>
 
+                    <button
+                        type="button"
+                        onClick={onCancelReply}
+                    >
+                        ×
+                    </button>
+                </div>
+            )}
 
-            <div className="emoji-picker-container">
+            <div className="message-input-row">
                 <button
-                    ref={emojiTriggerRef}
                     type="button"
-                    aria-label="Add emoji"
-                    className="message-emoji-button"
-                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                    className="message-attach-button"
+                    aria-label="Attach file"
+                    onClick={onAttach}
                 >
-                    <IoHappyOutline size={20} />
+                    <IoAttach size={20} />
                 </button>
 
-                {showEmojiPicker && (
-                    <div
-                        ref={emojiPickerRef}
-                        className="message-emoji-picker"
-                        style={{
-                            top: emojiPickerPosition.top,
-                            left: emojiPickerPosition.left,
-                        }}
+
+                <div className="emoji-picker-container">
+                    <button
+                        ref={emojiTriggerRef}
+                        type="button"
+                        aria-label="Add emoji"
+                        className="message-emoji-button"
+                        onClick={() => setShowEmojiPicker((prev) => !prev)}
                     >
-                        <EmojiPicker
-                            onEmojiClick={handleEmojiClick}
-                            width={320}
-                            height={380}
-                        />
-                    </div>
-                )}
+                        <IoHappyOutline size={20} />
+                    </button>
+
+                    {showEmojiPicker && (
+                        <div
+                            ref={emojiPickerRef}
+                            className="message-emoji-picker"
+                            style={{
+                                top: emojiPickerPosition.top,
+                                left: emojiPickerPosition.left,
+                            }}
+                        >
+                            <EmojiPicker
+                                onEmojiClick={handleEmojiClick}
+                                width={320}
+                                height={380}
+                            />
+                        </div>
+                    )}
+                </div>
+
+
+                <input
+                    type="text"
+                    placeholder="Type a message..."
+                    value={text}
+                    onChange={(e) => handleTyping(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+
+                <button
+                    type="button"
+                    className="message-send-button"
+                    aria-label="Send message"
+                    onClick={handleSend}
+                >
+                    <IoSend size={18} />
+                </button>
             </div>
-
-
-            <input
-                type="text"
-                placeholder="Type a message..."
-                value={text}
-                onChange={(e) => handleTyping(e.target.value)}
-                onKeyDown={handleKeyDown}
-            />
-
-            <button
-                type="button"
-                className="message-send-button"
-                aria-label="Send message"
-                onClick={handleSend}
-            >
-                <IoSend size={18} />
-            </button>
 
         </div>
     );

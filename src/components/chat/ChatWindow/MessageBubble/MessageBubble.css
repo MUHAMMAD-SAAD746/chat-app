@@ -24,17 +24,19 @@
     width: fit-content;
     min-width: 60px;
     max-width: 100%;
-    padding: 9px 12px;
+    padding: 9px 8px;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: #f1f1f1;
+    /* background-color: #f1f1f1; */
+    background-color: #242626;
     overflow-wrap: anywhere;
     word-break: break-word;
+    color: #ffffff;
 }
 
 .message-own .message-bubble {
-    background-color: #4b6397;
-    color: #ffffff;
+    /* background-color: #4b6397; */
+    background-color: #144d37;
 }
 
 .message-bubble p {
@@ -47,11 +49,99 @@
     word-break: break-word;
 }
 
+
+/* ================================
+   Message Reply Preview
+================================ */
+
+.message-reply-preview {
+    display: flex;
+    flex-direction: column;
+
+    margin: -5px -3px 6px;
+    padding: 6px 9px;
+
+    box-sizing: border-box;
+
+    /* border-left: 3px solid #4b6397; */
+    border-left: 3px solid #07ffc0;
+    border-radius: 6px;
+
+    /* background-color: rgba(0, 0, 0, 0.08); */
+    background-color: #1d1e1e;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    transition: background-color 0.15s ease;
+}
+
+.message-own .message-reply-preview {
+    /* border-left-color: #d9e2ff; */
+    border-left-color: #06cf9c;
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.message-other .message-reply-preview {
+    /* border-left-color: #4b6397; */
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    background-color: #1d1e1e;
+}
+
+.message-reply-preview:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.message-reply-preview strong {
+    margin: 0 0 2px;
+    color: #0acf8c;
+    font-size: 12px;
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-reply-preview p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.35;
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.message-highlight {
+    animation: message-highlight 3s ease;
+    border-radius: 10px;
+}
+
+@keyframes message-highlight {
+    0% {
+        box-shadow: none;
+    }
+
+    25% {
+        box-shadow: 0 0 0 4px rgba(75, 99, 151, 0.2);
+    }
+
+    100% {
+        box-shadow: none;
+    }
+}
+
+/* ======================================================= */
+
 .message-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
+    justify-content: flex-end;
     margin-top: 4px;
 }
 
@@ -59,11 +149,8 @@
 .message-edited {
     font-size: 11px;
     font-style: italic;
-
     opacity: 0.7;
-
     margin-right: 6px;
-
     white-space: nowrap;
 }
 
@@ -72,7 +159,7 @@
     align-items: center;
     justify-content: flex-end;
     gap: 3px;
-
+    color: var(--text-muted);
     font-size: 11px;
 }
 
@@ -127,9 +214,6 @@
     outline: none;
 }
 
-.message-edit textarea:focus {
-    border-color: #4b6397;
-}
 
 .message-edit-actions {
     display: flex;
@@ -278,16 +362,19 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    padding: 0;
 }
-
 
 
 .message-image {
     display: block;
 
-    width: 280px;
-    max-width: 100%;
+    width: calc(100% + 7px);
+    max-width: none;
     max-height: 320px;
+
+    margin: -5px -3px 0;
+
     cursor: pointer;
     object-fit: cover;
 
@@ -314,6 +401,8 @@
     gap: 12px;
 
     padding: 10px 12px;
+
+    margin: -5px -3px 0;
 
     background-color: rgba(0, 0, 0, 0.356);
 
@@ -440,15 +529,6 @@
     box-sizing: border-box;
 }
 
-/* .reaction-picker-above {
-    top: auto;
-    bottom: calc(100% + 8px);
-}
-
-.reaction-picker-below {
-    bottom: auto;
-    top: calc(100% + 8px);
-} */
 
 .message-other .reaction-picker {
     left: 0;
@@ -556,13 +636,6 @@
 }
 
 
-/* .message-full-emoji-picker {
-    position: absolute;
-
-    bottom: calc(100% + 8px);
-
-    z-index: 100;
-} */
 
 .message-full-emoji-picker {
     position: fixed;
@@ -574,17 +647,6 @@
 }
 
 
-/* .message-other .message-full-emoji-picker {
-    left: 0;
-}
-
-.message-own .message-full-emoji-picker {
-    right: 0;
-} */
-
-/* ================================
-   Mobile
-================================ */
 
 @media (max-width: 600px) {
 
@@ -596,6 +658,23 @@
     .message-bubble {
         max-width: 100%;
     }
+
+    .message-reply-preview {
+        max-width: 240px;
+
+        padding: 5px 8px;
+        margin-bottom: 5px;
+    }
+
+    .message-reply-preview strong {
+        font-size: 11px;
+    }
+
+
+    .message-reply-preview p {
+        font-size: 11px;
+    }
+
 
     .message-action-button svg {
         width: 12px !important;

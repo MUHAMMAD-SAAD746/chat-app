@@ -14,21 +14,24 @@ import {
     formatMessageDate,
 } from "../../../../utils/formatUtils";
 
-function MessageList() {
+function MessageList({ onReply, selectedUser }) {
     const { conversationId } = useParams();
     const { user } = useAuth();
 
     const [messages, setMessages] = useState([]);
+    const [clearedAt, setClearedAt] = useState(0);
 
     useEffect(() => {
         if (!conversationId || !user?.uid) return;
 
         const unsubscribe = subscribeToMessages(
             conversationId,
-            (messages) => {
+            user.uid,
+            ({ messages, clearedAt }) => {
                 setMessages(messages);
+                setClearedAt(clearedAt);
 
-                messages.forEach((message) => {
+                visibleMessages.forEach((message) => {
                     if (
                         message.senderId !== user.uid &&
                         !message.readAt
@@ -57,23 +60,33 @@ function MessageList() {
 
 
 
+    const visibleMessages = messages.filter(
+        (message) => message.createdAt > clearedAt
+    );
+
+
+
 
 
 
     return (
         <div className="message-list">
-            {messages.map((message, index) => {
+            {visibleMessages.map((message, index) => {
                 const currentDate = formatMessageDate(message.createdAt);
 
                 const previousDate =
                     index > 0
-                        ? formatMessageDate(messages[index - 1].createdAt)
+                        ? formatMessageDate(
+                            visibleMessages[index - 1].createdAt
+                        )
                         : null;
 
                 const showDateSeparator = currentDate !== previousDate;
 
                 return (
-                    <div key={message.id}>
+                    <div 
+                        key={message.id}
+                    >
                         {showDateSeparator && (
                             <div className="message-date">
                                 {currentDate}
@@ -86,6 +99,8 @@ function MessageList() {
                             userId={user.uid}
                             time={formatTime(message.createdAt)}
                             isOwn={message.senderId === user.uid}
+                            onReply={onReply}
+                            selectedUser={selectedUser}
                         />
                     </div>
                 );

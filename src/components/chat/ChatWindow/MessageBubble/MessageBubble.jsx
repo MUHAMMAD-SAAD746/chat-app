@@ -47,6 +47,8 @@ function MessageBubble({
     userId,
     time,
     isOwn = false,
+    onReply,
+    selectedUser,
 }) {
     const {
         id: messageId,
@@ -63,6 +65,7 @@ function MessageBubble({
         deletedFor,
         editedAt,
         reactions,
+        replyTo,
     } = message;
 
 
@@ -312,14 +315,35 @@ function MessageBubble({
     };
 
 
-
-
     const groupedReactions = groupReactions(reactions, userId);
+
+
+    const handleReplyClick = () => {
+        const originalMessage = document.getElementById(
+            replyTo?.messageId
+        );
+
+        if (!originalMessage) return;
+
+        originalMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+
+        originalMessage.classList.add("message-highlight");
+
+        setTimeout(() => {
+            originalMessage.classList.remove("message-highlight");
+        }, 1200);
+    };
 
 
 
     return (
-        <div className={`message ${isOwn ? "message-own" : "message-other"}`}>
+        <div
+            id={messageId}
+            className={`message ${isOwn ? "message-own" : "message-other"}`}
+        >
             <div className="message-container">
                 <div className="message-main">
                     <div className="message-bubble">
@@ -345,6 +369,18 @@ function MessageBubble({
                                     }}
                                     onClick={(event) => event.stopPropagation()}
                                 >
+                                    {!isDeletedForEveryone && (
+                                        <button
+                                            onClick={() => {
+                                                console.log("Reply clicked:", message);
+                                                onReply(message);
+                                                setShowMenu(false);
+                                            }}
+                                        >
+                                            Reply
+                                        </button>
+                                    )}
+
                                     {isOwn && !type && !isDeletedForEveryone && (
                                         <button
                                             onClick={() => {
@@ -431,6 +467,27 @@ function MessageBubble({
 
 
                         <>
+                            {replyTo && (
+                                <div
+                                    className="message-reply-preview"
+                                    onClick={handleReplyClick}
+                                >
+                                    <strong>
+                                        {replyTo.senderId === userId
+                                            ? "You"
+                                            : selectedUser?.fullName || "User"}
+                                    </strong>
+
+                                    <p>
+                                        {replyTo.text ||
+                                            replyTo.caption ||
+                                            replyTo.fileName ||
+                                            "Attachment"}
+                                    </p>
+                                </div>
+                            )}
+
+
                             {isDeletedForEveryone ? (
                                 <p className="message-deleted">
                                     Message deleted

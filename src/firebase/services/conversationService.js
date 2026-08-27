@@ -125,3 +125,22 @@ export async function unpinConversation(conversationId, userId) {
 
     await remove(pinRef);
 }
+
+
+export async function clearConversation(
+    conversationId,
+    userId
+) {
+    if (!conversationId || !userId) {
+        throw new Error(
+            "Conversation ID and user ID are required."
+        );
+    }
+
+    const clearedAtRef = ref(
+        database,
+        `conversations/${conversationId}/clearedAt/${userId}`
+    );
+
+    await set(clearedAtRef, Date.now());
+}

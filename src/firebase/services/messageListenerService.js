@@ -10,24 +10,41 @@ function mapMessages(data) {
 }
 
 
-export function subscribeToMessages(conversationId, callback) {
-    const messagesRef = ref(
+export function subscribeToMessages(
+    conversationId,
+    userId,
+    callback
+) {
+    const conversationRef = ref(
         database,
-        `conversations/${conversationId}/messages`
+        `conversations/${conversationId}`
     );
 
-    const unsubscribe = onValue(messagesRef, (snapshot) => {
-        const data = snapshot.val();
+    const unsubscribe = onValue(
+        conversationRef,
+        (snapshot) => {
+            const conversation = snapshot.val();
 
-        if (!data) {
-            callback([]);
-            return;
+            if (!conversation) {
+                callback({
+                    messages: [],
+                    clearedAt: 0,
+                });
+
+                return;
+            }
+
+            const messages = conversation.messages || {};
+
+            const clearedAt =
+                conversation.clearedAt?.[userId] || 0;
+
+            callback({
+                messages: mapMessages(messages),
+                clearedAt,
+            });
         }
-
-        const messages = mapMessages(data);
-
-        callback(messages);
-    });
+    );
 
     return unsubscribe;
 }

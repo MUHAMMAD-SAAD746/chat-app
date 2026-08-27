@@ -22,9 +22,10 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
     const [showAttachmentComposer, setShowAttachmentComposer] = useState(false);
     const [attachmentCaption, setAttachmentCaption] = useState("");
     const [isSendingAttachment, setIsSendingAttachment] = useState(false);
+    const [replyingTo, setReplyingTo] = useState(null);
 
 
-
+console.log("ChatWindow replyingTo:", replyingTo);
 
     const handleFileSelect = (e) => {
         if (isSendingAttachment) {
@@ -131,7 +132,10 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
             <section className="chat-content">
 
                 <section className="chat-messages">
-                    <MessageList />
+                    <MessageList
+                        onReply={setReplyingTo} 
+                        selectedUser={selectedUser}
+                    />
                 </section>
 
                 {showAttachmentComposer ? (
@@ -151,6 +155,8 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                     <div className="chat-input">
                         <MessageInput
                             canSendMessage={canSendMessage}
+                            replyingTo={replyingTo}
+                            onCancelReply={() => setReplyingTo(null)}
                             onAttach={() =>
                                 document
                                     .getElementById(

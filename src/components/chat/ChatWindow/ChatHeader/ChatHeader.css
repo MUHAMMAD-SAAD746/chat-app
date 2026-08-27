@@ -202,7 +202,11 @@
 .chat-options-menu button {
     width: 100%;
 
-    padding: 9px 12px;
+    padding: 7px 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
     border: none;
     border-radius: 6px;

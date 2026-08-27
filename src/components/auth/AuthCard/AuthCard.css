@@ -100,7 +100,7 @@
 
     box-sizing: border-box;
 
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
 
     outline: none;
@@ -228,7 +228,7 @@
 }
 
 .password-options a {
-    color: #6366f1;
+    color: var(--accent-primary);
 
     font-size: 13px;
 
@@ -253,8 +253,8 @@
     border: none;
     border-radius: 8px;
 
-    background: #4f46e5;
-    color: var(--switch-thumb);
+    background: var(--accent-primary);
+    color: var(--text-primary);
 
     font-size: 15px;
     font-weight: 600;
@@ -294,7 +294,7 @@
 }
 
 .login-prompt a {
-    color: #6366f1;
+    color: var(--accent-primary);
 
     font-weight: 500;
 
@@ -344,7 +344,7 @@
     height: 18px;
 
     border: 2px solid rgba(255, 255, 255, 0.35);
-    border-top-color: var(--switch-thumb);
+    border-top-color: var(--text-primary);
 
     border-radius: 50%;
 

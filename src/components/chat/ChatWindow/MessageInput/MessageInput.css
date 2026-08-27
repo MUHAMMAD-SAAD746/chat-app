@@ -1,10 +1,113 @@
-.message-input {
+/* .message-input {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
     border-top: 1px solid var(--border-primary);
     background-color: var(--bg-primary);
+} */
+
+
+.message-input {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding: 12px 16px;
+
+    border-top: 1px solid var(--border-primary);
+
+    background-color: var(--bg-primary);
+}
+
+.message-input-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* ================================
+   Reply Preview
+================================ */
+
+.reply-preview {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+
+    padding: 8px 12px;
+
+    border-left: 3px solid #2563eb;
+    border-radius: 6px;
+
+    background-color: var(--bg-secondary);
+}
+
+.reply-preview-content {
+    min-width: 0;
+}
+
+.reply-preview-content strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #2563eb;
+}
+
+.reply-preview-content p {
+    margin: 0;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 13px;
+
+    color: var(--text-primary);
+}
+
+.reply-preview>button {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+    line-height: 1;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+}
+
+.reply-preview>button:hover {
+    color: var(--text-primary);
 }
 
 .message-input input,
@@ -107,8 +210,8 @@
 
     border-radius: 8px;
 
-    background-color: #2563eb;
-    color: #ffffff;
+    background-color: #37c572;
+    color: #0a0a0a;
 }
 
 .message-send-button:hover {
@@ -144,6 +247,10 @@
         padding: 10px 10px;
     }
 
+    .message-input-row {
+        gap: 8px;
+    }
+
     .message-attach-button,
     .message-emoji-button,
     .message-send-button {
@@ -170,6 +277,10 @@
     .message-input {
         gap: 3px;
         padding: 8px;
+    }
+
+    .message-input-row {
+        gap: 3px;
     }
 
 
