@@ -23,7 +23,7 @@
     position: relative;
     width: fit-content;
     min-width: 60px;
-    max-width: 100%;
+    max-width: 65%;
     padding: 9px 8px;
     box-sizing: border-box;
     border-radius: 10px;
@@ -37,6 +37,7 @@
 .message-own .message-bubble {
     /* background-color: #4b6397; */
     background-color: var(--own-message-bubble);
+    margin-left: auto;
 }
 
 .message-bubble p {
