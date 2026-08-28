@@ -125,6 +125,7 @@ function MessageBubble({
             : "sent";
 
 
+
     const isDeletedForMe = deletedFor?.[userId] === true;
     const isDeletedForEveryone = deleteStatus === "everyone";
 

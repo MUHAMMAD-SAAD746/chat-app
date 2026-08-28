@@ -51,7 +51,7 @@ function SendFriendRequestModal({
 
                         {user.userName && (
                             <p className="friend-request-modal-username">
-                                @{user.userName}
+                                {user.userName}
                             </p>
                         )}
 

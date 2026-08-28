@@ -42,9 +42,6 @@
     border-radius: 6px;
 }
 
-.sidebar-menu-btn:hover {
-    background-color: var(--bg-chat-item-hover);
-}
 
 .sidebar-request-badge {
     position: absolute;
@@ -125,10 +122,13 @@
     gap: 8px;
 
     padding: 0 12px;
-
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-primary);
+    border: 1px solid var(--message-reply-preview);
+    background-color: var(--message-reply-preview);
     border-radius: 8px;
+}
+
+.sidebar-search:hover {
+    border: 1px solid #dfdedd;
 }
 
 .sidebar-search input {
@@ -258,7 +258,10 @@
     display: flex;
     align-items: center;
     gap: 6px;
+
     flex-shrink: 0;
+
+    position: relative;
 }
 
 .chat-pinned-icon {
@@ -287,35 +290,55 @@
 .conversation-menu-button {
     width: 20px;
     height: 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 0;
     border: none;
     border-radius: 50%;
+
     background: transparent;
     color: var(--text-secondary);
+
     cursor: pointer;
+
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
+
+    width: 0;
+    margin-left: 0;
+
     transform: translateX(10px);
 
+    overflow: hidden;
+
     transition:
+        width 0.15s ease,
+        margin-left 0.15s ease,
         opacity 0.15s ease,
-        visibility 0.15s ease,
         transform 0.15s ease,
-        background-color 0.15s ease;
+        visibility 0.15s ease;
 }
 
 .conversation-menu-button svg {
     width: 12px;
     height: 12px;
+    flex-shrink: 0;
 }
 
 .chat-item:hover .conversation-menu-button {
+    width: 20px;
+    margin-left: 0;
+
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
+
     transform: translateX(0);
+
     color: var(--text-primary);
 }
 

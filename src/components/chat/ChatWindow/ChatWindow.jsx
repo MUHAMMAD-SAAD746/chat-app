@@ -25,7 +25,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
     const [replyingTo, setReplyingTo] = useState(null);
 
 
-console.log("ChatWindow replyingTo:", replyingTo);
 
     const handleFileSelect = (e) => {
         if (isSendingAttachment) {

@@ -202,64 +202,69 @@ function MessageInput({
             )}
 
             <div className="message-input-row">
-                <button
-                    type="button"
-                    className="message-attach-button"
-                    aria-label="Attach file"
-                    onClick={onAttach}
-                >
-                    <IoAttach size={20} />
-                </button>
-
-
-                <div className="emoji-picker-container">
-                    <button
-                        ref={emojiTriggerRef}
-                        type="button"
-                        aria-label="Add emoji"
-                        className="message-emoji-button"
-                        onClick={() => setShowEmojiPicker((prev) => !prev)}
-                    >
-                        <IoHappyOutline size={20} />
-                    </button>
-
-                    {showEmojiPicker && (
-                        <div
-                            ref={emojiPickerRef}
-                            className="message-emoji-picker"
-                            style={{
-                                top: emojiPickerPosition.top,
-                                left: emojiPickerPosition.left,
-                            }}
+                <div className="message-input-wrapper">
+                    <div className="message-input-left">
+                        <button
+                            type="button"
+                            className="message-attach-button"
+                            aria-label="Attach file"
+                            onClick={onAttach}
                         >
-                            <EmojiPicker
-                                onEmojiClick={handleEmojiClick}
-                                width={320}
-                                height={380}
-                            />
+                            <IoAttach size={20} />
+                        </button>
+
+
+                        <div className="emoji-picker-container">
+                            <button
+                                ref={emojiTriggerRef}
+                                type="button"
+                                aria-label="Add emoji"
+                                className="message-emoji-button"
+                                onClick={() => setShowEmojiPicker((prev) => !prev)}
+                            >
+                                <IoHappyOutline size={20} />
+                            </button>
+
+                            {showEmojiPicker && (
+                                <div
+                                    ref={emojiPickerRef}
+                                    className="message-emoji-picker"
+                                    style={{
+                                        top: emojiPickerPosition.top,
+                                        left: emojiPickerPosition.left,
+                                    }}
+                                >
+                                    <EmojiPicker
+                                        onEmojiClick={handleEmojiClick}
+                                        width={320}
+                                        height={380}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
+
+
+
+                    <input
+                        type="text"
+                        placeholder="Type a message..."
+                        value={text}
+                        onChange={(e) => handleTyping(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+
+
+                    <button
+                        type="button"
+                        className="message-send-button"
+                        aria-label="Send message"
+                        onClick={handleSend}
+                    >
+                        <IoSend size={18} />
+                    </button>
                 </div>
-
-
-                <input
-                    type="text"
-                    placeholder="Type a message..."
-                    value={text}
-                    onChange={(e) => handleTyping(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-
-                <button
-                    type="button"
-                    className="message-send-button"
-                    aria-label="Send message"
-                    onClick={handleSend}
-                >
-                    <IoSend size={18} />
-                </button>
             </div>
-
         </div>
     );
 }

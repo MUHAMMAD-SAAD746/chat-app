@@ -95,8 +95,7 @@
 
 .friends-tab.active {
     color: var(--text-primary);
-
-    border-bottom-color: var(--accent-primary);
+    border-bottom-color: var(--accent-success);
 }
 
 .friends-request-count {

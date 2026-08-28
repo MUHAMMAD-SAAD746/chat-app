@@ -91,7 +91,7 @@
 
 
 .friend-request-accept {
-    background-color: var(--accent-primary);
+    background-color: var(--accent-success);
     color: white;
 }
 

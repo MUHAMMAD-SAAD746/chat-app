@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import ProfileImageInput from "../../../components/auth/ProfileImageInput/ProfileImageInput";
+import ProfileImageInput from "../../../components/ProfileImageInput/ProfileImageInput";
 
 import { useAuth } from "../../../context/AuthContext";
 import {

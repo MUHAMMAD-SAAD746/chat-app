@@ -21,6 +21,61 @@ function MessageList({ onReply, selectedUser }) {
     const [messages, setMessages] = useState([]);
     const [clearedAt, setClearedAt] = useState(0);
 
+    // useEffect(() => {
+    //     if (!conversationId || !user?.uid) return;
+
+    //     const unsubscribe = subscribeToMessages(
+    //         conversationId,
+    //         user.uid,
+    //         ({ messages, clearedAt }) => {
+    //             setMessages(messages);
+    //             setClearedAt(clearedAt);
+
+    //             const visibleMessages = messages.filter(
+    //                 (message) => message.createdAt > clearedAt
+    //             );
+
+    //             visibleMessages.forEach((message) => {
+    //                 if (
+    //                     message.senderId !== user.uid &&
+    //                     !message.readAt
+    //                 ) {
+    //                     console.log("Calling markMessageAsRead:", {
+    //                         conversationId,
+    //                         messageId: message.id,
+    //                         senderId: message.senderId,
+    //                         currentUserId: user.uid,
+    //                         readAt: message.readAt,
+    //                     });
+
+    //                     markMessageAsRead(
+    //                         conversationId,
+    //                         message.id
+    //                     );
+    //                 }
+    //             });
+
+    //             markConversationAsRead(
+    //                 conversationId,
+    //                 user.uid
+    //             ).catch((error) => {
+    //                 console.error(
+    //                     "Error marking conversation as read:",
+    //                     error
+    //                 );
+    //             });
+    //         }
+    //     );
+
+    //     return unsubscribe;
+    // }, [conversationId, user?.uid]);
+
+
+
+
+
+
+
     useEffect(() => {
         if (!conversationId || !user?.uid) return;
 
@@ -31,11 +86,14 @@ function MessageList({ onReply, selectedUser }) {
                 setMessages(messages);
                 setClearedAt(clearedAt);
 
-                visibleMessages.forEach((message) => {
+                // Mark incoming messages as read
+                messages.forEach((message) => {
                     if (
                         message.senderId !== user.uid &&
                         !message.readAt
                     ) {
+                        console.log("MARKING MESSAGE AS READ:", message.id);
+
                         markMessageAsRead(
                             conversationId,
                             message.id
@@ -43,6 +101,7 @@ function MessageList({ onReply, selectedUser }) {
                     }
                 });
 
+                // Mark conversation as read
                 markConversationAsRead(
                     conversationId,
                     user.uid
@@ -57,6 +116,14 @@ function MessageList({ onReply, selectedUser }) {
 
         return unsubscribe;
     }, [conversationId, user?.uid]);
+
+
+
+
+
+
+
+
 
 
 
@@ -84,7 +151,7 @@ function MessageList({ onReply, selectedUser }) {
                 const showDateSeparator = currentDate !== previousDate;
 
                 return (
-                    <div 
+                    <div
                         key={message.id}
                     >
                         {showDateSeparator && (

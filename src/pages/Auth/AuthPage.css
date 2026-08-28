@@ -40,7 +40,7 @@ body {
 
     background: color-mix(
         in srgb,
-        var(--accent-primary) 20%,
+        var(--accent-success) 20%,
         transparent
     );
 
@@ -66,7 +66,7 @@ body {
 
     background: color-mix(
         in srgb,
-        var(--accent-primary) 14%,
+        var(--accent-success) 14%,
         transparent
     );
 

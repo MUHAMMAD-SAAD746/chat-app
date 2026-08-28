@@ -71,8 +71,8 @@
 
     border-radius: 8px;
 
-    background-color: var(--accent-primary);
-    color: var(--text-on-accent);
+    background-color: var(--accent-success);
+    color: var(--text-primary);
 
     font-size: 14px;
     font-weight: 500;
@@ -90,7 +90,7 @@
 /* Hover */
 
 .profile-image-button:hover {
-    background-color: var(--accent-primary-hover);
+    background-color: var(--accent-success-hover);
 }
 
 

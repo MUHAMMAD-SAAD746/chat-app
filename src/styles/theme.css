@@ -5,32 +5,38 @@
 :root {
     /* Backgrounds */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
+    --bg-secondary: #f7f5f3;
+
+    --bg-chat-window: #f5f1eb;
+    --bg-message-bubble: #ffffff;
+    --own-message-bubble: #d9fdd3;
+    --message-reply-preview: #f6f5f4;
+    --own-msg-reply-preview: #d6f3cf;
+    --message-receipt: #576554;
+    --bg-button: #1b9a58;
+
     --bg-hover: #f1f5f9;
     --bg-active: #dbdde1;
     --bg-chat-item-hover: #e9eaed;
 
     /* Borders */
     --border-primary: #e5e7eb;
-    /* --border-secondary: #e2e8f0; */
 
     /* Text */
-    --text-primary: #1e293b;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    --text-primary: #000000;
+    --text-primary-opp: #ffffff;
+    --text-secondary: #31573c;
+    --text-muted: #576554;
     --text-placeholder: #94a3b8;
 
     /* Accent */
     --accent-primary: #2563eb;
     --accent-success: #0fbd4e;
+    --accent-success-hover: #45c574;
     --accent-danger: #e74c3c;
 
-    /* Switch */
-    /* --switch-off: #cbd5e1;
-    --switch-thumb: #ffffff; */
-
     /* Shadows */
-    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.555);
 }
 
 
@@ -41,32 +47,30 @@
 [data-theme="dark"] {
 
     /* Backgrounds */
-    /* --bg-primary: #0f172a; */
     --bg-primary: #161717;
-    /* --bg-secondary: #1e293b; */
+    --bg-chat-window: #161717;
+    --bg-message-bubble: #242626;
+    --own-message-bubble: #144d37;
+    --message-reply-preview: #1d1e1e;
+    --own-msg-reply-preview: #103e2c;
+    --message-receipt: #ffffff;
     --bg-secondary: #1d1f1f;
-    /* --bg-hover: #334155; */
     --bg-hover: #2e2f2f;
-    /* --bg-active: #475569; */
-    /* --bg-chat-item-hover: #334155; */
     --bg-chat-item-hover: #2e2f2f;
+    --bg-button: #37c572;
 
     /* whats app light grey */
     --light-grey: #494a4a;
 
     /* Borders */
-    /* --border-primary: #334155; */
     --border-primary: #393a3a;
 
     /* Text */
-    --text-primary: #f8fafc;
+    --text-primary: #ffffff;
+    --text-primary-opp: #000000;
     --text-secondary: #e2e8f0;
     --text-muted: #a1a2a5;
     --text-placeholder: #8b928c;
-
-    /* Accent */
-    --accent-primary: #37c572;
-    /* --accent-success: #4ade80; */
 
 
     /* Shadows */
@@ -87,7 +91,7 @@ body,
 .chat-item,
 .sidebar-search,
 .theme-toggle,
-.empty-chat-actions > button,
+.empty-chat-actions>button,
 .chat-options-menu {
     transition:
         background-color 0.2s ease,

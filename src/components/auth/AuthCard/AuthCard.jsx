@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import ProfileImageInput from "../ProfileImageInput/ProfileImageInput";
+import ProfileImageInput from "../../ProfileImageInput/ProfileImageInput";
 import GoogleButton from "../GoogleButton/GoogleButton";
 import "./AuthCard.css";
 

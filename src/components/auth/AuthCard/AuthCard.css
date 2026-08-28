@@ -8,8 +8,6 @@
     border: 1px solid var(--border-primary);
     border-radius: 16px;
 
-    box-shadow:
-        0 10px 30px var(--shadow-menu);
 
     transition:
         background-color 0.2s ease,
@@ -228,7 +226,7 @@
 }
 
 .password-options a {
-    color: var(--accent-primary);
+    color: var(--accent-success);
 
     font-size: 13px;
 
@@ -253,7 +251,7 @@
     border: none;
     border-radius: 8px;
 
-    background: var(--accent-primary);
+    background: var(--accent-success);
     color: var(--text-primary);
 
     font-size: 15px;
@@ -267,7 +265,7 @@
 }
 
 .auth-submit-btn:hover {
-    background: #6366f1;
+    background: var(--accent-primary);
 }
 
 .auth-submit-btn:active {
@@ -294,7 +292,7 @@
 }
 
 .login-prompt a {
-    color: var(--accent-primary);
+    color: var(--accent-success);
 
     font-weight: 500;
 

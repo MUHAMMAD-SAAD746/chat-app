@@ -1,6 +1,7 @@
 import {
     ref,
     runTransaction,
+    update,
     serverTimestamp,
 } from "firebase/database";
 
@@ -57,7 +58,6 @@ export const markMessageAsDelivered = async (
     }
 };
 
-
 export const markMessageAsRead = async (
     conversationId,
     messageId
@@ -70,23 +70,9 @@ export const markMessageAsRead = async (
             messageId
         );
 
-        await runTransaction(
-            messageRef,
-            (message) => {
-
-                if (!message) {
-                    return;
-                }
-
-                return {
-                    ...message,
-                    readAt: serverTimestamp(),
-                };
-            },
-            {
-                applyLocally: false,
-            }
-        );
+        await update(messageRef, {
+            readAt: serverTimestamp(),
+        });
 
     } catch (error) {
         console.error(
