@@ -7,17 +7,25 @@ import {
     IoChevronDown,
     IoDocumentText,
     IoDownloadOutline,
-    IoHappyOutline
+    IoHappyOutline,
+    IoArrowUndoOutline,
+    IoCreateOutline,
+    IoArrowForwardOutline,
+    IoTrashOutline,
 } from "react-icons/io5";
+import { RiShareForwardFill } from "react-icons/ri";
 import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
 import EditMessageModal from "./EditMessageModal/EditMessageModal";
 import ImageViewer from "./ImageViewer/ImageViewer";
+// import ForwardMessageModal from "../../ForwardMessageModal/ForwardMessageModal";
 
 import {
     deleteMessageForMe,
     deleteMessageForEveryone,
     editMessage,
+    // forwardMessage,
 } from "../../../../firebase/services/messageService";
+// import { getOrCreateConversation, } from "../../../../firebase/services/conversationService";
 import { toggleMessageReaction } from "../../../../firebase/services/messageReactionService";
 
 import { formatFileSize } from "../../../../utils/formatUtils";
@@ -40,7 +48,6 @@ const EMOJI_PICKER_WIDTH = 320;
 
 
 
-
 function MessageBubble({
     message,
     conversationId,
@@ -49,6 +56,10 @@ function MessageBubble({
     isOwn = false,
     onReply,
     selectedUser,
+    isForwardSelectionMode,
+    isSelected,
+    onStartForwardSelection,
+    onToggleMessageSelection,
 }) {
     const {
         id: messageId,
@@ -66,6 +77,7 @@ function MessageBubble({
         editedAt,
         reactions,
         replyTo,
+        forwarded,
     } = message;
 
 
@@ -89,6 +101,9 @@ function MessageBubble({
 
     const [showReactionPicker, setShowReactionPicker] = useState(false);
     const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
+
+    // const [showForwardModal, setShowForwardModal] = useState(false);
+    // const [isForwarding, setIsForwarding] = useState(false);
 
     const {
         triggerRef: reactionTriggerRef,
@@ -214,6 +229,48 @@ function MessageBubble({
             setIsSavingEdit(false);
         }
     };
+
+
+
+    // const handleForwardToFriends = async (selectedFriends) => {
+    //     try {
+    //         if (!selectedFriends?.length) {
+    //             throw new Error("No friends selected.");
+    //         }
+
+    //         setIsForwarding(true);
+
+    //         for (const friend of selectedFriends) {
+    //             if (!friend?.uid) {
+    //                 throw new Error("Friend not found.");
+    //             }
+
+    //             const destinationConversation =
+    //                 await getOrCreateConversation(
+    //                     userId,
+    //                     friend.uid
+    //                 );
+
+    //             await forwardMessage(
+    //                 destinationConversation.id,
+    //                 userId,
+    //                 message
+    //             );
+    //         }
+
+    //         console.log("Message forwarded successfully.");
+
+    //         setShowForwardModal(false);
+
+    //     } catch (error) {
+    //         console.error(
+    //             "Failed to forward message:",
+    //             error
+    //         );
+    //     } finally {
+    //         setIsForwarding(false);
+    //     }
+    // };
 
 
 
@@ -343,15 +400,41 @@ function MessageBubble({
     return (
         <div
             id={messageId}
-            className={`message ${isOwn ? "message-own" : "message-other"}`}
+            className={`message ${isOwn ? "message-own" : "message-other"} ${isForwardSelectionMode && isSelected
+                ? "message-forward-selected"
+                : ""
+                } ${isForwardSelectionMode ? "message-forward-mode" : ""}`}
+            onClick={() => {
+                if (isForwardSelectionMode) {
+                    onToggleMessageSelection(message);
+                }
+            }}
         >
+            {isForwardSelectionMode && (
+                <div className="message-selection">
+                    <div
+                        className={`message-checkbox ${isSelected ? "selected" : ""
+                            }`}
+                    >
+                        {isSelected && <span>✓</span>}
+                    </div>
+                </div>
+            )}
             <div className="message-container">
                 <div className="message-main">
                     <div className="message-bubble">
+                        {forwarded && (
+                            <div className="message-forwarded">
+                                ↪ Forwarded
+                            </div>
+                        )}
+
+
                         <div
                             className="message-actions"
                             onClick={(event) => event.stopPropagation()}
                         >
+
                             <button
                                 className={`message-action-button ${showMenu ? "active" : ""}`}
                                 ref={menuTriggerRef}
@@ -366,7 +449,9 @@ function MessageBubble({
                                     className="message-menu"
                                     style={{
                                         top: `${menuPosition.top}px`,
-                                        left: `${menuPosition.left}px`,
+                                        left: `${isOwn
+                                            ? menuPosition.left - 35
+                                            : menuPosition.left}px`,
                                     }}
                                     onClick={(event) => event.stopPropagation()}
                                 >
@@ -378,7 +463,8 @@ function MessageBubble({
                                                 setShowMenu(false);
                                             }}
                                         >
-                                            Reply
+                                            <IoArrowUndoOutline />
+                                            <span>Reply</span>
                                         </button>
                                     )}
 
@@ -389,7 +475,31 @@ function MessageBubble({
                                                 setShowMenu(false);
                                             }}
                                         >
-                                            Edit
+                                            <IoCreateOutline />
+                                            <span>Edit</span>
+                                        </button>
+                                    )}
+
+                                    {/* Forward */}
+                                    {!isDeletedForEveryone && (
+                                        // <button
+                                        //     onClick={() => {
+                                        //         setShowForwardModal(true);
+                                        //         setShowMenu(false);
+                                        //     }}
+                                        // >
+                                        //     <IoArrowForwardOutline />
+                                        //     <span>Forward</span>
+                                        // </button>
+
+                                        <button
+                                            onClick={() => {
+                                                onStartForwardSelection(message);
+                                                setShowMenu(false);
+                                            }}
+                                        >
+                                            <RiShareForwardFill />
+                                            <span>Forward</span>
                                         </button>
                                     )}
 
@@ -399,7 +509,8 @@ function MessageBubble({
                                             setShowMenu(false);
                                         }}
                                     >
-                                        Delete
+                                        <IoTrashOutline />
+                                        <span>Delete</span>
                                     </button>
                                 </div>
                             )}
@@ -446,7 +557,7 @@ function MessageBubble({
                                 className="message-full-emoji-picker"
                                 style={{
                                     top: `${emojiPickerPosition.top}px`,
-                                    left: `${getEmojiPickerLeft()}px`,
+                                    left: `${getEmojiPickerLeft() - (isOwn ? 50 : 0)}px`,
                                 }}
                                 onClick={(event) => event.stopPropagation()}
                             >
@@ -551,7 +662,7 @@ function MessageBubble({
                         <div className="message-footer">
                             {editedAt && (
                                 <span className="message-edited">
-                                    edited
+                                    Edited
                                 </span>
                             )}
 
@@ -634,6 +745,17 @@ function MessageBubble({
                     onClose={() => setShowImageViewer(false)}
                 />
             )}
+
+
+            {/* {showForwardModal && (
+                <ForwardMessageModal
+                    isOpen={showForwardModal}
+                    onClose={() => setShowForwardModal(false)}
+                    userId={userId}
+                    onSelectFriend={handleForwardToFriends}
+                    isForwarding={isForwarding}
+                />
+            )} */}
         </div>
     );
 }

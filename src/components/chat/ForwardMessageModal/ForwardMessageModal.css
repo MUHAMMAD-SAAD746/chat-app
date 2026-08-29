@@ -1,0 +1,569 @@
+/* ================================
+   Overlay
+================================ */
+
+.forward-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+
+/* ================================
+   Modal
+================================ */
+
+.forward-modal {
+    width: min(430px, calc(100vw - 32px));
+    max-height: min(650px, calc(100vh - 40px));
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--bg-primary);
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.forward-modal-header {
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 18px;
+
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.forward-modal-header h2 {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
+
+
+/* ================================
+   Close button
+================================ */
+
+.forward-close-button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font-size: 23px;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+.forward-close-button:hover {
+    background-color: var(--bg-secondary);
+}
+
+
+/* ================================
+   Search
+================================ */
+
+.forward-search-wrapper {
+    position: relative;
+
+    margin: 16px 18px 12px;
+}
+
+.forward-search-wrapper input {
+    width: 100%;
+    height: 42px;
+
+    box-sizing: border-box;
+
+    padding: 0 16px 0 42px;
+
+    border: none;
+    border-radius: 22px;
+
+    outline: none;
+
+    background-color: var(--bg-secondary);
+
+    color: var(--text-primary);
+
+    font-size: 14px;
+}
+
+.forward-search-wrapper input::placeholder {
+    color: var(--text-secondary);
+}
+
+.forward-search-icon {
+    position: absolute;
+
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--text-secondary);
+
+    font-size: 18px;
+
+    pointer-events: none;
+}
+
+
+/* ================================
+   Friends section
+================================ */
+
+.forward-friends-section {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.forward-section-title {
+    padding: 8px 20px 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: var(--text-secondary);
+}
+
+
+/* ================================
+   Friends list
+================================ */
+
+.forward-friends-list {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding-bottom: 8px;
+}
+
+.forward-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 140px;
+
+    gap: 10px;
+
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.forward-spinner {
+    width: 24px;
+    height: 24px;
+
+    border: 3px solid var(--border-primary);
+    border-top-color: var(--accent-success);
+
+    border-radius: 50%;
+
+    animation: forward-spin 0.7s linear infinite;
+}
+
+@keyframes forward-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ================================
+   Friend item
+================================ */
+
+.forward-friend-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    transition: background-color 0.15s ease;
+}
+
+.forward-friend-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+
+
+/* ================================
+   Checkbox
+================================ */
+
+.forward-checkbox {
+    width: 20px;
+    height: 20px;
+
+    flex: 0 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: 2px solid var(--border-primary);
+    border-radius: 4px;
+
+    background-color: transparent;
+
+    color: #ffffff;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+/* Selected */
+
+.forward-friend-item.selected .forward-checkbox {
+    background-color: var(--accent-success);
+    border-color: var(--accent-success);
+}
+
+
+.forward-checkbox span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* ================================
+   Avatar
+================================ */
+
+.forward-friend-avatar {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: var(--bg-secondary);
+
+    color: var(--text-primary);
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.forward-friend-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ================================
+   Friend information
+================================ */
+
+.forward-friend-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.forward-friend-name {
+    overflow: hidden;
+
+    color: var(--text-primary);
+
+    font-size: 15px;
+    font-weight: 500;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.forward-friend-username {
+    overflow: hidden;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* ================================
+   Empty state
+================================ */
+
+.forward-no-friends {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+}
+
+
+
+
+.forward-friend-item:disabled {
+    cursor: default;
+}
+
+
+
+/* ================================
+   Selection Bar
+================================ */
+
+.forward-selection-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px 14px;
+
+    border-top: 1px solid var(--border-primary);
+
+    background-color: var(--bg-primary);
+}
+
+
+.forward-selected-count {
+    color: var(--text-primary);
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.forward-send-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: var(--accent-success);
+
+    color: var(--text-primary-opp);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+.forward-send-button:hover {
+    transform: scale(1.05);
+}
+
+
+.forward-send-button:active {
+    transform: scale(0.95);
+}
+
+
+.forward-send-spinner {
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation: forward-send-spin 0.7s linear infinite;
+}
+
+@keyframes forward-send-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.forward-send-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+
+/* ================================
+   Forward Error
+================================ */
+
+.forward-error {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 8px 10px;
+    padding: 9px 10px;
+
+    border-radius: 7px;
+
+    background-color: rgba(220, 53, 69, 0.08);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+
+    color: #dc3545;
+
+    font-size: 12px;
+
+    animation: forward-error-in 0.2s ease;
+}
+
+.forward-error-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #dc3545;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.forward-error-text {
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+@keyframes forward-error-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 600px) {
+
+    .forward-modal-overlay {
+        align-items: flex-end;
+    }
+
+    .forward-modal {
+        width: 100%;
+        max-height: 80vh;
+
+        border-radius: 18px 18px 0 0;
+    }
+
+    .forward-modal-header {
+        height: 58px;
+
+        padding: 0 16px;
+    }
+
+    .forward-search-wrapper {
+        margin: 14px 16px 10px;
+    }
+
+    .forward-friend-item {
+        padding: 10px 16px;
+    }
+
+}

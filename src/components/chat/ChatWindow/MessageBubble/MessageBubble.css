@@ -1,8 +1,8 @@
 .message {
     display: flex;
+    align-items: flex-start;
+    width: 100%;
     margin-bottom: 10px;
-
-    min-width: 0;
 }
 
 .message-other {
@@ -10,6 +10,101 @@
 }
 
 .message-own {
+    justify-content: flex-start;
+}
+
+.message-forward-mode {
+    cursor: pointer;
+}
+
+.message-forward-mode:hover {
+    background-color: var(--bg-secondary);
+}
+
+/* ================================
+   Forward Selection
+================================ */
+.message-selection {
+    width: 32px;
+    min-width: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    align-self: center;
+
+    box-sizing: border-box;
+}
+
+.message-checkbox {
+    width: 20px;
+    height: 20px;
+
+    flex: 0 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: 2px solid var(--border-primary);
+    border-radius: 4px;
+
+    background-color: transparent;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+/* Selected */
+
+.message-checkbox.selected {
+    background-color: var(--accent-success);
+    border-color: var(--accent-success);
+}
+
+
+.message-checkbox span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.message-forward-selected {
+    background-color: rgba(6, 207, 157, 0.068);
+    border-radius: 8px;
+}
+
+.message-forward-mode.message-forward-selected:hover {
+    background-color: rgba(6, 207, 156, 0.16);
+}
+
+
+.message-container {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+}
+
+.message-other .message-container {
+    justify-content: flex-start;
+}
+
+.message-own .message-container {
     justify-content: flex-end;
 }
 
@@ -19,15 +114,15 @@
     max-width: 100%;
 }
 
+
 .message-bubble {
     position: relative;
     width: fit-content;
-    min-width: 60px;
+    min-width: fit-content;
     max-width: 65%;
     padding: 9px 8px;
     box-sizing: border-box;
     border-radius: 10px;
-    /* background-color: #f1f1f1; */
     background-color: var(--bg-message-bubble);
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -35,9 +130,15 @@
 }
 
 .message-own .message-bubble {
-    /* background-color: #4b6397; */
     background-color: var(--own-message-bubble);
-    margin-left: auto;
+}
+
+.message-forwarded {
+    font-size: 11px;
+    font-family: Arial;
+    font-style: italic;
+    opacity: 0.7;
+    margin-bottom: 4px;
 }
 
 .message-bubble p {
@@ -58,25 +159,18 @@
 .message-reply-preview {
     display: flex;
     flex-direction: column;
-
     margin: -5px -3px 6px;
     padding: 6px 9px;
-
     box-sizing: border-box;
     border-left: 3px solid #06cf9c;
     border-radius: 6px;
-
-    /* background-color: rgba(0, 0, 0, 0.08); */
     background-color: var(--message-reply-preview);
-
     cursor: pointer;
     overflow: hidden;
-
     transition: background-color 0.15s ease;
 }
 
 .message-own .message-reply-preview {
-    /* border-left-color: #d9e2ff; */
     border-left-color: #06cf9c;
     background-color: var(--own-msg-reply-preview);
 }
@@ -90,9 +184,7 @@
     color: #06cf9c;
     font-size: 12px;
     font-weight: 600;
-
     line-height: 1.3;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -135,16 +227,22 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: max-content;
+    max-width: 100%;
     margin-top: 4px;
+    margin-left: auto;
+    white-space: nowrap;
 }
 
 
 .message-edited {
+    flex-shrink: 0;
     font-size: 11px;
     font-style: italic;
     opacity: 0.7;
     margin-right: 6px;
     white-space: nowrap;
+    font-family: Arial;
 }
 
 .message-time {
@@ -154,6 +252,8 @@
     gap: 3px;
     color: var(--text-muted);
     font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 
@@ -179,7 +279,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-
     width: 100%;
 }
 
@@ -187,23 +286,16 @@
     width: 100%;
     min-height: 60px;
     max-height: 160px;
-
     padding: 8px 10px;
-
     box-sizing: border-box;
-
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 7px;
-
     background-color: #ffffff;
     color: #222222;
-
     font-family: inherit;
     font-size: 14px;
     line-height: 1.4;
-
     resize: vertical;
-
     outline: none;
 }
 
@@ -212,19 +304,15 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
     gap: 6px;
 }
 
 .message-edit-actions button {
     padding: 5px 10px;
-
     border: none;
     border-radius: 5px;
-
     font-size: 12px;
     font-family: inherit;
-
     cursor: pointer;
 }
 
@@ -254,17 +342,14 @@
     position: absolute;
     top: 0;
     right: 0;
-
     display: flex;
     align-items: center;
-
-    z-index: 10;
+    z-index: 30;
 }
 
 .message-bubble:hover .message-action-button {
     opacity: 1;
     visibility: visible;
-
     transition:
         opacity 0.2s ease,
         visibility 0s;
@@ -282,7 +367,6 @@
     background-color: transparent;
     opacity: 0;
     visibility: hidden;
-
     transition:
         opacity 0.2s ease,
         visibility 0s linear 0.2s;
@@ -305,34 +389,45 @@
 
 .message-menu {
     position: fixed;
-
-    min-width: 100px;
-
+    width: 100px;
+    min-width: 90px;
     padding: 4px;
-
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
+    background-color: var(--bg-chat-window);
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
     z-index: 9999;
 }
 
 .message-menu button {
     width: 100%;
-
-    padding: 7px 10px;
-
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
     border: none;
     border-radius: 5px;
-
     background: transparent;
-
     font-size: 13px;
     text-align: left;
-
     cursor: pointer;
+    color: var(--text-primary);
+}
+
+.message-menu button svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.message-menu button svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.message-menu button span {
+    flex: 1;
 }
 
 .message-menu button:hover {
@@ -361,16 +456,12 @@
 
 .message-image {
     display: block;
-
     width: calc(100% + 7px);
     max-width: none;
     max-height: 320px;
-
     margin: -5px -3px 0;
-
     cursor: pointer;
     object-fit: cover;
-
     border-radius: 8px;
 }
 
@@ -378,10 +469,8 @@
 
 .message-caption {
     margin: 0;
-
     font-size: 14px;
     line-height: 1.4;
-
     word-break: break-word;
 }
 
@@ -392,18 +481,12 @@
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
-
     padding: 10px 12px;
-
     margin: -5px -3px 0;
-
     background-color: var(--own-msg-reply-preview);
-
     border-radius: 8px;
-
     color: inherit;
     text-decoration: none;
-
     cursor: pointer;
 }
 
@@ -416,7 +499,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
 }
 
@@ -430,14 +512,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
 }
 
 
 .message-file-name {
     margin: 0;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -530,22 +610,15 @@
 .reaction-picker button {
     width: 30px;
     height: 30px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
     border: none;
     border-radius: 50%;
-
     background-color: transparent;
-
     font-size: 18px;
-
     cursor: pointer;
-
     transition:
         background-color 0.15s ease,
         transform 0.15s ease;
@@ -553,7 +626,6 @@
 
 .reaction-picker button:hover {
     background-color: #f1f1f1;
-
     transform: scale(1.15);
 }
 
@@ -605,9 +677,7 @@
 .message-reaction-emojis {
     display: flex;
     align-items: center;
-
     gap: 1px;
-
     line-height: 1;
 }
 
@@ -628,9 +698,7 @@
 
 .message-full-emoji-picker {
     position: fixed;
-
     z-index: 9999;
-
     width: 320px;
     height: 350px;
 }

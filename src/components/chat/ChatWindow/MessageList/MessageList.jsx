@@ -14,65 +14,19 @@ import {
     formatMessageDate,
 } from "../../../../utils/formatUtils";
 
-function MessageList({ onReply, selectedUser }) {
+function MessageList({
+    onReply,
+    selectedUser,
+    isForwardSelectionMode,
+    selectedMessages,
+    onStartForwardSelection,
+    onToggleMessageSelection,
+}) {
     const { conversationId } = useParams();
     const { user } = useAuth();
 
     const [messages, setMessages] = useState([]);
     const [clearedAt, setClearedAt] = useState(0);
-
-    // useEffect(() => {
-    //     if (!conversationId || !user?.uid) return;
-
-    //     const unsubscribe = subscribeToMessages(
-    //         conversationId,
-    //         user.uid,
-    //         ({ messages, clearedAt }) => {
-    //             setMessages(messages);
-    //             setClearedAt(clearedAt);
-
-    //             const visibleMessages = messages.filter(
-    //                 (message) => message.createdAt > clearedAt
-    //             );
-
-    //             visibleMessages.forEach((message) => {
-    //                 if (
-    //                     message.senderId !== user.uid &&
-    //                     !message.readAt
-    //                 ) {
-    //                     console.log("Calling markMessageAsRead:", {
-    //                         conversationId,
-    //                         messageId: message.id,
-    //                         senderId: message.senderId,
-    //                         currentUserId: user.uid,
-    //                         readAt: message.readAt,
-    //                     });
-
-    //                     markMessageAsRead(
-    //                         conversationId,
-    //                         message.id
-    //                     );
-    //                 }
-    //             });
-
-    //             markConversationAsRead(
-    //                 conversationId,
-    //                 user.uid
-    //             ).catch((error) => {
-    //                 console.error(
-    //                     "Error marking conversation as read:",
-    //                     error
-    //                 );
-    //             });
-    //         }
-    //     );
-
-    //     return unsubscribe;
-    // }, [conversationId, user?.uid]);
-
-
-
-
 
 
 
@@ -119,19 +73,9 @@ function MessageList({ onReply, selectedUser }) {
 
 
 
-
-
-
-
-
-
-
-
     const visibleMessages = messages.filter(
         (message) => message.createdAt > clearedAt
     );
-
-
 
 
 
@@ -168,6 +112,12 @@ function MessageList({ onReply, selectedUser }) {
                             isOwn={message.senderId === user.uid}
                             onReply={onReply}
                             selectedUser={selectedUser}
+                            isForwardSelectionMode={isForwardSelectionMode}
+                            isSelected={selectedMessages.some(
+                                (selected) => selected.id === message.id
+                            )}
+                            onStartForwardSelection={onStartForwardSelection}
+                            onToggleMessageSelection={onToggleMessageSelection}
                         />
                     </div>
                 );

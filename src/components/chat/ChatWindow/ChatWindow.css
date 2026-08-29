@@ -45,6 +45,103 @@
 }
 
 
+.forward-selection-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    min-height: 60px;
+
+    padding: 10px 16px;
+
+    box-sizing: border-box;
+
+    border-top: 1px solid var(--border-primary);
+
+    background-color: var(--bg-primary);
+}
+
+.forward-selection-left {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.forward-send-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--accent-success);
+    color: var(--text-primary-opp);
+    font-size: 21px;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.forward-send-button:hover {
+    transform: scale(1.05);
+}
+
+.forward-send-button:active {
+    transform: scale(0.95);
+}
+
+.forward-send-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.forward-cancel-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: transparent;
+
+    color: var(--text-primary);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.forward-cancel-button:hover {
+    background-color: var(--bg-secondary);
+}
+
+.forward-cancel-button:active {
+    transform: scale(0.92);
+}
+
+.forward-selected-count {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+
 /* ================================
    Mobile
 ================================ */
@@ -54,6 +151,21 @@
     .chat-window {
         width: 100%;
         height: 100%;
+    }
+
+    .forward-selection-bar {
+        min-height: 56px;
+        padding: 8px 12px;
+    }
+
+    .forward-cancel-button,
+    .forward-send-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .forward-selected-count {
+        font-size: 14px;
     }
 
 }

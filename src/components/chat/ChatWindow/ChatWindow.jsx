@@ -6,8 +6,13 @@ import ChatHeader from "./ChatHeader/ChatHeader";
 import MessageInput from "./MessageInput/MessageInput";
 import MessageList from "./MessageList/MessageList";
 import AttachmentComposer from "./AttachmentComposer/AttachmentComposer";
+import ForwardMessageModal from "../ForwardMessageModal/ForwardMessageModal";
 
-import { sendFileMessage } from "../../../firebase/services/messageService";
+import { IoClose } from "react-icons/io5";
+import { RiShareForwardFill } from "react-icons/ri";
+
+import { getOrCreateConversation } from "../../../firebase/services/conversationService";
+import { sendFileMessage, forwardMessage } from "../../../firebase/services/messageService";
 import { uploadChatFile } from "../../../cloudinary/cloudinaryService";
 
 import { isFriend } from "../../../firebase/services/friendService";
@@ -23,6 +28,11 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
     const [attachmentCaption, setAttachmentCaption] = useState("");
     const [isSendingAttachment, setIsSendingAttachment] = useState(false);
     const [replyingTo, setReplyingTo] = useState(null);
+
+    const [isForwardSelectionMode, setIsForwardSelectionMode] = useState(false);
+    const [selectedMessages, setSelectedMessages] = useState([]);
+    const [showForwardModal, setShowForwardModal] = useState(false);
+    const [isForwarding, setIsForwarding] = useState(false);
 
 
 
@@ -120,6 +130,102 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
+
+
+
+    // ==========================================
+    // forward message logics below 29-aug-2026
+    // ===========================================
+
+    const handleStartForwardSelection = (message) => {
+        setIsForwardSelectionMode(true);
+        setSelectedMessages([message]);
+    };
+
+    const handleToggleMessageSelection = (message) => {
+        setSelectedMessages((prev) => {
+            const alreadySelected = prev.some(
+                (selected) => selected.id === message.id
+            );
+
+            if (alreadySelected) {
+                const updated = prev.filter(
+                    (selected) => selected.id !== message.id
+                );
+
+                // If no messages remain, exit selection mode
+                if (updated.length === 0) {
+                    setIsForwardSelectionMode(false);
+                }
+
+                return updated;
+            }
+
+            return [...prev, message];
+        });
+    };
+
+    const handleCancelForwardSelection = () => {
+        setIsForwardSelectionMode(false);
+        setSelectedMessages([]);
+    };
+
+    const handleOpenForwardModal = () => {
+        if (!selectedMessages.length) return;
+
+        setShowForwardModal(true);
+    };
+
+
+
+
+    const handleForwardToFriends = async (selectedFriends) => {
+        if (!selectedFriends?.length || !selectedMessages?.length) {
+            return;
+        }
+
+        try {
+            setIsForwarding(true);
+
+            for (const friend of selectedFriends) {
+                if (!friend?.uid) {
+                    throw new Error("Friend not found.");
+                }
+
+                const destinationConversation =
+                    await getOrCreateConversation(
+                        user.uid,
+                        friend.uid
+                    );
+
+                for (const message of selectedMessages) {
+                    await forwardMessage(
+                        destinationConversation.id,
+                        user.uid,
+                        message
+                    );
+                }
+            }
+
+            console.log("Messages forwarded successfully.");
+
+            setShowForwardModal(false);
+            setIsForwardSelectionMode(false);
+            setSelectedMessages([]);
+
+        } catch (error) {
+            console.error(
+                "Failed to forward messages:",
+                error
+            );
+        } finally {
+            setIsForwarding(false);
+        }
+    };
+
+
+
+
     return (
         <main className="chat-window">
 
@@ -132,12 +238,54 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
                 <section className="chat-messages">
                     <MessageList
-                        onReply={setReplyingTo} 
+                        onReply={setReplyingTo}
                         selectedUser={selectedUser}
+                        isForwardSelectionMode={isForwardSelectionMode}
+                        selectedMessages={selectedMessages}
+                        onStartForwardSelection={handleStartForwardSelection}
+                        onToggleMessageSelection={handleToggleMessageSelection}
                     />
                 </section>
 
-                {showAttachmentComposer ? (
+                {isForwardSelectionMode ? (
+                    <div className="forward-selection-bar">
+
+                        {/* Left side */}
+                        <div className="forward-selection-left">
+
+                            <button
+                                type="button"
+                                className="forward-cancel-button"
+                                onClick={handleCancelForwardSelection}
+                                aria-label="Cancel selection"
+                            >
+                                <IoClose />
+                            </button>
+
+                            <span className="forward-selected-count">
+                                {selectedMessages.length}{" "}
+                                {selectedMessages.length === 1
+                                    ? "message"
+                                    : "messages"}
+                            </span>
+
+                        </div>
+
+
+                        {/* Right side */}
+                        <button
+                            type="button"
+                            className="forward-send-button"
+                            onClick={handleOpenForwardModal}
+                            disabled={!selectedMessages.length}
+                            aria-label="Forward messages"
+                        >
+                            {/* <IoArrowForwardOutline /> */}
+                            <RiShareForwardFill />
+                        </button>
+
+                    </div>
+                ) : showAttachmentComposer ? (
                     <AttachmentComposer
                         file={selectedFile}
                         caption={attachmentCaption}
@@ -158,9 +306,7 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                             onCancelReply={() => setReplyingTo(null)}
                             onAttach={() =>
                                 document
-                                    .getElementById(
-                                        "chat-file-input"
-                                    )
+                                    .getElementById("chat-file-input")
                                     ?.click()
                             }
                         />
@@ -168,6 +314,20 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                 )}
 
             </section>
+
+
+            {showForwardModal && (
+                <ForwardMessageModal
+                    isOpen={showForwardModal}
+                    onClose={() => setShowForwardModal(false)}
+                    userId={user.uid}
+                    selectedMessages={selectedMessages}
+                    onSelectFriend={handleForwardToFriends}
+                    isForwarding={isForwarding}
+                />
+            )}
+
+
 
             <input
                 id="chat-file-input"

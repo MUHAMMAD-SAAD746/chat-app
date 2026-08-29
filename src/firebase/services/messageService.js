@@ -236,3 +236,138 @@ export async function sendFileMessage(
         ...message,
     };
 }
+
+
+
+
+
+
+export async function forwardMessage(
+    destinationConversationId,
+    senderId,
+    originalMessage
+) {
+    if (
+        !destinationConversationId ||
+        !senderId ||
+        !originalMessage
+    ) {
+        throw new Error("Invalid forwarding data.");
+    }
+
+    const conversationRef = ref(
+        database,
+        `conversations/${destinationConversationId}`
+    );
+
+    const conversationSnapshot = await get(
+        conversationRef
+    );
+
+    if (!conversationSnapshot.exists()) {
+        throw new Error("Conversation not found.");
+    }
+
+    const conversation = conversationSnapshot.val();
+
+    const recipientId = Object.keys(
+        conversation.members || {}
+    ).find((uid) => uid !== senderId);
+
+    if (!recipientId) {
+        throw new Error("Recipient not found.");
+    }
+
+    const areFriends = await isFriend(
+        senderId,
+        recipientId
+    );
+
+    if (!areFriends) {
+        throw new Error(
+            "You are no longer friends with this user."
+        );
+    }
+
+    const messagesRef = ref(
+        database,
+        `conversations/${destinationConversationId}/messages`
+    );
+
+    const messageRef = push(messagesRef);
+
+    const {
+        text,
+        type,
+        fileUrl,
+        fileName,
+        fileType,
+        fileSize,
+        caption,
+    } = originalMessage;
+
+    const message = {
+        senderId,
+
+        ...(text !== undefined && {
+            text,
+        }),
+
+        ...(type !== undefined && {
+            type,
+        }),
+
+        ...(fileUrl !== undefined && {
+            fileUrl,
+        }),
+
+        ...(fileName !== undefined && {
+            fileName,
+        }),
+
+        ...(fileType !== undefined && {
+            fileType,
+        }),
+
+        ...(fileSize !== undefined && {
+            fileSize,
+        }),
+
+        ...(caption !== undefined && {
+            caption,
+        }),
+
+        forwarded: true,
+
+        createdAt: Date.now(),
+    };
+
+    await set(messageRef, message);
+
+    const activeConversationRef = ref(
+        database,
+        `activeConversations/${recipientId}`
+    );
+
+    const activeConversationSnapshot = await get(
+        activeConversationRef
+    );
+
+    const activeConversationId =
+        activeConversationSnapshot.val();
+
+    if (
+        activeConversationId !==
+        destinationConversationId
+    ) {
+        await incrementUnread(
+            destinationConversationId,
+            recipientId
+        );
+    }
+
+    return {
+        id: messageRef.key,
+        ...message,
+    };
+}
