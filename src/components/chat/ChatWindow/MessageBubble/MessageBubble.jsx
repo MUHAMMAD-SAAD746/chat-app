@@ -17,15 +17,12 @@ import { RiShareForwardFill } from "react-icons/ri";
 import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
 import EditMessageModal from "./EditMessageModal/EditMessageModal";
 import ImageViewer from "./ImageViewer/ImageViewer";
-// import ForwardMessageModal from "../../ForwardMessageModal/ForwardMessageModal";
 
 import {
     deleteMessageForMe,
     deleteMessageForEveryone,
     editMessage,
-    // forwardMessage,
 } from "../../../../firebase/services/messageService";
-// import { getOrCreateConversation, } from "../../../../firebase/services/conversationService";
 import { toggleMessageReaction } from "../../../../firebase/services/messageReactionService";
 
 import { formatFileSize } from "../../../../utils/formatUtils";
@@ -102,8 +99,6 @@ function MessageBubble({
     const [showReactionPicker, setShowReactionPicker] = useState(false);
     const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
 
-    // const [showForwardModal, setShowForwardModal] = useState(false);
-    // const [isForwarding, setIsForwarding] = useState(false);
 
     const {
         triggerRef: reactionTriggerRef,
@@ -230,47 +225,6 @@ function MessageBubble({
         }
     };
 
-
-
-    // const handleForwardToFriends = async (selectedFriends) => {
-    //     try {
-    //         if (!selectedFriends?.length) {
-    //             throw new Error("No friends selected.");
-    //         }
-
-    //         setIsForwarding(true);
-
-    //         for (const friend of selectedFriends) {
-    //             if (!friend?.uid) {
-    //                 throw new Error("Friend not found.");
-    //             }
-
-    //             const destinationConversation =
-    //                 await getOrCreateConversation(
-    //                     userId,
-    //                     friend.uid
-    //                 );
-
-    //             await forwardMessage(
-    //                 destinationConversation.id,
-    //                 userId,
-    //                 message
-    //             );
-    //         }
-
-    //         console.log("Message forwarded successfully.");
-
-    //         setShowForwardModal(false);
-
-    //     } catch (error) {
-    //         console.error(
-    //             "Failed to forward message:",
-    //             error
-    //         );
-    //     } finally {
-    //         setIsForwarding(false);
-    //     }
-    // };
 
 
 
@@ -482,16 +436,6 @@ function MessageBubble({
 
                                     {/* Forward */}
                                     {!isDeletedForEveryone && (
-                                        // <button
-                                        //     onClick={() => {
-                                        //         setShowForwardModal(true);
-                                        //         setShowMenu(false);
-                                        //     }}
-                                        // >
-                                        //     <IoArrowForwardOutline />
-                                        //     <span>Forward</span>
-                                        // </button>
-
                                         <button
                                             onClick={() => {
                                                 onStartForwardSelection(message);
@@ -698,7 +642,6 @@ function MessageBubble({
                         <button
                             type="button"
                             className="message-reaction"
-                            // onClick={() => setShowReactionPicker((prev) => !prev)}
                             onClick={handleReactionClick}
                         >
                             <span className="message-reaction-emojis">
@@ -745,17 +688,6 @@ function MessageBubble({
                     onClose={() => setShowImageViewer(false)}
                 />
             )}
-
-
-            {/* {showForwardModal && (
-                <ForwardMessageModal
-                    isOpen={showForwardModal}
-                    onClose={() => setShowForwardModal(false)}
-                    userId={userId}
-                    onSelectFriend={handleForwardToFriends}
-                    isForwarding={isForwarding}
-                />
-            )} */}
         </div>
     );
 }
