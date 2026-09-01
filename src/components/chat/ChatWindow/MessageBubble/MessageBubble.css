@@ -111,7 +111,15 @@
 .message-main {
     position: relative;
     width: fit-content;
-    max-width: 100%;
+    max-width: 65%;
+}
+
+.message-other .message-main {
+    margin-right: auto;
+}
+
+.message-own .message-main {
+    margin-left: auto;
 }
 
 
@@ -119,7 +127,7 @@
     position: relative;
     width: fit-content;
     min-width: fit-content;
-    max-width: 65%;
+    max-width: 100%;
     padding: 9px 8px;
     box-sizing: border-box;
     border-radius: 10px;
@@ -396,7 +404,7 @@
     border: 1px solid var(--border-primary);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
+    z-index: 50;
 }
 
 .message-menu button {
@@ -640,11 +648,10 @@
 }
 
 .message-reactions {
+    position: absolute;
+    bottom: 18px;
     display: flex;
     align-items: center;
-    margin-top: -5px;
-    min-height: 20px;
-    position: relative;
     z-index: 5;
 }
 
@@ -698,9 +705,32 @@
 
 .message-full-emoji-picker {
     position: fixed;
-    z-index: 9999;
+    z-index: 60;
     width: 320px;
     height: 350px;
+}
+
+
+
+
+@media (max-width: 991px) {
+
+    /* Message menu chevron */
+    .message-action-button {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Reaction / emoji button */
+    .message-reaction-button {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message-main {
+        max-width: 60% !important;
+    }
+
 }
 
 
@@ -709,7 +739,7 @@
 
     .message-main {
         width: fit-content;
-        max-width: 100%;
+        max-width: 80% !important;
     }
 
     .message-bubble {
@@ -736,13 +766,6 @@
     .message-action-button svg {
         width: 12px !important;
         height: 12px !important;
-    }
-
-    .message-action-button {
-        opacity: 0.4;
-        visibility: visible;
-
-        transition: opacity 0.2s ease;
     }
 
     .message-action-button.active {

@@ -168,7 +168,7 @@ function MessageInput({
     }, [conversationId, user]);
 
 
-    if (!canSendMessage) {
+    if (canSendMessage === false) {
         return (
             <div className="message-input-disabled">
                 <p>You are no longer friends with this user.</p>

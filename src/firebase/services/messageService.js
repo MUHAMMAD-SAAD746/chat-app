@@ -242,6 +242,99 @@ export async function sendFileMessage(
 
 
 
+export async function sendMultipleFileMessages(
+    conversationId,
+    senderId,
+    files,
+    caption
+) {
+    const conversationRef = ref(
+        database,
+        `conversations/${conversationId}`
+    );
+
+    const conversationSnapshot = await get(
+        conversationRef
+    );
+
+    if (!conversationSnapshot.exists()) {
+        throw new Error("Conversation not found");
+    }
+
+    const conversation = conversationSnapshot.val();
+
+    const recipientId = Object.keys(
+        conversation.members
+    ).find((uid) => uid !== senderId);
+
+    if (!recipientId) {
+        throw new Error("Recipient not found");
+    }
+
+    const areFriends = await isFriend(
+        senderId,
+        recipientId
+    );
+
+    if (!areFriends) {
+        throw new Error(
+            "You are no longer friends with this user."
+        );
+    }
+
+    const messagesRef = ref(
+        database,
+        `conversations/${conversationId}/messages`
+    );
+
+    const messages = {};
+
+    files.forEach((file) => {
+        const messageRef = push(messagesRef);
+
+        messages[messageRef.key] = {
+            senderId,
+            type: file.fileType.startsWith("image/")
+                ? "image"
+                : "file",
+            fileUrl: file.fileUrl,
+            fileName: file.fileName,
+            fileType: file.fileType,
+            fileSize: file.fileSize,
+            caption,
+            createdAt: Date.now(),
+        };
+    });
+
+    await update(messagesRef, messages);
+
+    const activeConversationRef = ref(
+        database,
+        `activeConversations/${recipientId}`
+    );
+
+    const activeConversationSnapshot = await get(
+        activeConversationRef
+    );
+
+    const activeConversationId =
+        activeConversationSnapshot.val();
+
+    if (activeConversationId !== conversationId) {
+        await incrementUnread(
+            conversationId,
+            recipientId
+        );
+    }
+
+    return messages;
+}
+
+
+
+
+
+
 export async function forwardMessage(
     destinationConversationId,
     senderId,

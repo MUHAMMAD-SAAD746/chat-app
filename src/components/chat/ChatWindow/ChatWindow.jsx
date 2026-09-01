@@ -12,7 +12,11 @@ import { IoClose } from "react-icons/io5";
 import { RiShareForwardFill } from "react-icons/ri";
 
 import { getOrCreateConversation } from "../../../firebase/services/conversationService";
-import { sendFileMessage, forwardMessage } from "../../../firebase/services/messageService";
+import {
+    sendFileMessage,
+    sendMultipleFileMessages,
+    forwardMessage
+} from "../../../firebase/services/messageService";
 import { uploadChatFile } from "../../../cloudinary/cloudinaryService";
 
 import { isFriend } from "../../../firebase/services/friendService";
@@ -22,11 +26,12 @@ import "./ChatWindow.css";
 function ChatWindow({ selectedUser, isOtherUserTyping }) {
     const { user } = useAuth();
     const { conversationId } = useParams();
-    const [canSendMessage, setCanSendMessage] = useState(true);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [canSendMessage, setCanSendMessage] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [showAttachmentComposer, setShowAttachmentComposer] = useState(false);
     const [attachmentCaption, setAttachmentCaption] = useState("");
     const [isSendingAttachment, setIsSendingAttachment] = useState(false);
+    const [fileStatuses, setFileStatuses] = useState({});
     const [replyingTo, setReplyingTo] = useState(null);
 
     const [isForwardSelectionMode, setIsForwardSelectionMode] = useState(false);
@@ -42,11 +47,28 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
             return;
         }
 
-        const file = e.target.files[0];
+        const files = Array.from(e.target.files);
 
-        if (!file) return;
+        if (!files.length) return;
 
-        setSelectedFile(file);
+        setSelectedFiles((prevFiles) => [
+            ...prevFiles,
+            ...files,
+        ]);
+
+
+        setFileStatuses((prevStatuses) => {
+            const newStatuses = { ...prevStatuses };
+
+            files.forEach((file) => {
+                const key = `${file.name}-${file.size}-${file.lastModified}`;
+
+                newStatuses[key] = "pending";
+            });
+
+            return newStatuses;
+        });
+
         setShowAttachmentComposer(true);
 
         e.target.value = "";
@@ -56,10 +78,84 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
+    const handleRetryFile = async (file) => {
+        if (
+            isSendingAttachment ||
+            !file ||
+            !user ||
+            !conversationId
+        ) {
+            return;
+        }
+
+        const key = `${file.name}-${file.size}-${file.lastModified}`;
+
+        try {
+            setFileStatuses((prev) => ({
+                ...prev,
+                [key]: "uploading",
+            }));
+
+
+            const uploadedFile = await uploadChatFile(file);
+
+
+            await sendMultipleFileMessages(
+                conversationId,
+                user.uid,
+                [
+                    {
+                        fileUrl: uploadedFile.url,
+                        fileName: file.name,
+                        fileType: file.type,
+                        fileSize: file.size,
+                    },
+                ],
+                attachmentCaption.trim()
+            );
+
+
+            setFileStatuses((prev) => ({
+                ...prev,
+                [key]: "success",
+            }));
+
+            // Remove successfully retried file
+            setSelectedFiles((prevFiles) => {
+                const remainingFiles = prevFiles.filter(
+                    (item) =>
+                        `${item.name}-${item.size}-${item.lastModified}` !== key
+                );
+
+                if (remainingFiles.length === 0) {
+                    setShowAttachmentComposer(false);
+                    setAttachmentCaption("");
+                }
+
+                return remainingFiles;
+            });
+
+        } catch (error) {
+            console.error(
+                "RETRY UPLOAD/SEND FAILED:",
+                file.name,
+                error
+            );
+
+            setFileStatuses((prev) => ({
+                ...prev,
+                [key]: "failed",
+            }));
+        }
+    };
+
+
+
+
     const handleSendAttachment = async () => {
         if (
             isSendingAttachment ||
-            !selectedFile ||
+            !selectedFiles.length ||
             !user ||
             !conversationId
         ) {
@@ -68,28 +164,97 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
         setIsSendingAttachment(true);
 
+        const filesToUpload = selectedFiles.filter((file) => {
+            const key = `${file.name}-${file.size}-${file.lastModified}`;
+
+            const status = fileStatuses[key];
+
+            return status === "pending" || status === "failed";
+        });
+
+        if (!filesToUpload.length) {
+            setIsSendingAttachment(false);
+            return;
+        }
+
         try {
-            const uploadedFile = await uploadChatFile(
-                selectedFile
-            );
+            // Keep track of files that fail
+            const failedFiles = [];
 
-            await sendFileMessage(
-                conversationId,
-                user.uid,
-                uploadedFile.url,
-                selectedFile.name,
-                selectedFile.type,
-                selectedFile.size,
-                attachmentCaption.trim()
-            );
+            // Upload ALL files in parallel
+            const uploadPromises = filesToUpload.map(async (file) => {
+                const key = `${file.name}-${file.size}-${file.lastModified}`;
 
-            setSelectedFile(null);
-            setAttachmentCaption("");
-            setShowAttachmentComposer(false);
+                try {
+                    setFileStatuses((prev) => ({
+                        ...prev,
+                        [key]: "uploading",
+                    }));
+
+
+
+                    const uploadedFile = await uploadChatFile(file);
+
+
+                    // Send this file immediately after its upload succeeds
+                    await sendMultipleFileMessages(
+                        conversationId,
+                        user.uid,
+                        [
+                            {
+                                fileUrl: uploadedFile.url,
+                                fileName: file.name,
+                                fileType: file.type,
+                                fileSize: file.size,
+                            },
+                        ],
+                        attachmentCaption.trim()
+                    );
+
+                    setFileStatuses((prev) => ({
+                        ...prev,
+                        [key]: "success",
+                    }));
+
+
+                } catch (error) {
+                    console.error(
+                        "UPLOAD/SEND FAILED:",
+                        file.name,
+                        error
+                    );
+
+                    setFileStatuses((prev) => ({
+                        ...prev,
+                        [key]: "failed",
+                    }));
+
+                    failedFiles.push(file);
+                }
+            });
+
+            // Wait until ALL parallel operations finish
+            await Promise.all(uploadPromises);
+
+
+            // Keep only failed files in composer
+            if (failedFiles.length > 0) {
+                setSelectedFiles(failedFiles);
+
+                console.warn(
+                    `${failedFiles.length} file(s) failed and are ready for retry.`
+                );
+            } else {
+                // Everything succeeded
+                setSelectedFiles([]);
+                setAttachmentCaption("");
+                setShowAttachmentComposer(false);
+            }
+
 
         } catch (error) {
             console.error(
-                "Failed to send attachment:",
+                "Failed to send attachments:",
                 error
             );
         } finally {
@@ -100,12 +265,53 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
+    // useEffect(() => {
+    //     const checkFriendship = async () => {
+    //         if (!user?.uid || !selectedUser?.uid) {
+    //             setCanSendMessage(false);
+    //             return;
+    //         }
+
+    //         try {
+    //             const friendStatus = await isFriend(
+    //                 user.uid,
+    //                 selectedUser.uid
+    //             );
+
+    //             setCanSendMessage(friendStatus);
+    //         } catch (error) {
+    //             console.error(
+    //                 "Failed to check friendship:",
+    //                 error
+    //             );
+
+    //             setCanSendMessage(false);
+    //         }
+    //     };
+
+    //     checkFriendship();
+    // }, [user?.uid, selectedUser?.uid]);
+
+
+
+
+
+
+
+    // ==========================================
+    // forward message logics below 29-aug-2026
+    // ===========================================
+
+
+
+
     useEffect(() => {
         const checkFriendship = async () => {
             if (!user?.uid || !selectedUser?.uid) {
-                setCanSendMessage(false);
                 return;
             }
+
+            setCanSendMessage(null);
 
             try {
                 const friendStatus = await isFriend(
@@ -131,11 +337,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
-
-
-    // ==========================================
-    // forward message logics below 29-aug-2026
-    // ===========================================
 
     const handleStartForwardSelection = (message) => {
         setIsForwardSelectionMode(true);
@@ -287,17 +488,26 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                     </div>
                 ) : showAttachmentComposer ? (
                     <AttachmentComposer
-                        file={selectedFile}
+                        files={selectedFiles}
+                        fileStatuses={fileStatuses}
+                        onRetryFile={handleRetryFile}
                         caption={attachmentCaption}
                         onCaptionChange={setAttachmentCaption}
                         onSend={handleSendAttachment}
                         isSending={isSendingAttachment}
+                        onAddMore={() =>
+                            document
+                                .getElementById("chat-file-input")
+                                ?.click()
+                        }
                         onClose={() => {
-                            setSelectedFile(null);
+                            setSelectedFiles([]);
                             setAttachmentCaption("");
                             setShowAttachmentComposer(false);
                         }}
                     />
+                ) : canSendMessage === null ? (
+                    <div className="chat-input"></div>
                 ) : (
                     <div className="chat-input">
                         <MessageInput
@@ -332,6 +542,7 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
             <input
                 id="chat-file-input"
                 type="file"
+                multiple
                 hidden
                 onChange={handleFileSelect}
             />

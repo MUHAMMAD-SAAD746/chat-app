@@ -11,12 +11,20 @@ export async function uploadProfileImage(file) {
     formData.append("file", file);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
+    const startTime = performance.now();
+
     const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
             method: "POST",
             body: formData
         }
+    );
+
+    console.log(
+        "PROFILE CLOUDINARY UPLOAD:",
+        performance.now() - startTime,
+        "ms"
     );
 
     if (!response.ok) {
@@ -32,11 +40,6 @@ export async function uploadProfileImage(file) {
 
 
 
-
-
-
-
-
 export async function uploadChatFile(file) {
     if (!file) {
         return null;
@@ -47,26 +50,41 @@ export async function uploadChatFile(file) {
     formData.append("file", file);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-    const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
-        {
-            method: "POST",
-            body: formData
-        }
-    );
+    const resourceType = file.type.startsWith("image/")
+        ? "image"
+        : "raw";
+
+
+    const startTime = performance.now();
+
+    let response;
+
+    try {
+        response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+    } catch (error) {
+        console.error(
+            `UPLOAD FAILED: ${file.name}`,
+            error
+        );
+
+        throw error;
+    }
+
 
     if (!response.ok) {
-        throw new Error("Chat file upload failed");
+        throw new Error(
+            `Chat file upload failed: ${file.name} (${response.status})`
+        );
     }
 
     const data = await response.json();
 
-    console.log("Uploaded chat file:", {
-        url: data.secure_url,
-        publicId: data.public_id,
-        resourceType: data.resource_type,
-        type: data.type,
-    });
 
     return {
         url: data.secure_url,

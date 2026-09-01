@@ -252,7 +252,7 @@
     border-radius: 8px;
 
     background: var(--accent-success);
-    color: var(--text-primary);
+    color: var(--text-primary-opp);
 
     font-size: 15px;
     font-weight: 600;
@@ -265,7 +265,7 @@
 }
 
 .auth-submit-btn:hover {
-    background: var(--accent-primary);
+    background: var(--accent-success-hover);
 }
 
 .auth-submit-btn:active {
