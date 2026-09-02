@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import MessageBubble from "../MessageBubble/MessageBubble";
@@ -27,6 +27,8 @@ function MessageList({
 
     const [messages, setMessages] = useState([]);
     const [clearedAt, setClearedAt] = useState(0);
+
+    const bottomRef = useRef(null);
 
 
 
@@ -79,6 +81,14 @@ function MessageList({
 
 
 
+    useEffect(() => {
+        if (visibleMessages.length === 0) return;
+
+        bottomRef.current?.scrollIntoView({
+            behavior: "auto",
+        });
+    }, [visibleMessages.length]);
+
 
     return (
         <div className="message-list">
@@ -122,6 +132,8 @@ function MessageList({
                     </div>
                 );
             })}
+
+            <div ref={bottomRef} />
         </div>
     );
 }
