@@ -95,6 +95,7 @@
 
 
 .message-container {
+    position: relative;
     min-width: 0;
     flex: 1;
     display: flex;
@@ -649,7 +650,7 @@
 
 .message-reactions {
     position: absolute;
-    bottom: 18px;
+    bottom: -10px;
     display: flex;
     align-items: center;
     z-index: 5;

@@ -20,6 +20,10 @@ import { auth, database } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
 
+googleProvider.setCustomParameters({
+    prompt: "select_account",
+});
+
 export const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
 }

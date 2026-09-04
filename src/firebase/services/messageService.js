@@ -1,4 +1,4 @@
-import { ref, push, set, get, update } from "firebase/database";
+import { ref, push, set, get, update, serverTimestamp } from "firebase/database";
 import { database } from "../config";
 import { incrementUnread } from "./unreadService";
 import { isFriend } from "./friendService";
@@ -50,7 +50,7 @@ export async function sendMessage(
     const message = {
         senderId,
         text,
-        createdAt: Date.now(),
+        createdAt: serverTimestamp(),
         ...(replyTo && { replyTo }),
     };
 
@@ -108,7 +108,7 @@ export async function deleteMessageForEveryone(
 
     await update(messageRef, {
         deleteStatus: "everyone",
-        deletedAt: Date.now(),
+        deletedAt: serverTimestamp(),
     });
 }
 
@@ -142,7 +142,7 @@ export async function editMessage(
 
     await update(messageRef, {
         text,
-        editedAt: Date.now(),
+        editedAt: serverTimestamp(),
     });
 }
 
@@ -208,7 +208,7 @@ export async function sendFileMessage(
         fileType,
         fileSize,
         caption,
-        createdAt: Date.now(),
+        createdAt: serverTimestamp(),
     };
 
     await set(messageRef, message);
@@ -302,7 +302,7 @@ export async function sendMultipleFileMessages(
             fileType: file.fileType,
             fileSize: file.fileSize,
             caption,
-            createdAt: Date.now(),
+            createdAt: serverTimestamp(),
         };
     });
 
@@ -432,7 +432,7 @@ export async function forwardMessage(
 
         forwarded: true,
 
-        createdAt: Date.now(),
+        createdAt: serverTimestamp(),
     };
 
     await set(messageRef, message);

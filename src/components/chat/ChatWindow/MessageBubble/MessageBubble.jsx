@@ -291,7 +291,7 @@ function MessageBubble({
 
 
     const getEmojiPickerLeft = () => {
-        const trigger = reactionTriggerRef.current;
+        const trigger = emojiTriggerRef.current;
 
         if (!trigger) {
             return emojiPickerPosition.left;

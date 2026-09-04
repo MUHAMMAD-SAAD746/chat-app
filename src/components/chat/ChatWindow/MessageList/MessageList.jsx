@@ -93,6 +93,19 @@ function MessageList({
     return (
         <div className="message-list">
             {visibleMessages.map((message, index) => {
+                console.log(
+                    "MESSAGE:",
+                    message.id,
+                    "createdAt:",
+                    message.createdAt,
+                    "local:",
+                    new Date(message.createdAt).toString(),
+                    "timezone:",
+                    Intl.DateTimeFormat().resolvedOptions().timeZone
+                );
+
+
+
                 const currentDate = formatMessageDate(message.createdAt);
 
                 const previousDate =
