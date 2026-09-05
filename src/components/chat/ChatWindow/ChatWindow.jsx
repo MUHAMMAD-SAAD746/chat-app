@@ -264,47 +264,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
-
-    // useEffect(() => {
-    //     const checkFriendship = async () => {
-    //         if (!user?.uid || !selectedUser?.uid) {
-    //             setCanSendMessage(false);
-    //             return;
-    //         }
-
-    //         try {
-    //             const friendStatus = await isFriend(
-    //                 user.uid,
-    //                 selectedUser.uid
-    //             );
-
-    //             setCanSendMessage(friendStatus);
-    //         } catch (error) {
-    //             console.error(
-    //                 "Failed to check friendship:",
-    //                 error
-    //             );
-
-    //             setCanSendMessage(false);
-    //         }
-    //     };
-
-    //     checkFriendship();
-    // }, [user?.uid, selectedUser?.uid]);
-
-
-
-
-
-
-
-    // ==========================================
-    // forward message logics below 29-aug-2026
-    // ===========================================
-
-
-
-
     useEffect(() => {
         const checkFriendship = async () => {
             if (!user?.uid || !selectedUser?.uid) {
@@ -451,7 +410,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                 {isForwardSelectionMode ? (
                     <div className="forward-selection-bar">
 
-                        {/* Left side */}
                         <div className="forward-selection-left">
 
                             <button
@@ -473,7 +431,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                         </div>
 
 
-                        {/* Right side */}
                         <button
                             type="button"
                             className="forward-send-button"
@@ -481,7 +438,6 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                             disabled={!selectedMessages.length}
                             aria-label="Forward messages"
                         >
-                            {/* <IoArrowForwardOutline /> */}
                             <RiShareForwardFill />
                         </button>
 

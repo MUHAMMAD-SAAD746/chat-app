@@ -1,17 +1,13 @@
 import { ref, set, remove, update, get } from "firebase/database";
 import { database } from "../config";
 
-/**
- * Generate a deterministic friend request ID.
- */
+
 const getFriendRequestId = (senderId, receiverId) => {
     return `${senderId}_${receiverId}`;
 };
 
 
-/**
- * Send a friend request.
- */
+
 export const sendFriendRequest = async (senderId, receiverId) => {
     if (!senderId || !receiverId) {
         throw new Error("Sender and receiver are required.");
@@ -54,9 +50,7 @@ export const sendFriendRequest = async (senderId, receiverId) => {
 };
 
 
-/**
- * Cancel a sent friend request.
- */
+
 export const cancelFriendRequest = async (senderId, receiverId) => {
     if (!senderId || !receiverId) {
         throw new Error("Sender and receiver are required.");
@@ -70,9 +64,7 @@ export const cancelFriendRequest = async (senderId, receiverId) => {
 };
 
 
-/**
- * Accept a received friend request.
- */
+
 export const acceptFriendRequest = async (senderId, receiverId) => {
     if (!senderId || !receiverId) {
         throw new Error("Sender and receiver are required.");
@@ -107,9 +99,6 @@ export const acceptFriendRequest = async (senderId, receiverId) => {
 };
 
 
-/**
- * Reject a received friend request.
- */
 export const rejectFriendRequest = async (senderId, receiverId) => {
     if (!senderId || !receiverId) {
         throw new Error("Sender and receiver are required.");

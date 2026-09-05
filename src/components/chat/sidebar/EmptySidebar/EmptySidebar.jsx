@@ -1,4 +1,4 @@
-import { LuUserPlus } from "react-icons/lu";
+import { LuMessageSquareText, LuUserPlus } from "react-icons/lu";
 import "./EmptySidebar.css"
 
 function EmptyChatSidebar({ onAddContact }) {
@@ -6,7 +6,7 @@ function EmptyChatSidebar({ onAddContact }) {
         <div className="empty-sidebar">
 
             <div className="empty-sidebar-icon">
-                💬
+                <LuMessageSquareText />
             </div>
 
             <h3>No conversations</h3>

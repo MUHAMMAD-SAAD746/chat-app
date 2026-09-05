@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { IoArrowBack } from "react-icons/io5";
 
 import ProfileSettings from "../../components/settings/ProfileSettings/ProfileSettings";
 import PasswordSettings from "../../components/settings/PasswordSettings/PasswordSettings";
@@ -18,7 +19,7 @@ function Settings() {
                     className="settings-back-button"
                     onClick={() => navigate("/chat")}
                 >
-                    ←
+                    <IoArrowBack />
                 </button>
 
                 <h1>Settings</h1>

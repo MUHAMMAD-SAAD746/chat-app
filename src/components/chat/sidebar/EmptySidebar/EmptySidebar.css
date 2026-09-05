@@ -12,14 +12,15 @@
 }
 
 .empty-sidebar-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
+    font-size: 40px;
+    margin-bottom: 2px;
+    color: var(--text-primary);
 }
 
 .empty-sidebar h3 {
     margin: 0 0 8px;
     font-size: 15px;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-family: Arial;
 }
 
@@ -27,7 +28,7 @@
     margin: 0 0 18px;
     font-size: 13px;
     line-height: 1.5;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-family: Arial;
 }
 
@@ -37,7 +38,7 @@
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     background-color: var(--bg-secondary);
     display: flex;
     align-items: center;

@@ -103,7 +103,6 @@ const ForwardMessageModal = ({
         <div className="forward-modal-overlay">
             <div className="forward-modal">
 
-                {/* Header */}
                 <div className="forward-modal-header">
                     <button
                         className="forward-close-button"
@@ -116,7 +115,6 @@ const ForwardMessageModal = ({
                     <h2>Forward messages</h2>
                 </div>
 
-                {/* Search */}
                 <div className="forward-search-wrapper">
                     <IoSearch className="forward-search-icon" />
 
@@ -129,7 +127,6 @@ const ForwardMessageModal = ({
                     />
                 </div>
 
-                {/* Friends */}
                 <div className="forward-friends-section">
 
                     <div className="forward-section-title">

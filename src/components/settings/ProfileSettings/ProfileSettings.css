@@ -3,89 +3,61 @@
 }
 
 
-/* ================================
-   Header
-================================ */
-
 .profile-settings-header {
     margin-bottom: 24px;
 }
 
 .profile-settings-header h2 {
     margin: 0 0 6px;
-
     font-size: 22px;
     font-weight: 600;
-
     color: var(--text-primary);
 }
 
 .profile-settings-header p {
     margin: 0;
-
     font-size: 13px;
     line-height: 1.5;
-
     color: var(--text-secondary);
 }
 
 
-/* ================================
-   Card
-================================ */
+
 
 .profile-settings-card {
     width: 100%;
-
     padding: 28px;
-
     box-sizing: border-box;
-
     background: var(--bg-primary);
-
     border: 1px solid var(--border-primary);
     border-radius: 14px;
 }
 
 
-/* ================================
-   Profile Image
-================================ */
+
 
 .profile-settings-avatar-section {
     display: grid;
-
     grid-template-columns: 82px 1fr;
-
     column-gap: 18px;
     row-gap: 12px;
-
     align-items: start;
 }
 
 .profile-settings-avatar {
     width: 82px;
     height: 82px;
-
     flex-shrink: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
-
     border-radius: 50%;
-
     background: var(--bg-secondary);
-
     color: var(--text-primary);
-
     border: 1px solid var(--border-primary);
-
     font-size: 24px;
     font-weight: 600;
-
     grid-column: 1;
     grid-row: 1 / 3;
 }
@@ -93,48 +65,37 @@
 .profile-settings-avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
 .profile-settings-avatar-info {
     min-width: 0;
-
     grid-column: 2;
     grid-row: 1;
 }
 
 .profile-settings-avatar-info h3 {
     margin: 0 0 5px;
-
     font-size: 14px;
     font-weight: 600;
-
     color: var(--text-primary);
 }
 
 .profile-settings-avatar-info p {
     margin: 0 0 11px;
-
     font-size: 12px;
-
     color: var(--text-secondary);
 }
 
 .profile-settings-photo-button {
     padding: 7px 12px;
-
     border: 1px solid var(--border-primary);
     border-radius: 7px;
-
     background: var(--bg-secondary);
     color: var(--text-primary);
-
     font-size: 12px;
     font-weight: 500;
-
     cursor: pointer;
-
     transition: background 0.15s ease;
 }
 
@@ -143,15 +104,12 @@
 }
 
 
-/* =======-------------============= */
 .profile-settings-photo-actions {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 12px;
-
     min-width: 0;
-
     grid-column: 2;
     grid-row: 2;
 }
@@ -171,9 +129,7 @@
 }
 
 
-/* ================================
-   Sections
-================================ */
+
 
 .profile-settings-section {
     display: flex;
@@ -182,46 +138,34 @@
 
 .profile-settings-section h3 {
     margin: 0 0 4px;
-
     font-size: 15px;
     font-weight: 600;
-
     color: var(--text-primary);
 }
 
 .profile-settings-section-description {
     margin: 0 0 20px;
-
     font-size: 12px;
     line-height: 1.5;
-
     color: var(--text-secondary);
 }
 
 
-/* ================================
-   Divider
-================================ */
+
 
 .profile-settings-divider {
     height: 1px;
-
     margin: 26px 0;
-
     background: var(--border-primary);
 }
 
 
-/* ================================
-   Fields
-================================ */
+
 
 .profile-settings-field {
     display: flex;
     flex-direction: column;
-
     gap: 7px;
-
     margin-bottom: 18px;
 }
 
@@ -232,28 +176,19 @@
 .profile-settings-field label {
     font-size: 13px;
     font-weight: 500;
-
     color: var(--text-primary);
 }
 
 .profile-settings-field input {
     width: 100%;
-    /* max-width: 520px; */
-
     box-sizing: border-box;
-
     padding: 10px 12px;
-
     border: 1px solid var(--border-primary);
     border-radius: 7px;
-
     outline: none;
-
     background: var(--bg-secondary);
     color: var(--text-primary);
-
     font-size: 13px;
-
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
@@ -261,21 +196,16 @@
 
 .profile-settings-field input:focus {
     border-color: var(--accent-color);
-
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 12%, transparent);
 }
 
 .profile-settings-field>span {
     font-size: 11px;
     line-height: 1.4;
-
-    /* color: var(--text-secondary); */
 }
 
 
-/* ================================
-   Field Messages
-================================ */
+
 .profile-settings-current-text {
     color: var(--text-secondary);
 }
@@ -297,9 +227,8 @@
     color: #16a34a;
 }
 
-/* ================================
-   Read Only Fields
-================================ */
+
+
 
 .profile-settings-readonly-wrapper {
     position: relative;
@@ -307,68 +236,48 @@
 
 .profile-settings-readonly-wrapper input {
     padding-right: 38px;
-
     background: var(--bg-tertiary);
-
     color: var(--text-secondary);
-
     cursor: not-allowed;
 }
 
 .profile-settings-lock {
     position: absolute;
-
     top: 50%;
     right: 12px;
-
     transform: translateY(-50%);
-
     font-size: 12px;
 }
 
 .profile-settings-readonly {
     width: 100%;
-
     box-sizing: border-box;
-
     padding: 10px 12px;
-
     border: 1px solid var(--border-primary);
     border-radius: 7px;
-
     background: var(--bg-tertiary);
-
     color: var(--text-secondary);
-
     font-size: 13px;
 }
 
 
-/* ================================
-   Actions
-================================ */
+
 
 .profile-settings-actions {
     display: flex;
     justify-content: flex-end;
-
     margin-top: 28px;
 }
 
 .profile-settings-save {
     min-width: 112px;
-
     padding: 9px 17px;
-
     border: 1px solid var(--border-primary);
     border-radius: 7px;
-
     background: var(--accent-color);
-    color: var(--text-secondary);
-
+    color: var(--text-primary);
     font-size: 13px;
     font-weight: 500;
-
     cursor: pointer;
 
     transition:
@@ -394,11 +303,8 @@
 
 
 
-/* ================================
-   Responsive
-================================ */
 
-/* Tablet */
+
 @media (max-width: 900px) {
 
     .profile-settings {
@@ -413,17 +319,14 @@
 
     .profile-settings-avatar-section {
         grid-template-columns: 82px 1fr;
-
         column-gap: 14px;
         row-gap: 12px;
-
         align-items: start;
     }
 
     .profile-settings-avatar {
         grid-column: 1;
         grid-row: 1;
-
         width: 82px;
         height: 82px;
     }
@@ -431,20 +334,17 @@
     .profile-settings-avatar-info {
         grid-column: 2;
         grid-row: 1;
-
         min-width: 0;
     }
 
     .profile-settings-photo-actions {
         grid-column: 1 / -1;
         grid-row: 2;
-
         width: 100%;
 
         display: flex;
         align-items: center;
         gap: 8px;
-
         min-width: 0;
     }
 
@@ -455,19 +355,14 @@
 }
 
 
-/* Mobile */
 @media (max-width: 600px) {
 
     .profile-settings {
         width: 100%;
         max-width: none;
-
         padding: 0;
         box-sizing: border-box;
     }
-
-
-    /* Header */
 
     .profile-settings-header {
         margin-bottom: 18px;
@@ -482,16 +377,13 @@
     }
 
 
-    /* Card */
 
     .profile-settings-card {
         padding: 20px 16px;
-
         border-radius: 12px;
     }
 
 
-    /* Profile Image */
 
     .profile-settings-avatar-section {
         align-items: flex-start;
@@ -513,12 +405,10 @@
     }
 
 
-    /* Photo actions */
 
     .profile-settings-photo-actions {
         flex-wrap: nowrap;
         gap: 8px;
-
         width: 100%;
         align-items: center;
     }
@@ -530,8 +420,6 @@
     }
 
 
-    /* Sections */
-
     .profile-settings-divider {
         margin: 22px 0;
     }
@@ -541,7 +429,6 @@
     }
 
 
-    /* Fields */
 
     .profile-settings-field {
         margin-bottom: 16px;
@@ -552,7 +439,7 @@
     }
 
 
-    /* Actions */
+
 
     .profile-settings-actions {
         margin-top: 22px;
@@ -561,7 +448,6 @@
     .profile-settings-save {
         width: 100%;
         min-width: 0;
-
         padding: 11px 16px;
     }
 }

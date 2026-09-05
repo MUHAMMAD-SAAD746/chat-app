@@ -42,10 +42,6 @@ function AttachmentComposer({
                     >
                         <IoClose size={24} />
                     </button>
-
-                    {/* <span>
-                    Send attachment
-                </span> */}
                 </div>
 
 
@@ -92,20 +88,6 @@ function AttachmentComposer({
                         }
                         disabled={isSending}
                     />
-
-                    {/* <button
-                    type="button"
-                    onClick={onSend}
-                    aria-label="Send attachment"
-                    disabled={isSending}
-                >
-                    {isSending ? (
-                        <span className="attachment-send-spinner" />
-                    ) : (
-                        <IoSend size={20} />
-                    )}
-                </button> */}
-
                 </div>
 
 

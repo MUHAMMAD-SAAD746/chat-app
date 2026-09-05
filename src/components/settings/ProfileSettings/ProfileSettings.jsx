@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FaLock } from "react-icons/fa";
+import { FiLock } from "react-icons/fi";
 
 import ProfileImageInput from "../../../components/ProfileImageInput/ProfileImageInput";
 
@@ -410,7 +412,7 @@ function ProfileSettings() {
                             />
 
                             <span className="profile-settings-lock">
-                                🔒
+                                <FiLock />
                             </span>
 
                         </div>
@@ -436,7 +438,7 @@ function ProfileSettings() {
                             />
 
                             <span className="profile-settings-lock">
-                                🔒
+                                <FiLock />
                             </span>
 
                         </div>

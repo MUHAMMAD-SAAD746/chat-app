@@ -45,7 +45,6 @@ function AuthCard({
             </div>
 
             <form className="auth-form" onSubmit={onSubmit}>
-                {/* Register-only fields */}
                 {!isLogin && (
                     <>
                         <ProfileImageInput
@@ -53,7 +52,6 @@ function AuthCard({
                             onChange={setProfileImage}
                         />
 
-                        {/* Full Name */}
                         <div className="form-group">
                             <label htmlFor="full-name">
                                 Full Name

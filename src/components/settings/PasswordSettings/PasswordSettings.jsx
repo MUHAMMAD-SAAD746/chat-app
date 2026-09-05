@@ -86,9 +86,6 @@ function PasswordSettings() {
 
     return (
         <section className="password-settings">
-
-            {/* Header */}
-
             <div className="password-settings-header">
                 <h2>Change Password</h2>
 
@@ -98,10 +95,7 @@ function PasswordSettings() {
             </div>
 
 
-            {/* Card */}
-
             <div className="password-settings-card">
-
                 <form
                     className="password-settings-section"
                     onSubmit={handleSubmit}
@@ -114,10 +108,7 @@ function PasswordSettings() {
                     </p>
 
 
-                    {/* Current Password */}
-
                     <div className="password-settings-field">
-
                         <label htmlFor="current-password">
                             Current password
                         </label>
@@ -133,14 +124,11 @@ function PasswordSettings() {
                             }}
                             autoComplete="current-password"
                         />
-
                     </div>
 
 
-                    {/* New Password */}
 
                     <div className="password-settings-field">
-
                         <label htmlFor="new-password">
                             New password
                         </label>
@@ -156,14 +144,11 @@ function PasswordSettings() {
                             }}
                             autoComplete="new-password"
                         />
-
                     </div>
 
 
-                    {/* Confirm Password */}
 
                     <div className="password-settings-field">
-
                         <label htmlFor="confirm-password">
                             Confirm new password
                         </label>
@@ -179,11 +164,9 @@ function PasswordSettings() {
                             }}
                             autoComplete="new-password"
                         />
-
                     </div>
 
 
-                    {/* Messages */}
 
                     {error && (
                         <p className="password-settings-error">
@@ -198,10 +181,8 @@ function PasswordSettings() {
                     )}
 
 
-                    {/* Action */}
 
                     <div className="password-settings-actions">
-
                         <button
                             className="password-settings-save"
                             type="submit"
@@ -211,13 +192,9 @@ function PasswordSettings() {
                                 ? "Changing..."
                                 : "Change Password"}
                         </button>
-
                     </div>
-
                 </form>
-
             </div>
-
         </section>
     );
 }

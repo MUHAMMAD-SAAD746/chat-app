@@ -2,9 +2,6 @@ import { ref, onValue } from "firebase/database";
 import { database } from "../config";
 
 
-/**
- * Listen for friend requests received by a user.
- */
 export const subscribeToReceivedFriendRequests = (
     userId,
     callback
@@ -37,9 +34,6 @@ export const subscribeToReceivedFriendRequests = (
 };
 
 
-/**
- * Listen for friend requests sent by a user.
- */
 export const subscribeToSentFriendRequests = (
     userId,
     callback
@@ -54,11 +48,6 @@ export const subscribeToSentFriendRequests = (
     const unsubscribe = onValue(requestsRef, (snapshot) => {
         const requests = snapshot.val() || {};
 
-        // const sentRequests = Object.values(requests).filter(
-        //     (request) =>
-        //         request.senderId === userId &&
-        //         request.status === "pending"
-        // );
 
         const sentRequests = Object.entries(requests)
             .filter(

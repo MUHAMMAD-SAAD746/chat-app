@@ -1,3 +1,4 @@
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import "./LoadingScreen.css";
 
 function LoadingScreen({ text = "Loading..." }) {
@@ -7,7 +8,7 @@ function LoadingScreen({ text = "Loading..." }) {
             <div className="loading-container">
 
                 <div className="loading-logo">
-                    💬
+                    <IoChatbubbleEllipsesOutline size={50} />
                 </div>
 
                 <h1 className="loading-title">

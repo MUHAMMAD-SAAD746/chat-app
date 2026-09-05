@@ -11,7 +11,7 @@ function getLastMessage(messages, userId, clearedAt) {
                 return latest;
             }
 
-            // Ignore messages deleted for the current user
+            // Ignore messages deleted for the current use
             if (message.deletedFor?.[userId] === true) {
                 return latest;
             }

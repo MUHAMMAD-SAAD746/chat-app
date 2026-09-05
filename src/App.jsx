@@ -7,22 +7,42 @@ import ChatLayout from "./components/chat/ChatLayout/ChatLayout";
 import Friends from "./pages/Friends/Friends";
 import Settings from "./pages/Settings/Settings";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/toast.css";
 
 import { useTheme } from "./context/ThemeContext";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   const { darkMode } = useTheme();
-  
+
+
+  function HomeRedirect() {
+    const { user, loading } = useAuth();
+
+    if (loading) {
+      return null;
+    }
+
+    return (
+      <Navigate
+        to={user ? "/chat" : "/login"}
+        replace
+      />
+    );
+  }
+
+
+
   return (
     <div>
       <Routes>
         <Route path="*" element={<Navigate to="/login" replace />} />
-        
-        
+
+
         <Route
           path="/"
           element={
@@ -33,12 +53,20 @@ function App() {
 
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
         />
 
         <Route
           path="/register"
-          element={<Register />}
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
         />
 
 
@@ -57,9 +85,9 @@ function App() {
         </Route>
       </Routes>
 
-      <ToastContainer 
+      <ToastContainer
         transition={Slide}
-        theme={darkMode ? "dark" : "light"} 
+        theme={darkMode ? "dark" : "light"}
       />
     </div>
   );

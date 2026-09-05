@@ -49,7 +49,6 @@ function MessageInput({
 
         if (!user || !conversationId) return;
 
-        // If input is empty, stop typing immediately
         if (!value.trim()) {
             clearTimeout(typingTimer.current);
 
@@ -62,17 +61,14 @@ function MessageInput({
             return;
         }
 
-        // User is typing
         setTyping(
             conversationId,
             user.uid,
             true
         );
 
-        // Reset the timer
         clearTimeout(typingTimer.current);
 
-        // Stop typing after 2 seconds
         typingTimer.current = setTimeout(() => {
             setTyping(
                 conversationId,
@@ -154,6 +150,8 @@ function MessageInput({
 
 
     useEffect(() => {
+        setText("");
+        
         return () => {
             clearTimeout(typingTimer.current);
 
