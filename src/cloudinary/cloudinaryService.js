@@ -41,6 +41,16 @@ export async function uploadProfileImage(file) {
 
 
 export async function uploadChatFile(file) {
+
+    if (file.name.includes("6")) {
+        throw new Error("TEST: Upload failed intentionally");
+    }
+
+    if (file.name.includes("5")) {
+        throw new Error("TEST: Upload failed intentionally");
+    }
+
+
     if (!file) {
         return null;
     }

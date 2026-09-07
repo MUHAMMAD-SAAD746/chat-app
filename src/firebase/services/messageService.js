@@ -282,31 +282,37 @@ export async function sendMultipleFileMessages(
         );
     }
 
+    if (!files?.length) {
+        throw new Error("No files provided.");
+    }
+
     const messagesRef = ref(
         database,
         `conversations/${conversationId}/messages`
     );
 
-    const messages = {};
+    const messageRef = push(messagesRef);
 
-    files.forEach((file) => {
-        const messageRef = push(messagesRef);
+    const attachments = files.map((file) => ({
+        fileUrl: file.fileUrl,
+        fileName: file.fileName,
+        fileType: file.fileType,
+        fileSize: file.fileSize,
+        type: file.fileType.startsWith("image/")
+            ? "image"
+            : "file",
+    }));
 
-        messages[messageRef.key] = {
-            senderId,
-            type: file.fileType.startsWith("image/")
-                ? "image"
-                : "file",
-            fileUrl: file.fileUrl,
-            fileName: file.fileName,
-            fileType: file.fileType,
-            fileSize: file.fileSize,
-            caption,
-            createdAt: serverTimestamp(),
-        };
-    });
+    const message = {
+        senderId,
+        attachments,
+        ...(caption?.trim() && {
+            caption: caption.trim(),
+        }),
+        createdAt: serverTimestamp(),
+    };
 
-    await update(messagesRef, messages);
+    await set(messageRef, message);
 
     const activeConversationRef = ref(
         database,
@@ -327,7 +333,10 @@ export async function sendMultipleFileMessages(
         );
     }
 
-    return messages;
+    return {
+        id: messageRef.key,
+        ...message,
+    };
 }
 
 

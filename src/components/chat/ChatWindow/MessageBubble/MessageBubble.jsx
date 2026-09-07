@@ -17,6 +17,7 @@ import { RiShareForwardFill } from "react-icons/ri";
 import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
 import EditMessageModal from "./EditMessageModal/EditMessageModal";
 import ImageViewer from "./ImageViewer/ImageViewer";
+import AttachmentGrid from "./AttachmentGrid/AttachmentGrid";
 
 import {
     deleteMessageForMe,
@@ -67,6 +68,7 @@ function MessageBubble({
         fileType,
         fileSize,
         caption,
+        attachments,
         deliveredAt,
         readAt,
         deleteStatus,
@@ -92,6 +94,7 @@ function MessageBubble({
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showImageViewer, setShowImageViewer] = useState(false);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const [isEditing, setIsEditing] = useState(false);
     const [isSavingEdit, setIsSavingEdit] = useState(false);
@@ -138,6 +141,14 @@ function MessageBubble({
 
     const isDeletedForMe = deletedFor?.[userId] === true;
     const isDeletedForEveryone = deleteStatus === "everyone";
+
+    const imageAttachments = attachments?.filter(
+        (attachment) =>
+            attachment.type === "image" ||
+            attachment.fileType?.startsWith("image/")
+    ) || [];
+
+    const hasGroupedImages = imageAttachments.length > 0;
 
 
     useEffect(() => {
@@ -548,6 +559,22 @@ function MessageBubble({
                                 <p className="message-deleted">
                                     Message deleted
                                 </p>
+                            ) : hasGroupedImages ? (
+                                <div className="message-attachment">
+                                    <AttachmentGrid
+                                        attachments={attachments}
+                                        onImageClick={(index) => {
+                                            setSelectedImageIndex(index);
+                                            setShowImageViewer(true);
+                                        }}
+                                    />
+
+                                    {caption && (
+                                        <p className="message-caption">
+                                            {caption}
+                                        </p>
+                                    )}
+                                </div>
                             ) : type === "image" ? (
                                 <div className="message-attachment">
                                     <img
@@ -681,10 +708,18 @@ function MessageBubble({
             )}
 
 
-            {showImageViewer && (
+            {/* {showImageViewer && (
                 <ImageViewer
                     imageUrl={fileUrl}
                     alt={fileName}
+                    onClose={() => setShowImageViewer(false)}
+                />
+            )} */}
+
+            {showImageViewer && (
+                <ImageViewer
+                    images={imageAttachments}
+                    initialIndex={selectedImageIndex}
                     onClose={() => setShowImageViewer(false)}
                 />
             )}

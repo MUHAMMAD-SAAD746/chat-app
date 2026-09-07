@@ -1,0 +1,106 @@
+.attachment-grid {
+    display: grid;
+    gap: 2px;
+    width: 100%;
+    max-width: 360px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* 1 image */
+.attachment-grid-1 {
+    grid-template-columns: 1fr;
+}
+
+/* 2 images */
+.attachment-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* 3 images */
+.attachment-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Make third image full width */
+.attachment-grid-3
+.attachment-grid-item:last-child {
+    grid-column: 1 / -1;
+}
+
+/* 4+ images */
+.attachment-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+
+.attachment-grid-item {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    padding: 0;
+    border: none;
+    overflow: hidden;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+.attachment-grid-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.2s ease;
+}
+
+
+.attachment-grid-item:hover img {
+    transform: scale(1.03);
+}
+
+
+/* Single image should not be forced into a square */
+.attachment-grid-1
+.attachment-grid-item {
+    aspect-ratio: auto;
+    max-height: 420px;
+}
+
+
+.attachment-grid-1
+.attachment-grid-item img {
+    width: 100%;
+    height: auto;
+
+    max-height: 420px;
+
+    object-fit: contain;
+}
+
+
+/* +N overlay */
+.attachment-grid-more {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    color: white;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    pointer-events: none;
+}

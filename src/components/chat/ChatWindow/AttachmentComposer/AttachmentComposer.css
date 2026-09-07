@@ -115,7 +115,7 @@
 
 /* File */
 
-.attachment-file-preview {
+.attachment-files-preview {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -128,7 +128,7 @@
     color: var(--text-primary);
 }
 
-.attachment-file-preview p {
+.attachment-files-preview p {
     max-width: 400px;
 
     margin: 0;
@@ -141,7 +141,7 @@
     white-space: nowrap;
 }
 
-.attachment-file-preview span {
+.attachment-files-preview span {
     font-size: 13px;
 
     color: var(--text-secondary);

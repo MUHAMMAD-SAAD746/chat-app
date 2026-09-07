@@ -1,8 +1,7 @@
 .image-viewer {
     position: fixed;
     inset: 0;
-
-    z-index: 1000;
+    z-index: 9999;
 
     display: flex;
     align-items: center;
@@ -10,43 +9,109 @@
 
     padding: 30px;
 
-    background-color: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
 }
-
-
-.image-viewer-image {
-    max-width: 90vw;
-    max-height: 90vh;
-
-    object-fit: contain;
-
-    border-radius: 6px;
-}
-
 
 .image-viewer-close {
     position: absolute;
-
     top: 20px;
     right: 20px;
-
-    width: 44px;
-    height: 44px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 44px;
+    height: 44px;
+
     border: none;
     border-radius: 50%;
 
-    background-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.12);
     color: white;
 
     cursor: pointer;
+
+    transition: background 0.2s ease;
 }
 
-
 .image-viewer-close:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.image-viewer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    max-width: 1200px;
+}
+
+.image-viewer-image {
+    flex: 1;
+
+    width: 100%;
+    min-height: 0;
+
+    object-fit: contain;
+}
+
+.image-viewer-thumbnails {
+    display: flex;
+    gap: 8px;
+
+    width: min(100%, 900px);
+    max-width: 100%;
+
+    padding: 12px 0 0;
+
+    overflow-x: auto;
+
+    justify-content: center;
+}
+
+.image-viewer-thumbnail {
+    flex: 0 0 70px;
+
+    width: 70px;
+    height: 70px;
+
+    padding: 2px;
+
+    border: 2px solid transparent;
+    border-radius: 6px;
+
+    background: transparent;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    opacity: 0.65;
+
+    transition:
+        opacity 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.image-viewer-thumbnail:hover {
+    opacity: 1;
+}
+
+.image-viewer-thumbnail.active {
+    opacity: 1;
+    border-color: white;
+}
+
+.image-viewer-thumbnail img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 4px;
 }

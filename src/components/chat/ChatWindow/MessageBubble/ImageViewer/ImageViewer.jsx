@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import "./ImageViewer.css";
 
-function ImageViewer({ imageUrl, alt, onClose }) {
-    if (!imageUrl) {
+function ImageViewer({
+    images = [],
+    initialIndex = 0,
+    onClose,
+}) {
+    const [selectedIndex, setSelectedIndex] = useState(initialIndex);
+
+    if (!images.length) {
         return null;
     }
+
+    const selectedImage = images[selectedIndex];
 
     return (
         <div
@@ -20,12 +29,45 @@ function ImageViewer({ imageUrl, alt, onClose }) {
                 <IoClose size={28} />
             </button>
 
-            <img
-                src={imageUrl}
-                alt={alt}
-                className="image-viewer-image"
-                onClick={(event) => event.stopPropagation()}
-            />
+            <div
+                className="image-viewer-content"
+                onClick={(event) =>
+                    event.stopPropagation()
+                }
+            >
+                <img
+                    src={selectedImage.fileUrl}
+                    alt={
+                        selectedImage.fileName ||
+                        "Image"
+                    }
+                    className="image-viewer-image"
+                />
+
+                <div className="image-viewer-thumbnails">
+                    {images.map((image, index) => (
+                        <button
+                            key={`${image.fileUrl}-${index}`}
+                            type="button"
+                            className={`image-viewer-thumbnail ${selectedIndex === index
+                                    ? "active"
+                                    : ""
+                                }`}
+                            onClick={() =>
+                                setSelectedIndex(index)
+                            }
+                        >
+                            <img
+                                src={image.fileUrl}
+                                alt={
+                                    image.fileName ||
+                                    `Thumbnail ${index + 1}`
+                                }
+                            />
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

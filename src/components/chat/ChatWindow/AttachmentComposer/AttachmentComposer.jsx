@@ -7,6 +7,7 @@ import {
     IoCheckmark,
     IoRefresh,
 } from "react-icons/io5";
+import { FaArrowRotateRight } from "react-icons/fa6";
 import "./AttachmentComposer.css";
 
 function AttachmentComposer({
@@ -19,6 +20,8 @@ function AttachmentComposer({
     onAddMore,
     fileStatuses,
     onRetryFile,
+    onRetryFailedFiles,
+    hasFailedFiles,
 }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -135,10 +138,6 @@ function AttachmentComposer({
                                 ] === "failed" && (
                                         <div
                                             className="attachment-status failed"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                onRetryFile(file);
-                                            }}
                                         >
                                             <IoRefresh />
                                         </div>
@@ -156,13 +155,23 @@ function AttachmentComposer({
 
                     <button
                         type="button"
-                        onClick={onSend}
-                        aria-label="Send attachment"
+                        onClick={
+                            hasFailedFiles
+                                ? onRetryFailedFiles
+                                : onSend
+                        }
+                        aria-label={
+                            hasFailedFiles
+                                ? "Retry failed attachments"
+                                : "Send attachments"
+                        }
                         disabled={isSending}
                         className="attachment-send-button"
                     >
                         {isSending ? (
                             <span className="attachment-send-spinner" />
+                        ) : hasFailedFiles ? (
+                            <IoRefresh size={30} />
                         ) : (
                             <IoSend size={20} />
                         )}
