@@ -63,10 +63,6 @@ function MessageBubble({
         id: messageId,
         text,
         type,
-        fileUrl,
-        fileName,
-        fileType,
-        fileSize,
         caption,
         attachments,
         deliveredAt,
@@ -142,13 +138,19 @@ function MessageBubble({
     const isDeletedForMe = deletedFor?.[userId] === true;
     const isDeletedForEveryone = deleteStatus === "everyone";
 
-    const imageAttachments = attachments?.filter(
+    const attachmentList = attachments
+        ? Object.values(attachments)
+        : [];
+
+    const imageAttachments = attachmentList.filter(
         (attachment) =>
             attachment.type === "image" ||
             attachment.fileType?.startsWith("image/")
-    ) || [];
+    );
 
-    const hasGroupedImages = imageAttachments.length > 0;
+    const hasGroupedImages = imageAttachments.length > 1;
+
+    const singleAttachment = attachmentList[0];
 
 
     useEffect(() => {
@@ -240,7 +242,9 @@ function MessageBubble({
 
 
     const handleOpenFile = () => {
-        window.open(fileUrl, "_blank");
+        if (!singleAttachment?.fileUrl) return;
+
+        window.open(singleAttachment.fileUrl, "_blank");
     };
 
 
@@ -575,45 +579,49 @@ function MessageBubble({
                                         </p>
                                     )}
                                 </div>
-                            ) : type === "image" ? (
+                            ) : singleAttachment ? (
                                 <div className="message-attachment">
-                                    <img
-                                        src={fileUrl}
-                                        alt={fileName}
-                                        className="message-image"
-                                        onClick={() => setShowImageViewer(true)}
-                                    />
+                                    {singleAttachment.type === "image" ||
+                                        singleAttachment.fileType?.startsWith("image/") ? (
+                                        <img
+                                            src={singleAttachment.fileUrl}
+                                            alt={singleAttachment.fileName}
+                                            className="message-image"
+                                            onClick={() => {
+                                                setSelectedImageIndex(0);
+                                                setShowImageViewer(true);
+                                            }}
+                                        />
+                                    ) : (
+                                        <div
+                                            className="message-file"
+                                            onClick={handleOpenFile}
+                                        >
+                                            <div className="message-file-icon">
+                                                <IoDocumentText size={32} />
+                                            </div>
 
-                                    {caption && (
-                                        <p className="message-caption">
-                                            {caption}
-                                        </p>
+                                            <div className="message-file-info">
+                                                <p className="message-file-name">
+                                                    {singleAttachment.fileName}
+                                                </p>
+
+                                                <span className="message-file-preview">
+                                                    {singleAttachment.fileType
+                                                        ?.split("/")[1]
+                                                        ?.toUpperCase()}{" "}
+                                                    •{" "}
+                                                    {formatFileSize(
+                                                        singleAttachment.fileSize
+                                                    )}
+                                                </span>
+                                            </div>
+
+                                            <div className="message-file-download">
+                                                <IoDownloadOutline size={20} />
+                                            </div>
+                                        </div>
                                     )}
-                                </div>
-                            ) : type === "file" ? (
-                                <div className="message-attachment">
-                                    <div
-                                        className="message-file"
-                                        onClick={handleOpenFile}
-                                    >
-                                        <div className="message-file-icon">
-                                            <IoDocumentText size={32} />
-                                        </div>
-
-                                        <div className="message-file-info">
-                                            <p className="message-file-name">
-                                                {fileName}
-                                            </p>
-
-                                            <span className="message-file-preview">
-                                                {fileType?.split("/")[1]?.toUpperCase()} • {formatFileSize(fileSize)}
-                                            </span>
-                                        </div>
-
-                                        <div className="message-file-download">
-                                            <IoDownloadOutline size={20} />
-                                        </div>
-                                    </div>
 
                                     {caption && (
                                         <p className="message-caption">

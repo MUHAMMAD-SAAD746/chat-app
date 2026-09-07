@@ -242,6 +242,107 @@ export async function sendFileMessage(
 
 
 
+// export async function sendMultipleFileMessages(
+//     conversationId,
+//     senderId,
+//     files,
+//     caption
+// ) {
+//     const conversationRef = ref(
+//         database,
+//         `conversations/${conversationId}`
+//     );
+
+//     const conversationSnapshot = await get(
+//         conversationRef
+//     );
+
+//     if (!conversationSnapshot.exists()) {
+//         throw new Error("Conversation not found");
+//     }
+
+//     const conversation = conversationSnapshot.val();
+
+//     const recipientId = Object.keys(
+//         conversation.members
+//     ).find((uid) => uid !== senderId);
+
+//     if (!recipientId) {
+//         throw new Error("Recipient not found");
+//     }
+
+//     const areFriends = await isFriend(
+//         senderId,
+//         recipientId
+//     );
+
+//     if (!areFriends) {
+//         throw new Error(
+//             "You are no longer friends with this user."
+//         );
+//     }
+
+//     if (!files?.length) {
+//         throw new Error("No files provided.");
+//     }
+
+//     const messagesRef = ref(
+//         database,
+//         `conversations/${conversationId}/messages`
+//     );
+
+//     const messageRef = push(messagesRef);
+
+//     const attachments = files.map((file) => ({
+//         fileUrl: file.fileUrl,
+//         fileName: file.fileName,
+//         fileType: file.fileType,
+//         fileSize: file.fileSize,
+//         type: file.fileType.startsWith("image/")
+//             ? "image"
+//             : "file",
+//     }));
+
+//     const message = {
+//         senderId,
+//         attachments,
+//         ...(caption?.trim() && {
+//             caption: caption.trim(),
+//         }),
+//         createdAt: serverTimestamp(),
+//     };
+
+//     await set(messageRef, message);
+
+//     const activeConversationRef = ref(
+//         database,
+//         `activeConversations/${recipientId}`
+//     );
+
+//     const activeConversationSnapshot = await get(
+//         activeConversationRef
+//     );
+
+//     const activeConversationId =
+//         activeConversationSnapshot.val();
+
+//     if (activeConversationId !== conversationId) {
+//         await incrementUnread(
+//             conversationId,
+//             recipientId
+//         );
+//     }
+
+//     return {
+//         id: messageRef.key,
+//         ...message,
+//     };
+// }
+
+
+
+
+
 export async function sendMultipleFileMessages(
     conversationId,
     senderId,
@@ -291,28 +392,98 @@ export async function sendMultipleFileMessages(
         `conversations/${conversationId}/messages`
     );
 
-    const messageRef = push(messagesRef);
+    const imageFiles = files.filter(
+        (file) =>
+            file.fileType?.startsWith("image/")
+    );
 
-    const attachments = files.map((file) => ({
-        fileUrl: file.fileUrl,
-        fileName: file.fileName,
-        fileType: file.fileType,
-        fileSize: file.fileSize,
-        type: file.fileType.startsWith("image/")
-            ? "image"
-            : "file",
-    }));
+    const documentFiles = files.filter(
+        (file) =>
+            !file.fileType?.startsWith("image/")
+    );
 
-    const message = {
-        senderId,
-        attachments,
-        ...(caption?.trim() && {
-            caption: caption.trim(),
-        }),
-        createdAt: serverTimestamp(),
-    };
+    const createdMessages = [];
 
-    await set(messageRef, message);
+    /*
+     * ==========================================
+     * 1. SEND ALL IMAGES AS ONE MESSAGE
+     * ==========================================
+     */
+
+    if (imageFiles.length > 0) {
+        const messageRef = push(messagesRef);
+
+        const attachments = imageFiles.map((file) => ({
+            fileUrl: file.fileUrl,
+            fileName: file.fileName,
+            fileType: file.fileType,
+            fileSize: file.fileSize,
+            type: "image",
+        }));
+
+        const message = {
+            senderId,
+            attachments,
+
+            ...(caption?.trim() && {
+                caption: caption.trim(),
+            }),
+
+            createdAt: serverTimestamp(),
+        };
+
+        await set(messageRef, message);
+
+        createdMessages.push({
+            id: messageRef.key,
+            ...message,
+        });
+    }
+
+
+    /*
+     * ==========================================
+     * 2. SEND EACH DOCUMENT AS SEPARATE MESSAGE
+     * ==========================================
+     */
+
+    for (const file of documentFiles) {
+        const messageRef = push(messagesRef);
+
+        const message = {
+            senderId,
+
+            attachments: [
+                {
+                    fileUrl: file.fileUrl,
+                    fileName: file.fileName,
+                    fileType: file.fileType,
+                    fileSize: file.fileSize,
+                    type: "file",
+                },
+            ],
+
+            ...(caption?.trim() && {
+                caption: caption.trim(),
+            }),
+
+            createdAt: serverTimestamp(),
+        };
+
+        await set(messageRef, message);
+
+        createdMessages.push({
+            id: messageRef.key,
+            ...message,
+        });
+    }
+
+
+    /*
+     * ==========================================
+     * 3. UPDATE UNREAD ONCE
+     * ==========================================
+     */
 
     const activeConversationRef = ref(
         database,
@@ -326,18 +497,19 @@ export async function sendMultipleFileMessages(
     const activeConversationId =
         activeConversationSnapshot.val();
 
-    if (activeConversationId !== conversationId) {
+    if (
+        activeConversationId !== conversationId
+    ) {
         await incrementUnread(
             conversationId,
             recipientId
         );
     }
 
-    return {
-        id: messageRef.key,
-        ...message,
-    };
+
+    return createdMessages;
 }
+
 
 
 

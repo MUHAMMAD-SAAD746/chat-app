@@ -276,6 +276,10 @@
     justify-content: center;
 }
 
+.attachment-thumbnail > svg {
+    color: var(--text-primary);
+}
+
 .attachment-thumbnail-selected {
     border: 2px solid var(--accent-success);
 }
