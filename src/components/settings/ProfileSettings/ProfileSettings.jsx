@@ -13,6 +13,7 @@ import useUsername from "../../../hooks/useUsername";
 import { uploadProfileImage } from "../../../cloudinary/cloudinaryService";
 import { notify } from "../../../utils/notification";
 import { formatMessageDate } from "../../../utils/formatUtils";
+import { getDefaultProfileImage } from "../../../utils/profile";
 
 import "./ProfileSettings.css";
 
@@ -32,7 +33,6 @@ function ProfileSettings() {
     const [saving, setSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState("");
 
-    const DEFAULT_PROFILE_IMAGE = "https://res.cloudinary.com/dn7oklgm7/image/upload/v1786611251/copy_of_profile_ppp_wh9unh.png";
 
     const {
         username: userName,
@@ -73,10 +73,8 @@ function ProfileSettings() {
                 setLocalProfile(userData);
 
 
-                const finalImage =
-                    userData.profileImage || DEFAULT_PROFILE_IMAGE;
 
-                setDbProfileImage(finalImage);
+                setDbProfileImage(userData.profileImage || "");
                 setNewProfileImage(null);
 
                 setFullName(userData.fullName || "");
@@ -130,14 +128,12 @@ function ProfileSettings() {
 
             let finalProfileImage = dbProfileImage;
 
-            // New uploaded file
             if (newProfileImage?.type === "file") {
                 finalProfileImage = await uploadProfileImage(
                     newProfileImage.value
                 );
             }
 
-            // New URL
             if (newProfileImage?.type === "url") {
                 finalProfileImage = newProfileImage.value;
             }
@@ -145,8 +141,11 @@ function ProfileSettings() {
             const updatedData = {
                 fullName: fullName.trim(),
                 userName: userName.trim().toLowerCase(),
-                profileImage: finalProfileImage,
             };
+
+            if (finalProfileImage) {
+                updatedData.profileImage = finalProfileImage;
+            }
 
             await updateUser(
                 user.uid,
@@ -223,9 +222,6 @@ function ProfileSettings() {
 
     return (
         <div className="profile-settings">
-
-            {/* Header */}
-
             <div className="profile-settings-header">
                 <h2>Profile</h2>
 
@@ -236,10 +232,8 @@ function ProfileSettings() {
             </div>
 
 
-            {/* Profile Card */}
 
             <div className="profile-settings-card">
-                {/* Profile Image */}
                 <div className="profile-settings-avatar-section">
 
                     <div className="profile-settings-avatar">
@@ -249,11 +243,14 @@ function ProfileSettings() {
                                     ? URL.createObjectURL(newProfileImage.value)
                                     : newProfileImage?.type === "url"
                                         ? newProfileImage.value
-                                        : dbProfileImage
+                                        : dbProfileImage ||
+                                        getDefaultProfileImage(profile.fullName)
                             }
                             alt={profile.fullName}
                             onError={(e) => {
-                                e.currentTarget.src = DEFAULT_PROFILE_IMAGE;
+                                e.currentTarget.src = getDefaultProfileImage(
+                                    profile.fullName
+                                );
                             }}
                         />
                     </div>
@@ -307,8 +304,6 @@ function ProfileSettings() {
                 <div className="profile-settings-divider" />
 
 
-                {/* Editable Information */}
-
                 <div className="profile-settings-section">
 
                     <h3>Personal information</h3>
@@ -318,8 +313,6 @@ function ProfileSettings() {
                         to other users.
                     </p>
 
-
-                    {/* Full Name */}
 
                     <div className="profile-settings-field">
 
@@ -337,8 +330,6 @@ function ProfileSettings() {
 
                     </div>
 
-
-                    {/* Username */}
 
                     <div className="profile-settings-field">
 
@@ -382,8 +373,6 @@ function ProfileSettings() {
                 <div className="profile-settings-divider" />
 
 
-                {/* Account Information */}
-
                 <div className="profile-settings-section">
 
                     <h3>Account information</h3>
@@ -393,8 +382,6 @@ function ProfileSettings() {
                         cannot be changed here.
                     </p>
 
-
-                    {/* Email */}
 
                     <div className="profile-settings-field">
 
@@ -419,8 +406,6 @@ function ProfileSettings() {
 
                     </div>
 
-
-                    {/* UID */}
 
                     <div className="profile-settings-field">
 
@@ -450,8 +435,6 @@ function ProfileSettings() {
                     </div>
 
 
-                    {/* Created At */}
-
                     <div className="profile-settings-field">
 
                         <label>
@@ -466,8 +449,6 @@ function ProfileSettings() {
 
                 </div>
 
-
-                {/* Actions */}
 
                 <div className="profile-settings-actions">
 

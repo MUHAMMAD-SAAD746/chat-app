@@ -8,6 +8,7 @@ import {
 } from "../../../firebase/services/friendRequestService";
 
 import { getUser } from "../../../firebase/database";
+import { getDefaultProfileImage } from "../../../utils/profile";
 
 const DEFAULT_PROFILE_IMAGE = "/default-profile.png";
 
@@ -97,7 +98,10 @@ function FriendRequestItem({ request, type = "received" }) {
 
                 <img
                     className="friend-request-avatar"
-                    src={requestUser?.profileImage || DEFAULT_PROFILE_IMAGE}
+                    src={
+                        requestUser?.profileImage ||
+                        getDefaultProfileImage(requestUser?.fullName)
+                    }
                     alt={requestUser?.fullName || "User"}
                 />
 

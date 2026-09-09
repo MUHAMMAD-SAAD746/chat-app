@@ -1,3 +1,4 @@
+import { getDefaultProfileImage } from "../../../utils/profile";
 import "./RemoveFriendModal.css";
 
 function RemoveFriendModal({
@@ -33,7 +34,7 @@ function RemoveFriendModal({
                         className="remove-friend-modal-avatar"
                         src={
                             friend.profileImage ||
-                            "/default-profile.png"
+                            getDefaultProfileImage(friend?.fullName)
                         }
                         alt={friend.fullName || "Friend"}
                     />

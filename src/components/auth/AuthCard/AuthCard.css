@@ -251,7 +251,7 @@
     border: none;
     border-radius: 8px;
 
-    background: var(--accent-success);
+    background: var(--bg-button) !important;
     color: var(--text-primary-opp);
 
     font-size: 15px;
@@ -292,7 +292,7 @@
 }
 
 .login-prompt a {
-    color: var(--accent-success);
+    color: var(--accent-success) !important;
 
     font-weight: 500;
 

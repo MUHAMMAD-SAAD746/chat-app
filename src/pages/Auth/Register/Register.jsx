@@ -46,7 +46,6 @@ function Register() {
 
         const errors = {};
 
-        // Full name
         if (!fullName.trim()) {
             errors.fullName = "Full name is required";
         }
@@ -55,12 +54,10 @@ function Register() {
             errors.userName = usernameError;
         }
 
-        // Email
         if (!email.trim()) {
             errors.email = "Email is required";
         }
 
-        // Password
         if (!password) {
             errors.password = "Password is required";
         } else if (password.length < 6) {
@@ -82,7 +79,6 @@ function Register() {
             return;
         }
 
-        // Username already exists
         if (usernameAvailable !== true) {
             return;
         }
@@ -100,8 +96,9 @@ function Register() {
             console.log("Signup completed");
             const user = result.user;
 
-            const DEFAULT_PROFILE_IMAGE = "https://res.cloudinary.com/dn7oklgm7/image/upload/v1786611251/copy_of_profile_ppp_wh9unh.png";
-            let profileImageUrl = DEFAULT_PROFILE_IMAGE;
+
+
+            let profileImageUrl = null;
 
             if (profileImage?.type === "file") {
                 profileImageUrl = await uploadProfileImage(profileImage.value);
@@ -114,9 +111,12 @@ function Register() {
                 fullName,
                 userName,
                 email: user.email,
-                profileImage: profileImageUrl,
                 createdAt: Date.now()
             };
+
+            if (profileImageUrl) {
+                profileData.profileImage = profileImageUrl;
+            }
 
             await createUser(user.uid, profileData);
             setProfile(profileData);

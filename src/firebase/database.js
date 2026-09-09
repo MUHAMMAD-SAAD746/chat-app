@@ -47,9 +47,13 @@ export const updateUser = async (uid, oldUserName, data) => {
 
         const updates = {
             [`users/${uid}/fullName`]: data.fullName.trim(),
-            [`users/${uid}/profileImage`]: data.profileImage || "",
             [`users/${uid}/userName`]: newUserName || "",
         };
+
+        if (data.profileImage) {
+            updates[`users/${uid}/profileImage`] = data.profileImage;
+        }
+
 
         // -----------------------------------------
         // Case 1: User is adding username for first time
@@ -128,8 +132,8 @@ export const getUsername = async (userName) => {
     );
 
     return snapshot.exists()
-    ? snapshot.val()
-    : null;
+        ? snapshot.val()
+        : null;
 };
 
 
@@ -138,6 +142,6 @@ export const getUsernames = async () => {
     const snapshot = await get(ref(database, "usernames"));
 
     return snapshot.exists()
-    ? snapshot.val()
-    : {};
+        ? snapshot.val()
+        : {};
 };

@@ -71,7 +71,7 @@
 
     border-radius: 8px;
 
-    background-color: var(--accent-success);
+    background-color: var(--bg-button);
     color: var(--text-primary-opp);
 
     font-size: 14px;

@@ -11,6 +11,7 @@ import {
     pinConversation,
     unpinConversation
 } from "../../../firebase/services/conversationService";
+import { getDefaultProfileImage } from "../../../utils/profile";
 
 
 
@@ -39,7 +40,10 @@ function ConversationItem({ conversation, otherUser, onClick }) {
         <>
             <div className="chat-avatar">
                 <img
-                    src={otherUser?.profileImage}
+                    src={
+                        otherUser?.profileImage ||
+                        getDefaultProfileImage(otherUser?.fullName)
+                    }
                     alt={`${otherUser?.fullName || "User"} profile`}
                 />
             </div>

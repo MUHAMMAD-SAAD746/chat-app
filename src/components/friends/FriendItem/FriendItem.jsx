@@ -6,6 +6,7 @@ import { getOrCreateConversation } from "../../../firebase/services/conversation
 
 import { removeFriend } from "../../../firebase/services/friendService";
 import RemoveFriendModal from "../RemoveFriendModal/RemoveFriendModal";
+import { getDefaultProfileImage } from "../../../utils/profile";
 
 import "./FriendItem.css";
 
@@ -17,7 +18,7 @@ function FriendItem({ friend, onRemove }) {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    const DEFAULT_PROFILE_IMAGE = "/default-profile.png";
+    // const DEFAULT_PROFILE_IMAGE = "/default-profile.png";
 
 
     const handleOpenChat = async () => {
@@ -81,7 +82,10 @@ function FriendItem({ friend, onRemove }) {
 
                     <img
                         className="friend-item-avatar"
-                        src={friend.profileImage || DEFAULT_PROFILE_IMAGE}
+                        src={
+                            friend.profileImage || 
+                            getDefaultProfileImage(friend?.fullName)
+                        }
                         alt={friend.fullName || "Friend"}
                     />
 

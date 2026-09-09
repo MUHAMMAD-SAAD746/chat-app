@@ -12,6 +12,7 @@ import { getOrCreateConversation } from "../../../firebase/services/conversation
 
 import { IoArrowBack, IoSearch } from "react-icons/io5";
 import "./NewChat.css";
+import { getDefaultProfileImage } from "../../../utils/profile";
 
 function NewChat({ onBack }) {
     const [search, setSearch] = useState("");
@@ -189,7 +190,10 @@ function NewChat({ onBack }) {
                         onClick={() => handleSelectUser(user)}
                     >
                         <img
-                            src={user.profileImage}
+                            src={
+                                user.profileImage || 
+                                getDefaultProfileImage(user?.fullName)
+                            }
                             alt={user.fullName}
                         />
 

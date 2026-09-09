@@ -8,6 +8,7 @@ import {
     reauthenticateWithCredential,
     reauthenticateWithPopup,
     updatePassword,
+    sendPasswordResetEmail
 } from "firebase/auth";
 
 import {
@@ -33,6 +34,9 @@ export const login = (email, password) =>
 
 export const loginWithGoogle = () =>
     signInWithPopup(auth, googleProvider);
+
+export const resetPassword = (email) =>
+    sendPasswordResetEmail(auth, email);
 
 
 
