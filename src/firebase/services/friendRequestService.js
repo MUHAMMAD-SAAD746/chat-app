@@ -1,6 +1,8 @@
 import { ref, set, remove, update, get } from "firebase/database";
 import { database } from "../config";
 
+import { getOrCreateConversation } from "./conversationService";
+
 
 const getFriendRequestId = (senderId, receiverId) => {
     return `${senderId}_${receiverId}`;
@@ -96,6 +98,11 @@ export const acceptFriendRequest = async (senderId, receiverId) => {
     };
 
     await update(ref(database), updates);
+
+    await getOrCreateConversation(
+        senderId,
+        receiverId
+    );
 };
 
 

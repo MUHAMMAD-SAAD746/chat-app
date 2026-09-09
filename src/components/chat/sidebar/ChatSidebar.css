@@ -271,6 +271,17 @@
     color: var(--text-secondary);
 }
 
+.unread-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.unread-container .unread-txt{
+    color: #25d366;
+    font-size: 13px;
+}
+
 .unread-count {
     min-width: 18px;
     height: 18px;

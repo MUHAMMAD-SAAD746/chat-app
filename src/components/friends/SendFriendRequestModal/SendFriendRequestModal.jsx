@@ -1,3 +1,5 @@
+import { getDefaultProfileImage } from "../../../utils/profile";
+
 import "./SendFriendRequestModal.css";
 
 function SendFriendRequestModal({
@@ -38,8 +40,13 @@ function SendFriendRequestModal({
                         className="friend-request-modal-avatar"
                         src={
                             user.profileImage ||
-                            "/default-profile.png"
+                            getDefaultProfileImage(user?.fullName)
                         }
+                        onError={(e) => {
+                            e.currentTarget.src = getDefaultProfileImage(
+                                user?.fullName
+                            );
+                        }}
                         alt={user.fullName || "User"}
                     />
 

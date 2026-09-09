@@ -48,8 +48,6 @@ function MessageList({
                         message.senderId !== user.uid &&
                         !message.readAt
                     ) {
-                        console.log("MARKING MESSAGE AS READ:", message.id);
-
                         markMessageAsRead(
                             conversationId,
                             message.id

@@ -77,9 +77,12 @@ function ConversationItem({ conversation, otherUser, onClick }) {
                             )}
 
                             {unreadCount > 0 && (
-                                <span className="unread-count">
-                                    {unreadCount}
-                                </span>
+                                <div className="unread-container">
+                                    <span className="unread-txt">new</span>
+                                    <span className="unread-count">
+                                        {unreadCount}
+                                    </span>
+                                </div>
                             )}
 
                             {!onClick && (
