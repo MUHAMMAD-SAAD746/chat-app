@@ -13,6 +13,7 @@ import { useAuth } from "../../../../context/AuthContext";
 import { listenToUserPresence } from "../../../../firebase/services/presenceListenerService";
 import { clearConversation } from "../../../../firebase/services/conversationService";
 import { formatLastSeen } from "../../../../utils/formatUtils";
+import { getDefaultProfileImage } from "../../../../utils/profile";
 
 import "./ChatHeader.css";
 
@@ -104,7 +105,10 @@ function ChatHeader({ selectedUser, isOtherUserTyping }) {
 
                     <div className="chat-header-avatar">
                         <img
-                            src={`${selectedUser?.profileImage}`}
+                            src={
+                                selectedUser?.profileImage ||
+                                getDefaultProfileImage(selectedUser?.fullName)
+                            }
                             alt="User profile"
                         />
                     </div>
