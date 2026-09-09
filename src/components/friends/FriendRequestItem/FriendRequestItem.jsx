@@ -10,8 +10,6 @@ import {
 import { getUser } from "../../../firebase/database";
 import { getDefaultProfileImage } from "../../../utils/profile";
 
-const DEFAULT_PROFILE_IMAGE = "/default-profile.png";
-
 function FriendRequestItem({ request, type = "received" }) {
     const [requestUser, setRequestUser] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -102,6 +100,11 @@ function FriendRequestItem({ request, type = "received" }) {
                         requestUser?.profileImage ||
                         getDefaultProfileImage(requestUser?.fullName)
                     }
+                    onError={(e) => {
+                        e.currentTarget.src = getDefaultProfileImage(
+                            requestUser?.fullName
+                        );
+                    }}
                     alt={requestUser?.fullName || "User"}
                 />
 
