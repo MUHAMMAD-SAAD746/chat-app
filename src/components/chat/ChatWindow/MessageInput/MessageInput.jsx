@@ -2,10 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import usePopupPosition from "../../../../hooks/usePopupPosition";
 import { IoSend, IoAttach, IoHappyOutline } from "react-icons/io5";
+import { MdMicNone } from "react-icons/md";
 import EmojiPicker from "emoji-picker-react";
 import "./MessageInput.css";
 
-import { sendMessage } from "../../../../firebase/services/messageService";
+import VoiceRecorder from "./VoiceRecorder/VoiceRecorder";
+
+import {
+    startRecording,
+    stopRecording,
+    getAudioDuration,
+    generateWaveform,
+} from "../../../../utils/audioRecorder";
+
+import { uploadVoiceMessage } from "../../../../cloudinary/cloudinaryService";
+
+import {
+    sendMessage,
+    sendVoiceMessage,
+} from "../../../../firebase/services/messageService";
 import { setTyping } from "../../../../firebase/services/typingService";
 import { useAuth } from "../../../../context/AuthContext";
 
@@ -22,6 +37,8 @@ function MessageInput({
     const { user } = useAuth();
     const [text, setText] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+    const [isRecording, setIsRecording] = useState(false);
 
     const { conversationId } = useParams();
 
@@ -88,6 +105,58 @@ function MessageInput({
     };
 
 
+    const handleStartRecording = async () => {
+        try {
+            await startRecording();
+
+            setIsRecording(true);
+        } catch (error) {
+            console.error("Failed to start recording:", error);
+        }
+    };
+
+
+
+    const handleSendVoice = async () => {
+        if (
+            !canSendMessage ||
+            !user ||
+            !conversationId ||
+            !isRecording
+        ) return;
+
+        try {
+            const audioBlob = await stopRecording();
+            const duration = await getAudioDuration(audioBlob);
+            console.log("VOICE DURATION:", duration);
+
+            const waveform = await generateWaveform(audioBlob);
+            console.log("VOICE WAVEFORM:", waveform);
+
+            console.log("VOICE BLOB:", audioBlob);
+            console.log("VOICE TYPE:", audioBlob.type);
+            console.log("VOICE SIZE:", audioBlob.size);
+
+            const voiceUpload = await uploadVoiceMessage(audioBlob);
+            console.log("VOICE UPLOAD:", voiceUpload);
+
+            await sendVoiceMessage(
+                conversationId,
+                user.uid,
+                voiceUpload.url,
+                audioBlob.type,
+                audioBlob.size,
+                duration,
+                waveform
+            );
+
+            setIsRecording(false);
+        } catch (error) {
+            console.error("Failed to send voice recording:", error);
+        }
+    };
+
+
 
     const handleSend = async () => {
         if (
@@ -151,7 +220,7 @@ function MessageInput({
 
     useEffect(() => {
         setText("");
-        
+
         return () => {
             clearTimeout(typingTimer.current);
 
@@ -244,23 +313,40 @@ function MessageInput({
 
 
 
-                    <input
-                        type="text"
-                        placeholder="Type a message..."
-                        value={text}
-                        onChange={(e) => handleTyping(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                    />
+                    {isRecording ? (
+                        <VoiceRecorder
+                            onCancel={() => setIsRecording(false)}
+                        />
+                    ) : (
+                        <input
+                            type="text"
+                            placeholder="Type a message..."
+                            value={text}
+                            onChange={(e) => handleTyping(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                        />
+                    )}
 
 
-                    <button
-                        type="button"
-                        className="message-send-button"
-                        aria-label="Send message"
-                        onClick={handleSend}
-                    >
-                        <IoSend size={18} />
-                    </button>
+                    {isRecording || text.trim() ? (
+                        <button
+                            type="button"
+                            className="message-send-button"
+                            aria-label="Send message"
+                            onClick={isRecording ? handleSendVoice : handleSend}
+                        >
+                            <IoSend size={18} />
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            className="message-send-button message-mic-button"
+                            aria-label="Record voice message"
+                            onClick={handleStartRecording}
+                        >
+                            <MdMicNone size={20} />
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

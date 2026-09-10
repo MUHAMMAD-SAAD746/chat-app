@@ -1,0 +1,137 @@
+.voice-recorder {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+
+.voice-recorder-delete {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.voice-recorder-delete:hover {
+    background-color: var(--bg-secondary);
+}
+
+
+/* Recording dot */
+
+.voice-recorder-dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #ef4444;
+    animation: voice-recorder-pulse 1s infinite;
+}
+
+@keyframes voice-recorder-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+/* Recording time */
+
+.voice-recorder-time {
+    min-width: 38px;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+}
+
+/* Waveform */
+
+.voice-recorder-waveform {
+    width: 180px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    overflow: hidden;
+}
+
+.voice-recorder-waveform span {
+    width: 3px;
+    min-height: 5px;
+    border-radius: 3px;
+    background-color: var(--text-muted);
+}
+
+.voice-recorder-waveform span:nth-child(1) {
+    height: 10px;
+}
+
+.voice-recorder-waveform span:nth-child(2) {
+    height: 18px;
+}
+
+.voice-recorder-waveform span:nth-child(3) {
+    height: 13px;
+}
+
+.voice-recorder-waveform span:nth-child(4) {
+    height: 24px;
+}
+
+.voice-recorder-waveform span:nth-child(5) {
+    height: 16px;
+}
+
+.voice-recorder-waveform span:nth-child(6) {
+    height: 21px;
+}
+
+.voice-recorder-waveform span:nth-child(7) {
+    height: 11px;
+}
+
+.voice-recorder-waveform span:nth-child(8) {
+    height: 18px;
+}
+
+/* Pause / Resume */
+
+.voice-recorder-control {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--text-primary);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.voice-recorder-control:hover {
+    background-color: var(--bg-secondary);
+}

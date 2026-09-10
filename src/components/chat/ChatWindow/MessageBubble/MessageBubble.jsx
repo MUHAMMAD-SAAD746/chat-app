@@ -18,6 +18,7 @@ import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
 import EditMessageModal from "./EditMessageModal/EditMessageModal";
 import ImageViewer from "./ImageViewer/ImageViewer";
 import AttachmentGrid from "./AttachmentGrid/AttachmentGrid";
+import VoiceMessageBubble from "./VoiceMessageBubble/VoiceMessageBubble";
 
 import {
     deleteMessageForMe,
@@ -563,6 +564,14 @@ function MessageBubble({
                                 <p className="message-deleted">
                                     Message deleted
                                 </p>
+                            ) : type === "voice" ? (
+                                <VoiceMessageBubble
+                                    fileUrl={message.fileUrl}
+                                    duration={message.duration}
+                                    waveform={message.waveform}
+                                    profileImage={selectedUser?.profileImage}
+                                    fullName={selectedUser?.fullName}
+                                />
                             ) : hasGroupedImages ? (
                                 <div className="message-attachment">
                                     <AttachmentGrid

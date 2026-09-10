@@ -254,6 +254,18 @@
 }
 
 
+.message-mic-button {
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
+.message-mic-button:hover {
+    background-color: var(--bg-button);
+    color: var(--text-primary-opp);
+    opacity: 1;
+}
+
+
 .emoji-picker-container {
     position: relative;
     flex-shrink: 0;
@@ -308,9 +320,6 @@
         width: 320px !important;
         max-width: calc(100vw - 20px) !important;
         height: 350px !important;
-
-        /* left: 50% !important;
-        transform: translateX(-50%); */
     }
 }
 

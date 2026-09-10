@@ -10,6 +10,8 @@ import Settings from "./pages/Settings/Settings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 
+import AudioRecorderTest from "./components/AudioRecorderTest/AudioRecorderTest";
+
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/toast.css";

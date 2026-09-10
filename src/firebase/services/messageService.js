@@ -240,6 +240,97 @@ export async function sendFileMessage(
 
 
 
+export async function sendVoiceMessage(
+    conversationId,
+    senderId,
+    fileUrl,
+    fileType,
+    fileSize,
+    duration,
+    waveform
+) {
+    const conversationRef = ref(
+        database,
+        `conversations/${conversationId}`
+    );
+
+    const conversationSnapshot = await get(
+        conversationRef
+    );
+
+    if (!conversationSnapshot.exists()) {
+        throw new Error("Conversation not found");
+    }
+
+    const conversation = conversationSnapshot.val();
+
+    const recipientId = Object.keys(
+        conversation.members
+    ).find((uid) => uid !== senderId);
+
+    if (!recipientId) {
+        throw new Error("Recipient not found");
+    }
+
+    const areFriends = await isFriend(
+        senderId,
+        recipientId
+    );
+
+    if (!areFriends) {
+        throw new Error(
+            "You are no longer friends with this user."
+        );
+    }
+
+    const messagesRef = ref(
+        database,
+        `conversations/${conversationId}/messages`
+    );
+
+    const messageRef = push(messagesRef);
+
+    const message = {
+        senderId,
+        type: "voice",
+        fileUrl,
+        fileType,
+        fileSize,
+        duration,
+        waveform,
+        createdAt: serverTimestamp(),
+    };
+
+    await set(messageRef, message);
+
+    const activeConversationRef = ref(
+        database,
+        `activeConversations/${recipientId}`
+    );
+
+    const activeConversationSnapshot = await get(
+        activeConversationRef
+    );
+
+    const activeConversationId =
+        activeConversationSnapshot.val();
+
+    if (activeConversationId !== conversationId) {
+        await incrementUnread(
+            conversationId,
+            recipientId
+        );
+    }
+
+    return {
+        id: messageRef.key,
+        ...message,
+    };
+}
+
+
+
+
 
 
 // export async function sendMultipleFileMessages(

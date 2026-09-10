@@ -1,0 +1,78 @@
+.voice-message-bubble {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 240px;
+    max-width: 320px;
+}
+
+.voice-message-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.voice-message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.voice-message-play-button {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.voice-message-play-button:hover {
+    background-color: var(--bg-voice-button-hover);
+}
+
+.voice-message-waveform {
+    flex: 1;
+    min-width: 70px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.voice-message-waveform span {
+    width: 3px;
+    min-height: 5px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    background-color: var(--text-muted);
+}
+
+.voice-message-waveform span.active {
+    background-color: var(--text-primary);
+}
+
+.voice-message-duration {
+    min-width: 32px;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+}

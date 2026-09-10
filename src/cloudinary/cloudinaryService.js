@@ -102,3 +102,45 @@ export async function uploadChatFile(file) {
         resourceType: data.resource_type
     };
 }
+
+
+
+
+export async function uploadVoiceMessage(audioBlob) {
+    if (!audioBlob) {
+        return null;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "file",
+        audioBlob,
+        "voice-message.webm"
+    );
+
+    formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+    );
+
+    const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Voice message upload failed");
+    }
+
+    const data = await response.json();
+
+    return {
+        url: data.secure_url,
+        publicId: data.public_id,
+        resourceType: data.resource_type
+    };
+}

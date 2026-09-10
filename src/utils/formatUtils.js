@@ -57,6 +57,15 @@ export const formatTime = (timestamp) => {
 
 
 
+export const formatRecordingTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+};
+
+
+
 
 export const formatMessageDate = (timestamp) => {
     const date = new Date(timestamp);
