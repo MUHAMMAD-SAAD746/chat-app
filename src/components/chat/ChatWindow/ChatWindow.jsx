@@ -699,6 +699,7 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
                 ) : (
                     <div className="chat-input">
                         <MessageInput
+                            key={conversationId}
                             canSendMessage={canSendMessage}
                             replyingTo={replyingTo}
                             onCancelReply={() => setReplyingTo(null)}

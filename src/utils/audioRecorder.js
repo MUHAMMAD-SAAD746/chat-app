@@ -16,7 +16,7 @@ export async function startRecording() {
         }
     };
 
-    mediaRecorder.start();
+    mediaRecorder.start(1000);
 }
 
 
@@ -65,6 +65,17 @@ export function resumeRecording() {
     if (mediaRecorder && mediaRecorder.state === "paused") {
         mediaRecorder.resume();
     }
+}
+
+
+export function getRecordingPreview() {
+    if (!mediaRecorder || audioChunks.length === 0) {
+        return null;
+    }
+
+    return new Blob(audioChunks, {
+        type: mediaRecorder.mimeType,
+    });
 }
 
 

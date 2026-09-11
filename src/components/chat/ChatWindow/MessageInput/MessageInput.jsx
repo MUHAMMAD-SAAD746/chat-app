@@ -13,6 +13,7 @@ import {
     stopRecording,
     getAudioDuration,
     generateWaveform,
+    cancelRecording,
 } from "../../../../utils/audioRecorder";
 
 import { uploadVoiceMessage } from "../../../../cloudinary/cloudinaryService";
@@ -43,6 +44,7 @@ function MessageInput({
     const { conversationId } = useParams();
 
     const typingTimer = useRef(null);
+    const recordingRef = useRef(false);
 
 
     const {
@@ -110,6 +112,7 @@ function MessageInput({
             await startRecording();
 
             setIsRecording(true);
+            recordingRef.current = true;
         } catch (error) {
             console.error("Failed to start recording:", error);
         }
@@ -151,6 +154,7 @@ function MessageInput({
             );
 
             setIsRecording(false);
+            recordingRef.current = false;
         } catch (error) {
             console.error("Failed to send voice recording:", error);
         }
@@ -223,6 +227,12 @@ function MessageInput({
 
         return () => {
             clearTimeout(typingTimer.current);
+
+            if (recordingRef.current) {
+                cancelRecording();
+                recordingRef.current = false;
+                setIsRecording(false);
+            }
 
             if (user && conversationId) {
                 setTyping(
@@ -315,7 +325,10 @@ function MessageInput({
 
                     {isRecording ? (
                         <VoiceRecorder
-                            onCancel={() => setIsRecording(false)}
+                            onCancel={() => {
+                                setIsRecording(false);
+                                recordingRef.current = false;
+                            }}
                         />
                     ) : (
                         <input
