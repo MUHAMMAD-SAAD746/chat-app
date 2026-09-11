@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import usePopupPosition from "../../../../hooks/usePopupPosition";
 import EmojiPicker from "emoji-picker-react";
+import Linkify from "linkify-react";
 import {
     IoCheckmark,
     IoCheckmarkDone,
@@ -640,7 +641,9 @@ function MessageBubble({
                                 </div>
                             ) : (
                                 <p>
-                                    {text}
+                                    <Linkify>
+                                        {text}
+                                    </Linkify>
                                 </p>
                             )}
                         </>
