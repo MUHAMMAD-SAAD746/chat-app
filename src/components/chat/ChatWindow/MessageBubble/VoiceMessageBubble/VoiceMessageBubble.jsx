@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { getDefaultProfileImage } from "../../../../../utils/profile";
 import { IoPlay, IoPause } from "react-icons/io5";
 
 import "./VoiceMessageBubble.css";
@@ -15,17 +16,6 @@ function VoiceMessageBubble({
     const [audioDuration, setAudioDuration] = useState(duration);
     const audioRef = useRef(null);
 
-    const getInitials = (name) => {
-        if (!name) return "?";
-
-        return name
-            .trim()
-            .split(" ")
-            .map((word) => word[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase();
-    };
 
     const formatDuration = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -98,16 +88,10 @@ function VoiceMessageBubble({
             <div className="voice-message-bubble">
 
                 <div className="voice-message-avatar">
-                    {profileImage ? (
                         <img
-                            src={profileImage}
+                            src={profileImage || getDefaultProfileImage(fullName)}
                             alt={fullName || "User"}
                         />
-                    ) : (
-                        <span>
-                            {getInitials(fullName)}
-                        </span>
-                    )}
                 </div>
 
                 <button

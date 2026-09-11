@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../../../context/AuthContext";
 import usePopupPosition from "../../../../hooks/usePopupPosition";
 import EmojiPicker from "emoji-picker-react";
 import Linkify from "linkify-react";
@@ -11,8 +12,8 @@ import {
     IoHappyOutline,
     IoArrowUndoOutline,
     IoCreateOutline,
-    IoArrowForwardOutline,
     IoTrashOutline,
+    IoCopyOutline,
 } from "react-icons/io5";
 import { RiShareForwardFill } from "react-icons/ri";
 import DeleteMessageModal from "../../DeleteMessageModal/DeleteMessageModal";
@@ -77,6 +78,8 @@ function MessageBubble({
         forwarded,
     } = message;
 
+
+    const { profile } = useAuth();
 
     const [showMenu, setShowMenu] = useState(false);
 
@@ -174,6 +177,17 @@ function MessageBubble({
     }
 
 
+    const handleCopy = async () => {
+        if (!text) return;
+
+        try {
+            await navigator.clipboard.writeText(text);
+            setShowMenu(false);
+        } catch (error) {
+            console.error("Failed to copy message:", error);
+        }
+    };
+
 
     const handleDeleteForMe = async () => {
         try {
@@ -209,7 +223,6 @@ function MessageBubble({
 
 
 
-
     const handleEdit = async (newText) => {
         const trimmedText = newText.trim();
 
@@ -239,7 +252,6 @@ function MessageBubble({
             setIsSavingEdit(false);
         }
     };
-
 
 
 
@@ -439,6 +451,13 @@ function MessageBubble({
                                         </button>
                                     )}
 
+                                    {!isDeletedForEveryone && text && (
+                                        <button onClick={handleCopy}>
+                                            <IoCopyOutline />
+                                            <span>Copy</span>
+                                        </button>
+                                    )}
+
                                     {isOwn && !type && !isDeletedForEveryone && (
                                         <button
                                             onClick={() => {
@@ -570,8 +589,12 @@ function MessageBubble({
                                     fileUrl={message.fileUrl}
                                     duration={message.duration}
                                     waveform={message.waveform}
-                                    profileImage={selectedUser?.profileImage}
-                                    fullName={selectedUser?.fullName}
+                                    profileImage={
+                                        isOwn ? profile?.profileImage : selectedUser?.profileImage
+                                    }
+                                    fullName={
+                                        isOwn ? profile?.fullName : selectedUser?.fullName
+                                    }
                                 />
                             ) : hasGroupedImages ? (
                                 <div className="message-attachment">
