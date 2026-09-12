@@ -97,26 +97,43 @@ export function cancelRecording() {
 
 
 
-export function getAudioDuration(audioBlob) {
-    return new Promise((resolve, reject) => {
-        const audio = new Audio();
+// export function getAudioDuration(audioBlob) {
+//     return new Promise((resolve, reject) => {
+//         const audio = new Audio();
 
-        const audioUrl = URL.createObjectURL(audioBlob);
+//         const audioUrl = URL.createObjectURL(audioBlob);
 
-        audio.src = audioUrl;
+//         audio.src = audioUrl;
 
-        audio.onloadedmetadata = () => {
-            URL.revokeObjectURL(audioUrl);
+//         audio.onloadedmetadata = () => {
+//             URL.revokeObjectURL(audioUrl);
 
-            resolve(Math.round(audio.duration));
-        };
+//             resolve(Math.round(audio.duration));
+//         };
 
-        audio.onerror = () => {
-            URL.revokeObjectURL(audioUrl);
+//         audio.onerror = () => {
+//             URL.revokeObjectURL(audioUrl);
 
-            reject(new Error("Failed to get audio duration"));
-        };
-    });
+//             reject(new Error("Failed to get audio duration"));
+//         };
+//     });
+// }
+
+
+export async function getAudioDuration(audioBlob) {
+    const audioContext = new AudioContext();
+
+    try {
+        const arrayBuffer = await audioBlob.arrayBuffer();
+
+        const audioBuffer = await audioContext.decodeAudioData(
+            arrayBuffer
+        );
+
+        return Math.round(audioBuffer.duration);
+    } finally {
+        await audioContext.close();
+    }
 }
 
 

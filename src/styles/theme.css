@@ -9,11 +9,13 @@
 
     --bg-chat-window: #f5f1eb;
     --bg-message-bubble: #ffffff;
-    --own-message-bubble: #d9fdd3;
+    --own-message-bubble: #caffc1;
     --message-reply-preview: #f6f5f4;
     --own-msg-reply-preview: #d6f3cf;
     --message-receipt: #576554;
     --bg-button: #1b9a58;
+    --bg-wave: #acacacad;
+    --bg-playback: #777777;
 
     --bg-hover: #f1f5f9;
     --bg-voice-button-hover: rgba(0, 0, 0, 0.08);
@@ -57,6 +59,8 @@
     --own-msg-reply-preview: #103e2c;
     --message-receipt: #ffffff;
     --bg-secondary: #1d1f1f;
+    --bg-wave: #cccccc54;
+    --bg-playback: #ffff;
 
     --bg-hover: #2e2f2f;
     --bg-voice-button-hover: rgba(255, 255, 255, 0.12);

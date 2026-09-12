@@ -80,7 +80,22 @@ function VoiceMessageBubble({
                     setCurrentTime(0);
                 }}
                 onLoadedMetadata={(event) => {
-                    setAudioDuration(event.target.duration);
+                    const loadedDuration = event.target.duration;
+
+                    if (Number.isFinite(loadedDuration)) {
+                        setAudioDuration(loadedDuration);
+                    }
+                }}
+                onPlay={() => {
+                    console.log("AUDIO PLAYING");
+                }}
+
+                onPause={() => {
+                    console.log("AUDIO PAUSED");
+                }}
+
+                onError={(event) => {
+                    console.log("AUDIO ERROR:", event.target.error);
                 }}
             />
 
@@ -88,10 +103,10 @@ function VoiceMessageBubble({
             <div className="voice-message-bubble">
 
                 <div className="voice-message-avatar">
-                        <img
-                            src={profileImage || getDefaultProfileImage(fullName)}
-                            alt={fullName || "User"}
-                        />
+                    <img
+                        src={profileImage || getDefaultProfileImage(fullName)}
+                        alt={fullName || "User"}
+                    />
                 </div>
 
                 <button

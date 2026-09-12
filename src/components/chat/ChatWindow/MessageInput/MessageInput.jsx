@@ -40,6 +40,7 @@ function MessageInput({
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const [isRecording, setIsRecording] = useState(false);
+    const [isSendingVoice, setIsSendingVoice] = useState(false);
 
     const { conversationId } = useParams();
 
@@ -129,6 +130,10 @@ function MessageInput({
         ) return;
 
         try {
+            setIsSendingVoice(true);
+            setIsRecording(false);
+            recordingRef.current = false;
+
             const audioBlob = await stopRecording();
             const duration = await getAudioDuration(audioBlob);
             console.log("VOICE DURATION:", duration);
@@ -153,10 +158,13 @@ function MessageInput({
                 waveform
             );
 
+            setIsSendingVoice(false);
             setIsRecording(false);
             recordingRef.current = false;
         } catch (error) {
             console.error("Failed to send voice recording:", error);
+        } finally {
+            setIsSendingVoice(false);
         }
     };
 
@@ -325,6 +333,7 @@ function MessageInput({
 
                     {isRecording ? (
                         <VoiceRecorder
+                            isSending={isSendingVoice}
                             onCancel={() => {
                                 setIsRecording(false);
                                 recordingRef.current = false;

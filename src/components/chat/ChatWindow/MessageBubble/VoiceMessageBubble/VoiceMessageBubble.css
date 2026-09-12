@@ -62,11 +62,12 @@
     min-height: 5px;
     flex-shrink: 0;
     border-radius: 3px;
-    background-color: var(--text-muted);
+    /* background-color: var(--text-muted); */
+    background-color: var(--bg-wave);
 }
 
 .voice-message-waveform span.active {
-    background-color: var(--text-primary);
+    background-color: var(--bg-playback);
 }
 
 .voice-message-duration {
