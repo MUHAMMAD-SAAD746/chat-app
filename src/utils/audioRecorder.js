@@ -95,31 +95,6 @@ export function cancelRecording() {
 }
 
 
-
-
-// export function getAudioDuration(audioBlob) {
-//     return new Promise((resolve, reject) => {
-//         const audio = new Audio();
-
-//         const audioUrl = URL.createObjectURL(audioBlob);
-
-//         audio.src = audioUrl;
-
-//         audio.onloadedmetadata = () => {
-//             URL.revokeObjectURL(audioUrl);
-
-//             resolve(Math.round(audio.duration));
-//         };
-
-//         audio.onerror = () => {
-//             URL.revokeObjectURL(audioUrl);
-
-//             reject(new Error("Failed to get audio duration"));
-//         };
-//     });
-// }
-
-
 export async function getAudioDuration(audioBlob) {
     const audioContext = new AudioContext();
 
@@ -135,8 +110,6 @@ export async function getAudioDuration(audioBlob) {
         await audioContext.close();
     }
 }
-
-
 
 
 export async function generateWaveform(audioBlob, barCount = 30) {

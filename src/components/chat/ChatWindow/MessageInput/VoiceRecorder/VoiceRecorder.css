@@ -148,14 +148,11 @@
     border: none;
     border-radius: 50%;
     background-color: transparent;
-    /* color: var(--text-primary); */
     color: var(--mic-color);
     font-size: 15px;
     cursor: pointer;
 }
 
 .voice-recorder-control:hover {
-    /* background-color: var(--bg-secondary); */
-    /* background-color: #3a2a2c; */
     background-color: rgba(187, 49, 60, 0.212);
 }

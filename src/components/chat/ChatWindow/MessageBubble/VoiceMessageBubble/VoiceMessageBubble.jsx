@@ -135,7 +135,6 @@ function VoiceMessageBubble({
                                     : ""
                             }
                             style={{
-                                // height: `${Math.max(value * 30, 5)}px`,
                                 height: `${Math.max((value / maxWaveformValue) * 30, 5)}px`,
                             }}
                         ></span>

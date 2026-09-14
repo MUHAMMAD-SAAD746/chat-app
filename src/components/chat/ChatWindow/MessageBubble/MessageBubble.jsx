@@ -751,14 +751,6 @@ function MessageBubble({
             )}
 
 
-            {/* {showImageViewer && (
-                <ImageViewer
-                    imageUrl={fileUrl}
-                    alt={fileName}
-                    onClose={() => setShowImageViewer(false)}
-                />
-            )} */}
-
             {showImageViewer && (
                 <ImageViewer
                     images={imageAttachments}
