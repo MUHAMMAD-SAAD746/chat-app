@@ -44,6 +44,11 @@ function ChatWindow({ selectedUser, isOtherUserTyping }) {
 
 
 
+    useEffect(() => {
+        setReplyingTo(null);
+    }, [conversationId]);
+
+
     const handleFileSelect = (e) => {
         if (isSendingAttachment) {
             e.target.value = "";
