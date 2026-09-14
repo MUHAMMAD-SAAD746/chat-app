@@ -113,6 +113,7 @@
     position: relative;
     width: fit-content;
     max-width: 65%;
+    min-width: 0;
 }
 
 .message-other .message-main {

@@ -1,9 +1,11 @@
 .voice-message-bubble {
     display: flex;
     align-items: center;
-    gap: 10px;
-    min-width: 240px;
-    max-width: 320px;
+    gap: 8px;
+    width: min(320px, 100%);
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .voice-message-avatar {
@@ -47,8 +49,8 @@
 }
 
 .voice-message-waveform {
-    flex: 1;
-    min-width: 70px;
+    flex: 1 1 auto;
+    min-width: 0;
     height: 30px;
     display: flex;
     align-items: center;
@@ -59,10 +61,10 @@
 
 .voice-message-waveform span {
     width: 3px;
+    min-width: 0;
     min-height: 5px;
     flex-shrink: 0;
     border-radius: 3px;
-    /* background-color: var(--text-muted); */
     background-color: var(--bg-wave);
 }
 
@@ -76,4 +78,136 @@
     font-size: 12px;
     font-variant-numeric: tabular-nums;
     color: var(--text-muted);
+}
+
+.voice-message-avatar,
+.voice-message-play-button,
+.voice-message-duration {
+    flex-shrink: 0;
+}
+
+.voice-message-waveform {
+    flex-shrink: 1;
+}
+
+
+
+
+@media (max-width: 900px) {
+    .voice-message-bubble {
+        gap: 6px;
+    }
+
+    .voice-message-avatar {
+        width: 34px;
+        height: 34px;
+    }
+
+    .voice-message-play-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .voice-message-duration {
+        min-width: 30px;
+        font-size: 11px;
+    }
+
+    .voice-message-waveform {
+        gap: 2px;
+    }
+
+    .voice-message-waveform span {
+        width: 2px;
+    }
+}
+
+
+@media (max-width: 645px) {
+    .voice-message-bubble {
+        gap: 4px;
+    }
+
+    .voice-message-avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .voice-message-play-button {
+        width: 26px;
+        height: 26px;
+    }
+
+    .voice-message-duration {
+        min-width: 26px;
+        font-size: 10px;
+    }
+
+    .voice-message-waveform {
+        gap: 1.5px;
+    }
+
+    .voice-message-waveform span {
+        width: 2px;
+    }
+}
+
+
+@media (max-width: 450px) {
+    .voice-message-bubble {
+        gap: 6px;
+    }
+
+    .voice-message-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .voice-message-play-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .voice-message-duration {
+        min-width: 28px;
+        font-size: 11px;
+    }
+
+    .voice-message-waveform {
+        gap: 2px;
+    }
+
+    .voice-message-waveform span {
+        width: 2px;
+    }
+}
+
+
+@media (max-width: 350px) {
+    .voice-message-bubble {
+        gap: 4px;
+    }
+
+    .voice-message-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .voice-message-play-button {
+        width: 26px;
+        height: 26px;
+    }
+
+    .voice-message-duration {
+        min-width: 25px;
+        font-size: 10px;
+    }
+
+    .voice-message-waveform {
+        gap: 1px;
+    }
+
+    .voice-message-waveform span {
+        width: 2px;
+    }
 }
