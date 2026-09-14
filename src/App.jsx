@@ -15,26 +15,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/toast.css";
 
 import { useTheme } from "./context/ThemeContext";
-import { useAuth } from "./context/AuthContext";
 
 function App() {
   const { darkMode } = useTheme();
-
-
-  function HomeRedirect() {
-    const { user, loading } = useAuth();
-
-    if (loading) {
-      return null;
-    }
-
-    return (
-      <Navigate
-        to={user ? "/chat" : "/login"}
-        replace
-      />
-    );
-  }
 
 
 
